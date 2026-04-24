@@ -1,69 +1,61 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>깨비 운세</title>
-  <meta name="theme-color" content="#2b1055" />
-  <meta name="description" content="깨비 운세 - 오늘의 운세, 재회운, 궁합 서비스" />
-
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="kkabbi.png" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <main class="app">
-    <section class="hero">
-      <div class="symbol">🪄</div>
-      <h1>깨비 운세</h1>
-      <img class="mascot-img" src="kkabbi.png" alt="깨비 캐릭터" />
-      <p class="main-copy">오늘의 문이 열리면 행운도 함께 들어옵니다</p>
-      <p class="sub-copy">고급스럽고 신비롭게, 하지만 친근하게 다가오는 오늘의 운세</p>
-    </section>
-
-    <section class="card">
-      <h2>💞 재회 궁합 입력</h2>
-      <div class="input-grid">
-        <input id="myBirth" placeholder="내 생년월일 (예: 1990-03-12)" />
-        <input id="theirBirth" placeholder="상대 생년월일 (예: 1988-11-07)" />
-        <button class="primary" onclick="calcReunion()">궁합 결과 보기</button>
-      </div>
-
-      <div class="label">TODAY</div>
-      <h2>오늘의 총운</h2>
-      <div class="result" id="result"></div>
-    </section>
-
-    <button class="wide" onclick="drawFortune()">🔮 오늘의 운세 뽑기</button>
-
-    <section>
-      <h3>띠별 운세</h3>
-      <div class="grid" id="zodiacGrid"></div>
-    </section>
-
-    <section class="grid two">
-      <button onclick="drawMoney()">💰 재물운</button>
-      <button onclick="drawLove()">❤️ 애정운</button>
-      <button onclick="drawReunionLuck()">💞 재회운</button>
-      <button onclick="coupleMatch()">💘 커플궁합</button>
-    </section>
-
-    <section class="premium">
-      <div class="premium-title">👑 프리미엄</div>
-      <p class="premium-copy">재회 상세판과 궁합 심층판은 정식 오픈 준비 중입니다.</p>
-      <div class="grid two">
-        <button onclick="premiumReunion()">🔐 재회 상세판</button>
-        <button onclick="premiumMatch()">💎 궁합 심층판</button>
-      </div>
-    </section>
-
-    <section class="youtube">
-      <button onclick="openYoutube()">📺 깨비 운세 TV 연결</button>
-    </section>
-  </main>
-
-  <script src="script.js"></script>
-</body>
-</html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>깨비 운세 프리미엄 메인</title>
+<style>
+body{margin:0;font-family:sans-serif;background:linear-gradient(180deg,#140428,#2b1055);color:#fff;padding:20px}.wrap{max-width:430px;margin:auto}.card{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:18px;margin:14px 0}.hero{text-align:center}.hero img{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #f6c85f}.menu{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn,.menu .card{cursor:pointer;padding:16px;border-radius:18px;background:linear-gradient(90deg,#7b2ff7,#f107a3);text-align:center;font-weight:700}.bar{height:10px;background:#ffffff22;border-radius:99px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#ffd166,#06d6a0)}small{opacity:.8}.result{white-space:pre-line;line-height:1.7;background:rgba(0,0,0,.25);border-radius:18px;padding:14px;margin-top:10px}input{width:100%;box-sizing:border-box;margin:6px 0;padding:12px;border-radius:14px;border:1px solid #ffffff33;background:#00000044;color:white}
+</style>
+</head><body><div class='wrap'>
+<div class='card hero'>
+<h1>깨비 운세</h1>
+<img src='kkabbi.png' alt='깨비'>
+<p>오늘의 운세가 궁금하신가요?</p>
+</div>
+<div class='menu'>
+<div class='card' onclick='todayFortune()'>🌙 오늘의 운세</div>
+<div class='card' onclick='showReunion()'>💞 재회 궁합</div>
+<div class='card' onclick='zodiacFortune()'>🐭 띠별 운세</div>
+<div class='card' onclick='taroFortune()'>🔮 타로 운세</div>
+</div>
+<div class='card' id='actionBox'><h3>오늘의 한마디</h3>
+<p>지금의 작은 노력이 큰 행운으로 돌아옵니다.</p>
+</div>
+<div class='card'>
+<h3>오늘의 종합 운세</h3>
+<small>사랑운 80%</small><div class='bar'><div class='fill' style='width:80%'></div></div><br>
+<small>금전운 70%</small><div class='bar'><div class='fill' style='width:70%'></div></div><br>
+<small>건강운 75%</small><div class='bar'><div class='fill' style='width:75%'></div></div>
+</div>
+<div class='card' style='text-align:center'>홈 · 운세 · 궁합 · 마이</div>
+</div>
+<script>
+const result=document.getElementById('actionBox');
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const today=[
+'총운: 기회가 열리는 하루입니다.
+사랑운: 따뜻한 말이 관계를 살립니다.
+금전운: 작은 지출은 신중히 하세요.
+건강운: 무리하지 말고 쉬어가세요.',
+'총운: 막혔던 일이 풀립니다.
+사랑운: 기다리던 연락운이 밝습니다.
+금전운: 뜻밖의 이익이 따를 수 있습니다.
+건강운: 몸을 따뜻하게 하세요.',
+'총운: 새로운 제안이 들어올 수 있습니다.
+사랑운: 마음을 열면 좋은 흐름입니다.
+금전운: 계산은 꼼꼼히 하세요.
+건강운: 소화 관리가 필요합니다.'
+];
+function todayFortune(){result.innerHTML='<h3>🌙 오늘의 운세</h3><div class="result">'+pick(today)+'</div>'}
+function showReunion(){result.innerHTML='<h3>💞 재회 궁합</h3><input id="me" placeholder="내 생년월일 예: 1990-03-12"><input id="you" placeholder="상대 생년월일 예: 1988-11-07"><div class="btn" onclick="calcReunion()">재회 궁합 보기</div><div id="reunionResult" class="result">생년월일을 입력해 주세요.</div>'}
+function calcReunion(){const me=document.getElementById('me').value;const you=document.getElementById('you').value;const a=(me.match(/\d/g)||[]).reduce((s,n)=>s+Number(n),0);const b=(you.match(/\d/g)||[]).reduce((s,n)=>s+Number(n),0);if(!a||!b){document.getElementById('reunionResult').textContent='생년월일을 먼저 입력해 주세요.';return;}const score=45+((a*7+b*11)%51);const chance=score>=80?'높음':score>=60?'보통':'시간 필요';const mind=score>=80?'상대도 마음이 남아 있으나 망설이고 있습니다.':score>=60?'감정과 현실 사이에서 고민하는 흐름입니다.':'아직 다시 생각할 여유가 부족합니다.';document.getElementById('reunionResult').textContent='감정 연결도 '+score+'%
+재회 가능성 '+chance+'
+상대 심리: '+mind+'
+깨비 조언: 서두르지 말고 가벼운 안부부터 시작하세요.'}
+function zodiacFortune(){const z=['쥐띠: 새로운 기회가 옵니다.','소띠: 꾸준함이 복을 부릅니다.','호랑이띠: 추진력이 강해집니다.','토끼띠: 인간관계가 좋아집니다.','용띠: 큰 흐름이 열립니다.','뱀띠: 지혜로운 선택이 필요합니다.','말띠: 움직일수록 기회가 커집니다.','양띠: 마음의 평온이 중요합니다.','원숭이띠: 재치가 빛납니다.','닭띠: 성실함이 인정받습니다.','개띠: 믿음이 좋은 결과를 만듭니다.','돼지띠: 재물운이 따릅니다.'];result.innerHTML='<h3>🐭 띠별 운세</h3><div class="result">'+z.join('
+')+'</div>'}
+function taroFortune(){const cards=['해의 카드: 밝은 기운과 좋은 소식이 옵니다.','달의 카드: 마음을 차분히 살피세요.','별의 카드: 희망이 다시 살아납니다.','연인의 카드: 관계운이 강하게 들어옵니다.'];result.innerHTML='<h3>🔮 타로 운세</h3><div class="result">'+pick(cards)+'</div>'}
+todayFortune();
+</script>
+</body></html>
