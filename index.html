@@ -10,95 +10,20 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  background:linear-gradient(180deg,#120022,#26004a,#100019);
-  color:#fff;
-}
-.wrap{
-  max-width:430px;
-  margin:0 auto;
-  min-height:100vh;
-  padding:22px 18px 36px;
-}
-h1{
-  text-align:center;
-  color:#ffd86b;
-  font-size:42px;
-  margin:18px 0 24px;
-}
-.hero{
-  width:100%;
-  border-radius:26px;
-  display:block;
-  background:#fff;
-  padding:8px;
-}
-.bubble{
-  background:#fff;
-  color:#240840;
-  border-radius:22px;
-  padding:18px;
-  margin-top:18px;
-  text-align:center;
-  font-size:21px;
-  line-height:1.55;
-  font-weight:900;
-}
-.askRow{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-  margin-top:16px;
-}
-input{
-  width:100%;
-  padding:16px;
-  border-radius:18px;
-  border:3px solid #fff;
-  font-size:16px;
-}
-button{
-  border:none;
-  border-radius:18px;
-  padding:15px 18px;
-  background:linear-gradient(90deg,#7a3cff,#ff3ca6);
-  color:#fff;
-  font-size:17px;
-  font-weight:900;
-  cursor:pointer;
-}
-.result{
-  background:#fff;
-  color:#240840;
-  border-radius:22px;
-  padding:18px;
-  margin-top:16px;
-  text-align:center;
-  font-size:20px;
-  line-height:1.55;
-  font-weight:900;
-  white-space:pre-line;
-}
-.menu{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:18px;
-}
-.menu button{
-  min-height:72px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,216,107,.35);
-  color:#fff;
-}
-.footer{
-  text-align:center;
-  color:#d8b4fe;
-  margin-top:18px;
-  font-size:14px;
-}
+body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(180deg,#120022,#26004a,#100019);color:#fff}
+.wrap{max-width:430px;margin:0 auto;min-height:100vh;padding:22px 18px 36px}
+h1{text-align:center;color:#ffd86b;font-size:42px;margin:18px 0 24px}
+.hero{width:100%;border-radius:26px;display:block;background:#fff;padding:8px}
+.bubble,.result{background:#fff;color:#240840;border-radius:22px;padding:18px;margin-top:16px;text-align:center;font-size:20px;line-height:1.55;font-weight:900;white-space:pre-line}
+.askRow{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:16px}
+input{width:100%;padding:16px;border-radius:18px;border:3px solid #fff;font-size:16px}
+button,.downloadBtn{border:none;border-radius:18px;padding:15px 18px;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;font-size:17px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.menu button{min-height:72px;background:rgba(255,255,255,.08);border:1px solid rgba(255,216,107,.35);color:#fff}
+.talismanBox{background:rgba(255,216,107,.10);border:1px solid rgba(255,216,107,.35);border-radius:22px;padding:18px;margin-top:18px;text-align:center}
+.talismanBox h3{color:#ffd86b;margin:0 0 10px}
+.talismanImg{width:150px;height:150px;object-fit:cover;border-radius:22px;border:2px solid #ffd86b;background:#fff;margin:10px auto;display:block}
+.footer{text-align:center;color:#d8b4fe;margin-top:18px;font-size:14px}
 </style>
 </head>
 <body>
@@ -125,6 +50,8 @@ button{
     <button type="button" id="reunionBtn">💞 재회 궁합</button>
     <button type="button" id="zodiacBtn">🐭 띠별 운세</button>
     <button type="button" id="specialBtn">✨ 특별 운세</button>
+    <button type="button" id="talismanBtn">📜 행운 부적</button>
+    <button type="button" id="premiumBtn">👑 프리미엄</button>
   </div>
 
   <div class="footer">🌸 깨비는 항상 청야선생님 편이에요 🍀</div>
@@ -143,69 +70,50 @@ function show(text, msg, img){
 
 function askKabbi(){
   const q = document.getElementById("question").value.trim();
-
-  if(!q){
-    show("질문을 입력해 주세요 😊", "깨비가 기다리고 있어요!", "kkabbi.png");
-    return;
-  }
-
+  if(!q){show("질문을 입력해 주세요 😊","깨비가 기다리고 있어요!","kkabbi.png");return;}
   if(q.includes("연락") || q.includes("재회") || q.includes("사랑")){
-    show(
-      "💞 사랑/재회운\\n기다리던 소식이 움직일 수 있어요.\\n다만 먼저 감정을 쏟기보다 짧고 따뜻하게 다가가세요.",
-      "연락운을 살펴볼게요 💗<br>답은 타이밍에 있어요.",
-      "kkabbi-love.png"
-    );
+    show("💞 사랑/재회운\n기다리던 소식이 움직일 수 있어요.\n짧고 따뜻한 안부가 좋아요.","연락운을 살펴볼게요 💗<br>답은 타이밍에 있어요.","kkabbi-love.png");
   } else if(q.includes("돈") || q.includes("금전") || q.includes("복")){
-    show(
-      "💰 금전운\\n작은 기회가 복이 됩니다.\\n큰 지출은 천천히 결정하세요.",
-      "금전운이 움직이고 있어요 ✨",
-      "kkabbi-talisman.png"
-    );
+    show("💰 금전운\n작은 기회가 복이 됩니다.\n큰 지출은 천천히 결정하세요.","금전운이 움직이고 있어요 ✨","kkabbi-talisman.png");
   } else if(q.includes("힘들") || q.includes("고민") || q.includes("걱정")){
-    show(
-      "🤔 깨비 조언\\n지금은 서두르기보다 흐름을 보는 지혜가 필요합니다.\\n마음이 급할수록 한 걸음 쉬어가세요.",
-      "괜찮아요. 깨비가 곁에 있어요.",
-      "kkabbi-cute.png"
-    );
+    show("🤔 깨비 조언\n지금은 서두르기보다 흐름을 보는 지혜가 필요합니다.","괜찮아요. 깨비가 곁에 있어요.","kkabbi-cute.png");
   } else {
-    show(
-      "🔮 깨비 답변\\n좋은 기운이 곁에 있어요.\\n오늘은 작은 신호를 놓치지 않는 것이 중요합니다.",
-      "좋은 소식이 보여요 ✨<br>기대해도 좋아요.",
-      "kkabbi-wink.png"
-    );
+    show("🔮 깨비 답변\n좋은 기운이 곁에 있어요.\n오늘은 작은 신호를 놓치지 마세요.","좋은 소식이 보여요 ✨<br>기대해도 좋아요.","kkabbi-wink.png");
   }
 }
 
 function todayFortune(){
-  show(
-    "🌙 오늘의 운세\\n총운: 새로운 제안이나 연락이 들어올 수 있습니다.\\n사랑운: 기다리던 연락운이 밝아집니다.\\n금전운: 계산은 꼼꼼히, 결정은 천천히 하세요.\\n행운 숫자: 9",
-    "오늘의 운세를 전해드릴게요 ✨",
-    "kkabbi-basic.png"
-  );
+  show("🌙 오늘의 운세\n총운: 새로운 제안이나 연락이 들어올 수 있습니다.\n사랑운: 기다리던 연락운이 밝아집니다.\n금전운: 계산은 꼼꼼히 하세요.\n행운 숫자: 9","오늘의 운세를 전해드릴게요 ✨","kkabbi-basic.png");
 }
 
 function reunionFortune(){
-  show(
-    "💞 재회 궁합 결과\\n감정 연결도 87%\\n재회 가능성: 높음\\n상대 심리: 아직 미련은 있으나 자존심이 큼\\n연락 타이밍: 5월 초 저녁 시간대\\n피해야 할 행동: 감정적인 장문 메시지\\n깨비 조언: 가벼운 안부가 열쇠입니다.",
-    "재회운이 강하게 보여요 💗",
-    "kkabbi-love.png"
-  );
+  show("💞 재회 궁합 결과\n감정 연결도 87%\n재회 가능성: 높음\n상대 심리: 아직 미련은 있으나 자존심이 큼\n연락 타이밍: 5월 초 저녁 시간대\n깨비 조언: 가벼운 안부가 열쇠입니다.","재회운이 강하게 보여요 💗","kkabbi-love.png");
 }
 
 function zodiacFortune(){
-  show(
-    "🐭 띠별 운세\\n쥐띠: 기회가 옵니다.\\n소띠: 꾸준함이 복입니다.\\n호랑이띠: 추진력이 강합니다.\\n토끼띠: 관계운 상승.\\n용띠: 큰 흐름이 열립니다.",
-    "띠별 흐름을 살펴볼게요.",
-    "kkabbi-think.png"
-  );
+  show("🐭 띠별 운세\n쥐띠: 기회가 옵니다.\n소띠: 꾸준함이 복입니다.\n호랑이띠: 추진력이 강합니다.\n토끼띠: 관계운 상승.","띠별 흐름을 살펴볼게요.","kkabbi-think.png");
 }
 
 function specialFortune(){
-  show(
-    "✨ 특별 운세\\n행운 부적의 기운이 들어옵니다.\\n작은 소원이 이루어질 수 있어요.\\n오늘은 뜻밖의 도움이 가까이에 있습니다.",
-    "특별운이 열렸어요 ✨",
-    "kkabbi-talisman.png"
-  );
+  show("✨ 특별 운세\n행운 부적의 기운이 들어옵니다.\n작은 소원이 이루어질 수 있어요.","특별운이 열렸어요 ✨","kkabbi-talisman.png");
+}
+
+function talismanDownload(){
+  mainImage.src = "kkabbi-talisman.png";
+  speech.innerHTML = "오늘의 행운 부적을 드릴게요 ✨<br>핸드폰에 저장해 지니고 계세요.";
+
+  answer.innerHTML =
+    '<div class="talismanBox">' +
+    '<h3>📜 오늘의 행운 부적</h3>' +
+    '<img class="talismanImg" src="kkabbi-talisman.png" alt="행운 부적">' +
+    '<p>이 부적은 오늘의 좋은 기운을 담은 깨비 행운 부적입니다.</p>' +
+    '<a class="downloadBtn" href="kkabbi-talisman.png" download="kkaebbi-luck-talisman.png">부적 다운로드</a>' +
+    '<p style="font-size:13px;color:#6b4b16;margin-top:12px">※ 휴대폰에서 다운로드가 안 되면 이미지를 길게 눌러 저장하세요.</p>' +
+    '</div>';
+}
+
+function premiumInfo(){
+  show("👑 프리미엄 준비 중\n재회 상세판과 궁합 심층판을 준비하고 있습니다.\n카카오페이 / 토스페이 / 계좌이체 연결 예정입니다.","프리미엄 운세는 더 깊게 봐드릴게요 👑","kkabbi-talisman.png");
 }
 
 document.getElementById("askBtn").addEventListener("click", askKabbi);
@@ -213,6 +121,8 @@ document.getElementById("todayBtn").addEventListener("click", todayFortune);
 document.getElementById("reunionBtn").addEventListener("click", reunionFortune);
 document.getElementById("zodiacBtn").addEventListener("click", zodiacFortune);
 document.getElementById("specialBtn").addEventListener("click", specialFortune);
+document.getElementById("talismanBtn").addEventListener("click", talismanDownload);
+document.getElementById("premiumBtn").addEventListener("click", premiumInfo);
 </script>
 </body>
 </html>
