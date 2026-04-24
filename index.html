@@ -9,8 +9,9 @@
 <body>
   <main class="app">
     <section class="hero">
-      <div class="wand">🪄</div>
+      <div class="symbol">🪄</div>
       <h1>깨비 운세</h1>
+      <div class="mascot">깨비</div>
       <p class="main-copy">오늘의 문이 열리면 행운도 함께 들어옵니다</p>
       <p class="sub-copy">고급스럽고 신비롭게, 하지만 친근하게 다가오는 오늘의 운세</p>
     </section>
@@ -25,7 +26,7 @@
 
       <div class="label">TODAY</div>
       <h2>오늘의 총운</h2>
-      <div class="result" id="result">기다리던 소식이 들려오는 날입니다.</div>
+      <div class="result" id="result"></div>
     </section>
 
     <button class="wide" onclick="drawFortune()">🔮 오늘의 운세 뽑기</button>
@@ -44,6 +45,7 @@
 
     <section class="premium">
       <div class="premium-title">👑 프리미엄</div>
+      <p class="premium-copy">재회 상세판과 궁합 심층판은 정식 오픈 준비 중입니다.</p>
       <div class="grid two">
         <button onclick="premiumReunion()">🔐 재회 상세판</button>
         <button onclick="premiumMatch()">💎 궁합 심층판</button>

@@ -1,24 +1,8 @@
 const fortunes=[
-'기다리던 소식이 들려오는 날입니다.',
-'작은 친절이 큰 복으로 돌아옵니다.',
-'급한 마음을 내려놓으면 길이 보입니다.',
-'뜻밖의 인연이 미소를 가져다줍니다.',
-'금전운이 있으니 지출도 함께 살피세요.',
-'오늘의 선택이 내일의 기회가 됩니다.',
-'망설이던 일에 한 걸음 내디뎌 보세요.',
-'조용한 시간 속에 답이 숨어 있습니다.',
-'주변의 조언 속에 행운이 담겨 있습니다.',
-'마음을 다스리면 일이 순조롭게 풀립니다.',
-'멈춰 있던 일이 다시 움직이기 시작합니다.',
-'작은 용기가 큰 변화를 만듭니다.',
-'웃는 얼굴이 귀인을 불러옵니다.',
-'늦었다고 생각한 순간이 가장 빠른 때입니다.',
-'새로운 제안이 들어올 수 있는 날입니다.',
-'지나친 걱정보다 행동이 필요한 날입니다.',
-'오늘은 말보다 실천이 빛을 발합니다.',
-'반가운 만남이 기다리고 있습니다.',
-'잊고 있던 기회가 다시 찾아옵니다.',
-'차분함 속에서 큰 복이 자랍니다.'
+{total:'기다리던 기회가 열리는 하루입니다.',love:'따뜻한 말 한마디가 관계를 살립니다.',money:'작은 지출은 신중히 살피세요.',health:'무리하지 말고 피로를 풀어주세요.',num:7,color:'보라색',advice:'서두르지 말고 흐름을 보세요.'},
+{total:'막혀 있던 일이 조금씩 풀리기 시작합니다.',love:'오해가 풀리고 마음이 가까워질 수 있습니다.',money:'뜻밖의 작은 이익이 따를 수 있습니다.',health:'몸을 따뜻하게 하고 수분을 챙기세요.',num:3,color:'금색',advice:'오늘은 웃는 얼굴이 복을 부릅니다.'},
+{total:'새로운 제안이나 연락이 들어올 수 있습니다.',love:'기다리던 연락운이 밝아집니다.',money:'계산은 꼼꼼히, 결정은 천천히 하세요.',health:'소화와 컨디션 관리가 필요합니다.',num:9,color:'분홍색',advice:'작은 기회를 가볍게 넘기지 마세요.'},
+{total:'차분함 속에서 좋은 결과가 만들어집니다.',love:'상대의 마음을 먼저 들어주면 좋습니다.',money:'아껴둔 것이 든든한 힘이 됩니다.',health:'가벼운 산책이 기운을 회복시킵니다.',num:5,color:'초록색',advice:'오늘은 말보다 행동이 운을 엽니다.'}
 ];
 
 const money=[
@@ -78,7 +62,18 @@ const advLow=[
 
 function show(text){document.getElementById('result').textContent=text}
 function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
-function drawFortune(){show(pick(fortunes))}
+
+function formatFortune(f){
+  return `🔮 총운: ${f.total}
+❤️ 사랑운: ${f.love}
+💰 금전운: ${f.money}
+🌿 건강운: ${f.health}
+🍀 행운 숫자: ${f.num}
+🎨 행운 색상: ${f.color}
+✨ 한줄 조언: ${f.advice}`;
+}
+
+function drawFortune(){show(formatFortune(pick(fortunes)))}
 function drawMoney(){show(pick(money))}
 function drawLove(){show(pick(love))}
 function drawReunionLuck(){show(pick(reunion))}
@@ -89,24 +84,62 @@ function calcReunion(){
   const a=(my.match(/\d/g)||[]).reduce((s,n)=>s+Number(n),0);
   const b=(their.match(/\d/g)||[]).reduce((s,n)=>s+Number(n),0);
   if(!a||!b){show('생년월일을 먼저 입력해주세요.');return;}
+
   const score=45+((a*7+b*11)%51);
   const chance=score>=80?'높음':score>=60?'보통':'시간 필요';
-  const timing=score>=80?'2주 안에 가벼운 안부가 좋습니다.':score>=60?'조금 기다린 뒤 자연스럽게 연락하세요.':'지금은 연락보다 마음 정리가 먼저입니다.';
+  const timing=score>=80?'이번 달 후반, 가벼운 안부가 좋습니다.':score>=60?'2~4주 정도 시간을 두고 자연스럽게 다가가세요.':'지금은 연락보다 마음 정리가 먼저입니다.';
+  const mind=score>=80?'상대도 아직 마음이 남아 있으나 먼저 움직이기 망설이고 있습니다.':score>=60?'상대는 감정과 현실 사이에서 고민하는 흐름입니다.':'상대는 아직 관계를 다시 생각할 여유가 부족한 상태입니다.';
+  const caution=score>=80?'과거 다툼 이야기는 피하고 현재 안부부터 시작하세요.':score>=60?'조급한 확인이나 재촉은 관계를 더 멀어지게 할 수 있습니다.':'억지로 붙잡기보다 스스로의 마음을 먼저 회복하는 것이 중요합니다.';
+  const goodDays=[7,14,22].map(d=>d+'일').join(', ');
   const advice=score>=80?pick(advHigh):score>=60?pick(advMid):pick(advLow);
-  show(`💞 감정 연결도 ${score}%\n🔮 재회 가능성 ${chance}\n📩 연락 타이밍: ${timing}\n🌙 깨비 조언: ${advice}`);
+
+  show(`💞 감정 연결도 ${score}%
+🔮 재회 가능성 ${chance}
+📩 연락 타이밍: ${timing}
+🧠 상대 심리: ${mind}
+⚠️ 주의할 점: ${caution}
+📅 좋은 날짜: ${goodDays}
+🌙 깨비 조언: ${advice}`);
 }
 
 function coupleMatch(){
   const score=70+Math.floor(Math.random()*26);
-  show(`💘 커플 궁합 ${score}%\n서로 다른 매력이 어우러지는 인연입니다.\n대화가 깊어질수록 더 좋은 관계가 됩니다.`);
+  const style=score>=90?'운명처럼 잘 맞는 인연입니다.':score>=80?'서로를 성장시키는 좋은 궁합입니다.':'다름을 이해하면 깊어지는 관계입니다.';
+  const lovePoint=score>=90?'감정 표현이 잘 통하고 애정 흐름이 강합니다.':score>=80?'대화가 잘 통하며 안정감이 있습니다.':'서로 다른 표현 방식 이해가 중요합니다.';
+  const caution=score>=90?'익숙함 속 표현 부족만 주의하세요.':score>=80?'사소한 오해는 바로 대화로 푸세요.':'기대치를 강요하지 않는 것이 중요합니다.';
+  const future=score>=90?'장기적인 미래까지 함께 보기 좋은 흐름입니다.':score>=80?'천천히 쌓아가면 오래가는 인연입니다.':'시간을 들여 맞춰가면 충분히 좋아집니다.';
+
+  show(`💘 커플 궁합 ${score}%
+💞 관계 해석: ${style}
+❤️ 애정 흐름: ${lovePoint}
+⚠️ 주의할 점: ${caution}
+🌈 미래 흐름: ${future}`);
 }
 
 function premiumReunion(){
-  show('🔐 프리미엄 재회운\n상세 분석은 결제 후 이용 가능합니다.\n감정 흐름, 연락 타이밍, 상대 심리, 관계 주의점을 제공합니다.');
+  show(`🔐 프리미엄 재회운
+프리미엄 서비스 준비 중입니다.
+정식 오픈 시 카카오페이 / 토스페이 / 계좌이체로 이용 가능합니다.
+
+제공 예정:
+- 상대 심리 상세 분석
+- 연락 타이밍
+- 재회 가능 흐름
+- 관계 주의점`);
 }
+
 function premiumMatch(){
-  show('💎 프리미엄 궁합\n심층 궁합은 결제 후 이용 가능합니다.\n결혼궁합, 갈등패턴, 오래가는 비결을 제공합니다.');
+  show(`💎 프리미엄 궁합
+프리미엄 서비스 준비 중입니다.
+정식 오픈 시 카카오페이 / 토스페이 / 계좌이체로 이용 가능합니다.
+
+제공 예정:
+- 결혼궁합
+- 갈등 패턴
+- 오래가는 비결
+- 심층 관계 리포트`);
 }
+
 function openYoutube(){
   alert('유튜브 채널 링크를 넣으면 바로 연결됩니다.');
 }
@@ -118,3 +151,5 @@ Object.keys(zodiac).forEach(name=>{
   btn.onclick=()=>show(zodiac[name]);
   grid.appendChild(btn);
 });
+
+drawFortune();
