@@ -17,7 +17,7 @@ body{margin:0;font-family:sans-serif;background:linear-gradient(180deg,#140428,#
 <div class='card' onclick='todayFortune()'>🌙 오늘의 운세</div>
 <div class='card' onclick='showReunion()'>💞 재회 궁합</div>
 <div class='card' onclick='zodiacFortune()'>🐭 띠별 운세</div>
-<div class='card' onclick='taroFortune()'>🔮 타로 운세</div>
+<div class='card' onclick='specialFortune()'>✨ 특별 운세</div>
 </div>
 <div class='card' id='actionBox'><h3>오늘의 한마디</h3>
 <p>지금의 작은 노력이 큰 행운으로 돌아옵니다.</p>
@@ -55,7 +55,7 @@ function calcReunion(){const me=document.getElementById('me').value;const you=do
 깨비 조언: 서두르지 말고 가벼운 안부부터 시작하세요.'}
 function zodiacFortune(){const z=['쥐띠: 새로운 기회가 옵니다.','소띠: 꾸준함이 복을 부릅니다.','호랑이띠: 추진력이 강해집니다.','토끼띠: 인간관계가 좋아집니다.','용띠: 큰 흐름이 열립니다.','뱀띠: 지혜로운 선택이 필요합니다.','말띠: 움직일수록 기회가 커집니다.','양띠: 마음의 평온이 중요합니다.','원숭이띠: 재치가 빛납니다.','닭띠: 성실함이 인정받습니다.','개띠: 믿음이 좋은 결과를 만듭니다.','돼지띠: 재물운이 따릅니다.'];result.innerHTML='<h3>🐭 띠별 운세</h3><div class="result">'+z.join('
 ')+'</div>'}
-function taroFortune(){const cards=['해의 카드: 밝은 기운과 좋은 소식이 옵니다.','달의 카드: 마음을 차분히 살피세요.','별의 카드: 희망이 다시 살아납니다.','연인의 카드: 관계운이 강하게 들어옵니다.'];result.innerHTML='<h3>🔮 타로 운세</h3><div class="result">'+pick(cards)+'</div>'}
+function specialFortune(){const cards=['특별운: 귀인의 도움이 들어옵니다.','특별운: 오늘의 선택이 큰 흐름을 바꿉니다.','특별운: 기다리던 소식이 가까워졌습니다.','특별운: 작은 시작이 큰 기회가 됩니다.'];result.innerHTML='<h3>✨ 특별 운세</h3><div class="result">'+pick(cards)+'</div>'}
 todayFortune();
 </script>
 </body></html>
