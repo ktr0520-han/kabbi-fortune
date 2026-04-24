@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>깨비 운세</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="wand">🪄</div>
+      <h1>깨비 운세</h1>
+      <p class="main-copy">오늘의 문이 열리면 행운도 함께 들어옵니다</p>
+      <p class="sub-copy">고급스럽고 신비롭게, 하지만 친근하게 다가오는 오늘의 운세</p>
+    </section>
+
+    <section class="card">
+      <h2>💞 재회 궁합 입력</h2>
+      <div class="input-grid">
+        <input id="myBirth" placeholder="내 생년월일 (예: 1990-03-12)" />
+        <input id="theirBirth" placeholder="상대 생년월일 (예: 1988-11-07)" />
+        <button class="primary" onclick="calcReunion()">궁합 결과 보기</button>
+      </div>
+
+      <div class="label">TODAY</div>
+      <h2>오늘의 총운</h2>
+      <div class="result" id="result">기다리던 소식이 들려오는 날입니다.</div>
+    </section>
+
+    <button class="wide" onclick="drawFortune()">🔮 오늘의 운세 뽑기</button>
+
+    <section>
+      <h3>띠별 운세</h3>
+      <div class="grid" id="zodiacGrid"></div>
+    </section>
+
+    <section class="grid two">
+      <button onclick="drawMoney()">💰 재물운</button>
+      <button onclick="drawLove()">❤️ 애정운</button>
+      <button onclick="drawReunionLuck()">💞 재회운</button>
+      <button onclick="coupleMatch()">💘 커플궁합</button>
+    </section>
+
+    <section class="premium">
+      <div class="premium-title">👑 프리미엄</div>
+      <div class="grid two">
+        <button onclick="premiumReunion()">🔐 재회 상세판</button>
+        <button onclick="premiumMatch()">💎 궁합 심층판</button>
+      </div>
+    </section>
+
+    <section class="youtube">
+      <button onclick="openYoutube()">📺 깨비 운세 TV 연결</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
