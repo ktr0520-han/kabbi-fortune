@@ -2,12 +2,19 @@
   "name": "깨비 운세",
   "short_name": "깨비운세",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "background_color": "#18062f",
-  "theme_color": "#2b1055",
+  "background_color": "#1a0933",
+  "theme_color": "#1a0933",
   "icons": [
-    {"src": "kkabbi.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
-    {"src": "kkabbi.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+    {
+      "src": "/kkabbi.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/kkabbi.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }
