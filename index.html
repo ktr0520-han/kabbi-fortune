@@ -1,92 +1,76 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>깨비 운세</title>
-<meta name="theme-color" content="#2b1055">
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,sans-serif;color:#fff;background:linear-gradient(180deg,#10051f,#24104b,#050816)}
-.wrap{max-width:430px;margin:auto;min-height:100vh;padding:24px 18px 42px}
-.card{background:rgba(255,255,255,.09);border:1px solid rgba(253,230,138,.18);border-radius:26px;padding:18px;margin:14px 0;backdrop-filter:blur(12px)}
-.hero{text-align:center}
-.hero img{width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #fde047}
-h1{margin:0 0 16px;color:#fde047;font-size:38px}
-h3{margin:0 0 12px;color:#fde68a}
-.menu,.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button{border:none;color:#fff;background:linear-gradient(90deg,#7b2ff7,#f107a3);border-radius:18px;padding:16px 12px;font-weight:800;cursor:pointer}
-.result{white-space:pre-line;line-height:1.7;background:rgba(0,0,0,.28);border-radius:18px;padding:14px}
-.premium{background:linear-gradient(135deg,rgba(250,204,21,.18),rgba(217,70,239,.18))}
-.bottom{text-align:center;color:#d8b4fe}
+body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(180deg,#12051f,#24104b,#050816);color:#fff}
+.wrap{max-width:430px;margin:auto;padding:20px}
+.card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:18px;margin:14px 0}
+.hero{text-align:center}.hero img{width:100px;height:100px;border-radius:50%;border:3px solid gold}
+h1{color:#fde047;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{border:none;padding:15px;border-radius:16px;color:#fff;font-weight:800;background:linear-gradient(90deg,#7b2ff7,#f107a3)}
+.result{white-space:pre-line;line-height:1.7;background:rgba(0,0,0,.25);padding:14px;border-radius:18px}
+.ask{display:flex;gap:8px}.ask input{flex:1;padding:12px;border-radius:14px;border:none}
+.kabbiTalk{display:flex;gap:12px;align-items:flex-start}
+.kabbiTalk img{width:72px;height:72px;border-radius:50%;border:2px solid gold}
+.bubble{background:#fff;color:#222;padding:12px;border-radius:18px;line-height:1.6;flex:1}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="card hero">
 <h1>깨비 운세</h1>
-<img src="kkabbi.png" alt="깨비">
-<p>오늘의 운세가 궁금하신가요?</p>
+<img src="kkabbi.png">
+<p>깨비에게 무엇이든 물어보세요</p>
 </div>
 
-<div class="menu">
+<div class="card">
+<div class="ask">
+<input id="question" placeholder="예: 오늘 연락 올까요?">
+<button onclick="askKabbi()">질문</button>
+</div>
+</div>
+
+<div class="card" id="talkBox">
+<div class="kabbiTalk">
+<img src="kkabbi.png">
+<div class="bubble">안녕하세요 😊 저는 깨비예요. 오늘의 고민을 들려주세요.</div>
+</div>
+</div>
+
+<div class="grid">
 <button onclick="todayFortune()">🌙 오늘의 운세</button>
 <button onclick="showReunion()">💞 재회 궁합</button>
 <button onclick="zodiacFortune()">🐭 띠별 운세</button>
 <button onclick="specialFortune()">✨ 특별 운세</button>
 </div>
 
-<div class="card" id="actionBox">
-<h3>오늘의 한마디</h3>
-<div class="result">지금의 작은 노력이 큰 행운으로 돌아옵니다.</div>
-</div>
-
-<div class="card premium">
-<h3>👑 프리미엄</h3>
-<p>재회 상세판과 궁합 심층판은 정식 오픈 준비 중입니다.</p>
-<div class="two">
-<button onclick="premiumReunion()">🔐 재회 상세판</button>
-<button onclick="premiumMatch()">💎 궁합 심층판</button>
-</div>
-</div>
-
-<div class="card bottom">홈 · 운세 · 궁합 · 마이</div>
+<div class="card" id="actionBox"></div>
 </div>
 
 <script>
-const result=document.getElementById('actionBox');
-const pick=a=>a[Math.floor(Math.random()*a.length)];
-
-function box(title,text){
- result.innerHTML='<h3>'+title+'</h3><div class="result">'+text+'</div>';
+const action=document.getElementById('actionBox');
+function speak(msg){
+document.getElementById('talkBox').innerHTML=
+'<div class="kabbiTalk"><img src="kkabbi.png"><div class="bubble">'+msg+'</div></div>';
 }
-function todayFortune(){
- box('🌙 오늘의 운세',pick([
- '총운: 기회가 열리는 하루입니다.\n사랑운: 따뜻한 말이 관계를 살립니다.\n금전운: 작은 지출은 신중히 하세요.',
- '총운: 막혔던 일이 풀립니다.\n사랑운: 기다리던 연락운이 밝습니다.\n금전운: 뜻밖의 이익이 따를 수 있습니다.',
- '총운: 새로운 제안이 들어옵니다.\n사랑운: 좋은 흐름입니다.\n금전운: 계산은 꼼꼼히 하세요.'
- ]));
+function askKabbi(){
+const q=document.getElementById('question').value.trim();
+if(!q){speak('질문을 입력해 주세요 😊');return;}
+if(q.includes('연락')) speak('기다리던 소식이 움직일 수 있어요. 오늘 저녁 흐름을 살펴보세요.');
+else if(q.includes('돈')||q.includes('금전')) speak('지출은 줄이고 들어오는 기회는 놓치지 마세요.');
+else if(q.includes('사랑')||q.includes('재회')) speak('마음을 급하게 밀어붙이지 말고 따뜻한 한마디가 열쇠예요.');
+else if(q.includes('건강')) speak('오늘은 무리하지 말고 몸의 신호를 먼저 살펴보세요.');
+else speak('좋은 기운이 곁에 있어요. 조급함보다 흐름을 믿어보세요.');
 }
-function showReunion(){
- box('💞 재회 궁합','생년월일 기반 심층 재회 분석 기능이 연결될 예정입니다.\n현재 버전도 곧 업그레이드됩니다.');
-}
-function zodiacFortune(){
- box('🐭 띠별 운세','쥐띠: 기회가 옵니다.\n소띠: 꾸준함이 복입니다.\n호랑이띠: 추진력이 강합니다.\n토끼띠: 관계운 상승.');
-}
-function specialFortune(){
- box('✨ 특별 운세',pick([
- '귀인의 도움이 들어옵니다.',
- '오늘의 선택이 큰 흐름을 바꿉니다.',
- '기다리던 소식이 가까워졌습니다.'
- ]));
-}
-function premiumReunion(){
- box('🔐 프리미엄 재회 상세판','프리미엄 서비스 준비 중입니다.\n정식 오픈 시 카카오페이 / 토스페이 / 계좌이체 지원 예정입니다.\n\n제공 예정:\n- 상대 심리 상세 분석\n- 연락 타이밍\n- 재회 가능 흐름');
-}
-function premiumMatch(){
- box('💎 프리미엄 궁합 심층판','프리미엄 서비스 준비 중입니다.\n정식 오픈 시 카카오페이 / 토스페이 / 계좌이체 지원 예정입니다.\n\n제공 예정:\n- 결혼 궁합\n- 갈등 패턴\n- 오래가는 비결');
-}
-todayFortune();
+function box(t,m){action.innerHTML='<div class="card"><h3>'+t+'</h3><div class="result">'+m+'</div></div>';}
+function todayFortune(){box('🌙 오늘의 운세','오늘은 작은 기회가 크게 이어질 수 있습니다.');speak('오늘의 문은 천천히 열립니다. 서두르지 마세요.');}
+function showReunion(){box('💞 재회 궁합','상대도 당신을 한 번쯤 떠올리고 있습니다.');speak('재회는 타이밍이 중요해요. 지금은 부드러운 접근이 좋아요.');}
+function zodiacFortune(){box('🐭 띠별 운세','쥐띠부터 돼지띠까지 오늘은 관계운이 좋습니다.');speak('오늘은 사람 속에서 복이 들어오는 날이에요.');}
+function specialFortune(){box('✨ 특별 운세','귀인의 도움을 받을 수 있습니다.');speak('당신을 quietly 돕는 사람이 가까이에 있어요.');}
+speak('안녕하세요 😊 저는 깨비예요. 오늘의 고민을 들려주세요.');
 </script>
 </body>
 </html>
