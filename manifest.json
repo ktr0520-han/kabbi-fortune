@@ -8,17 +8,7 @@
   "background_color": "#18062f",
   "theme_color": "#2b1055",
   "icons": [
-    {
-      "src": "kkabbi.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "kkabbi.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    {"src": "kkabbi.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "kkabbi.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
   ]
 }
