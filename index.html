@@ -4,106 +4,363 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>깨비 운세</title>
-<style>
-*{box-sizing:border-box} body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(180deg,#12051f,#24104b,#050816);color:#fff}
-.wrap{max-width:430px;margin:auto;padding:20px}
-.card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:18px;margin:14px 0}
-.hero{text-align:center}
-.hero img,#mainKabbi{width:110px;height:110px;border-radius:50%;border:3px solid gold;object-fit:cover}
-h1{margin:0 0 12px;color:#fde047}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button{border:none;padding:15px;border-radius:16px;color:#fff;font-weight:800;background:linear-gradient(90deg,#7b2ff7,#f107a3)}
-.ask{display:flex;gap:8px}.ask input,input{flex:1;padding:12px;border-radius:14px;border:none}
-.kabbiTalk{display:flex;gap:12px;align-items:flex-start}
-.kabbiTalk img{width:72px;height:72px;border-radius:50%;border:2px solid gold;object-fit:cover}
-.bubble{background:#fff;color:#222;padding:12px;border-radius:18px;line-height:1.6;flex:1}
-.result{white-space:pre-line;line-height:1.7;background:rgba(0,0,0,.25);padding:14px;border-radius:18px}
-</style>
-
-<meta name="theme-color" content="#2b1055">
+<meta name="theme-color" content="#140428">
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(255,205,92,.22),transparent 28%),
+    radial-gradient(circle at 85% 20%,rgba(214,70,239,.2),transparent 30%),
+    linear-gradient(180deg,#10051f 0%,#1b0a34 50%,#070511 100%);
+}
+.app{
+  max-width:1120px;
+  margin:0 auto;
+  min-height:100vh;
+  padding:18px 16px 34px;
+}
+.layout{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:24px;
+}
+.panel{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(250,204,21,.22);
+  border-radius:28px;
+  box-shadow:0 24px 70px rgba(0,0,0,.38), inset 0 0 22px rgba(255,255,255,.03);
+  backdrop-filter:blur(14px);
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:26px 20px 22px;
+}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.iconBtn{
+  width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(250,204,21,.25);
+  font-size:22px;
+}
+.title{
+  text-align:center;
+  color:#fde68a;
+  font-size:46px;
+  line-height:1;
+  margin:0 0 8px;
+  letter-spacing:.04em;
+  text-shadow:0 0 22px rgba(250,204,21,.38);
+}
+.subtitle{text-align:center;color:#fde68a;margin:6px 0 18px;font-weight:700}
+.heroMain{
+  display:grid;
+  grid-template-columns:250px 1fr;
+  gap:16px;
+  align-items:center;
+}
+.bigKabbi{
+  width:100%;
+  border-radius:24px;
+  border:2px solid rgba(250,204,21,.38);
+  box-shadow:0 20px 48px rgba(0,0,0,.34);
+}
+.speech{
+  background:#fff;
+  color:#24104b;
+  border-radius:26px;
+  padding:24px;
+  font-size:21px;
+  line-height:1.6;
+  font-weight:700;
+  position:relative;
+}
+.speech:before{
+  content:"";
+  position:absolute;
+  left:-16px;top:50%;
+  border-right:18px solid #fff;
+  border-top:12px solid transparent;
+  border-bottom:12px solid transparent;
+}
+.askBox{
+  margin-top:18px;
+  padding:18px;
+  border-radius:24px;
+  background:rgba(20,7,42,.78);
+  border:1px solid rgba(217,70,239,.3);
+}
+.askRow{display:flex;gap:12px}
+input{
+  flex:1;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.28);
+  color:#fff;
+  border-radius:18px;
+  padding:16px;
+  font-size:16px;
+}
+input::placeholder{color:#a78bfa}
+button{
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  font-weight:900;
+  border-radius:18px;
+  padding:15px 20px;
+  background:linear-gradient(135deg,#8b35ff,#ec0c97);
+  box-shadow:0 12px 28px rgba(236,12,151,.22);
+}
+.hint{margin:12px 0 0;color:#e9d5ff;font-size:14px}
+.sectionTitle{
+  text-align:center;
+  color:#fde68a;
+  margin:18px 0 14px;
+  font-size:22px;
+  font-weight:900;
+}
+.menuGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+.menuCard{
+  border-radius:22px;
+  padding:18px 10px;
+  text-align:center;
+  min-height:142px;
+  border:1px solid rgba(250,204,21,.22);
+  background:linear-gradient(180deg,rgba(168,85,247,.28),rgba(30,16,68,.64));
+  cursor:pointer;
+  transition:.18s ease;
+}
+.menuCard:hover{transform:translateY(-2px)}
+.menuIcon{font-size:42px;margin-bottom:8px}
+.menuCard b{display:block;color:#fde68a;font-size:18px;margin-bottom:8px}
+.menuCard span{font-size:13px;color:#e9d5ff;line-height:1.4}
+.premiumCard{
+  margin-top:16px;
+  padding:22px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:14px;
+  align-items:center;
+  border-radius:24px;
+  border:1px solid rgba(250,204,21,.35);
+  background:linear-gradient(135deg,rgba(250,204,21,.12),rgba(236,12,151,.12));
+}
+.premiumCard h3{margin:0 0 8px;color:#fde68a;font-size:24px}
+.premiumCard p{margin:0;color:#f5d0fe;line-height:1.55}
+.resultPanel{
+  margin-top:16px;
+  padding:18px;
+  border-radius:24px;
+  background:rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.12);
+}
+.resultPanel h3{margin:0 0 12px;color:#fde68a}
+.resultText{white-space:pre-line;line-height:1.75;color:#fff}
+.bottomNav{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  padding:12px;
+  border-radius:28px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(250,204,21,.18);
+  text-align:center;
+}
+.bottomNav div{color:#e9d5ff;font-size:13px}
+.side{
+  padding:22px;
+}
+.side h2{
+  text-align:center;color:#fde68a;margin:0 0 18px;font-size:27px;
+}
+.kabbiGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.kabbiCard{
+  padding:10px;
+  border-radius:20px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(217,70,239,.28);
+  text-align:center;
+}
+.kabbiCard img{
+  width:100%;
+  aspect-ratio:1/1;
+  border-radius:16px;
+  object-fit:cover;
+  object-position:center top;
+  border:1px solid rgba(250,204,21,.24);
+}
+.kabbiCard b{display:block;color:#fde68a;margin:8px 0 4px}
+.kabbiCard span{font-size:12px;color:#d8b4fe}
+.preview{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:14px;
+  align-items:center;
+  border-radius:22px;
+  padding:14px;
+  background:rgba(236,12,151,.13);
+  border:1px solid rgba(250,204,21,.25);
+}
+.preview img{width:120px;height:120px;object-fit:cover;border-radius:18px}
+.preview h3{margin:0 0 8px;color:#f9a8d4}
+.preview p{margin:0 0 12px;color:#e9d5ff}
+.footer{text-align:center;color:#f5d0fe;margin-top:16px;font-size:15px}
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+  .heroMain{grid-template-columns:1fr;text-align:center}
+  .bigKabbi{max-width:260px;margin:0 auto}
+  .speech:before{display:none}
+  .menuGrid{grid-template-columns:1fr 1fr}
+  .premiumCard{grid-template-columns:1fr}
+  .side{display:block}
+}
+</style>
 </head>
 <body>
-<div class="wrap">
-<div class="card hero">
-<h1>깨비 운세</h1>
-<img id="mainKabbi" src="kkabbi-basic.png">
-<p>상황마다 다른 깨비가 등장합니다</p>
-</div>
+<div class="app">
+  <div class="layout">
+    <main>
+      <section class="panel hero">
+        <div class="topbar">
+          <div class="iconBtn">☰</div>
+          <div class="iconBtn">🔔</div>
+        </div>
+        <h1 class="title">깨비 운세</h1>
+        <p class="subtitle">✤ 오늘의 운세가 깨비가 전해드려요! ✤</p>
 
-<div class="card">
-<div class="ask">
-<input id="question" placeholder="예: 오늘 연락 올까요?">
-<button onclick="askKabbi()">질문</button>
-</div>
-</div>
+        <div class="heroMain">
+          <img id="mainKabbi" class="bigKabbi" src="kkabbi-wink.png" alt="깨비">
+          <div class="speech" id="speechText">
+            안녕하세요! 💗<br>무엇이든 물어보세요.<br>깨비가 정성껏 알려드릴게요 ✨
+          </div>
+        </div>
 
-<div class="card" id="talkBox"></div>
+        <div class="askBox">
+          <div class="askRow">
+            <input id="question" placeholder="예: 오늘 연락 올까요?">
+            <button onclick="askKabbi()">질문하기 ✈</button>
+          </div>
+          <p class="hint">💡 구체적으로 질문할수록 더 정확한 답변을 받을 수 있어요!</p>
+        </div>
 
-<div class="grid">
-<button onclick="todayFortune()">🌙 오늘의 운세</button>
-<button onclick="showReunion()">💞 재회 궁합</button>
-<button onclick="specialFortune()">✨ 특별 운세</button>
-<button onclick="adviceMode()">🤔 조언 받기</button>
-</div>
+        <div class="sectionTitle">✤ 운세 메뉴 ✤</div>
+        <div class="menuGrid">
+          <div class="menuCard" onclick="todayFortune()">
+            <div class="menuIcon">🌙</div><b>오늘의 운세</b><span>오늘 하루의<br>운세 확인</span>
+          </div>
+          <div class="menuCard" onclick="showReunion()">
+            <div class="menuIcon">💗</div><b>재회 궁합</b><span>그 사람과의<br>재회 가능성은?</span>
+          </div>
+          <div class="menuCard" onclick="zodiacFortune()">
+            <div class="menuIcon">🐭</div><b>띠별 운세</b><span>나의 띠로 보는<br>운세 이야기</span>
+          </div>
+          <div class="menuCard" onclick="specialFortune()">
+            <div class="menuIcon">✨</div><b>특별 운세</b><span>특별한 날의<br>운세 확인</span>
+          </div>
+        </div>
 
-<div class="card" id="actionBox"></div>
+        <div class="premiumCard">
+          <div>
+            <h3>👑 프리미엄 궁합 심층판 <small style="background:#8b35ff;border-radius:999px;padding:4px 8px;font-size:12px">PREMIUM</small></h3>
+            <p>더 깊고 상세한 궁합 분석을 원하시나요?<br>프리미엄 서비스에서 확인하세요!</p>
+          </div>
+          <button onclick="premiumReunion()">자세히 보기 →</button>
+        </div>
+
+        <div class="resultPanel" id="resultBox">
+          <h3>오늘의 한마디</h3>
+          <div class="resultText">지금의 작은 노력이 큰 행운으로 돌아올 거예요.</div>
+        </div>
+
+        <div class="bottomNav">
+          <div>🏠<br>홈</div><div>☾<br>운세</div><div>♡<br>궁합</div><div>👤<br>마이</div><div>⚙<br>설정</div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="panel side">
+      <h2>✤ 깨비의 다양한 모습 ✤</h2>
+      <div class="kabbiGrid">
+        <div class="kabbiCard"><img src="kkabbi-basic.png"><b>기본 상담 깨비</b><span>반갑게 인사해요!</span></div>
+        <div class="kabbiCard"><img src="kkabbi-wink.png"><b>윙크 깨비</b><span>좋은 소식을 전할 때!</span></div>
+        <div class="kabbiCard"><img src="kkabbi-talisman.png"><b>부적 든 깨비</b><span>기운과 복을 드려요!</span></div>
+        <div class="kabbiCard"><img src="kkabbi-cute.png"><b>턱 괸 깨비</b><span>궁금한 게 있나요?</span></div>
+        <div class="kabbiCard"><img src="kkabbi-think.png"><b>진지한 깨비</b><span>중요한 조언을 할 때!</span></div>
+        <div class="kabbiCard"><img src="kkabbi-love.png"><b>사랑운 깨비</b><span>사랑과 인연의 이야기!</span></div>
+      </div>
+
+      <div class="preview">
+        <img src="kkabbi-talisman.png">
+        <div>
+          <h3>재회 궁합 결과 ✧</h3>
+          <p><b style="font-size:34px;color:#f472b6">87%</b><br>재회 가능성 높음<br>5월 초 연락이 올 수 있어요!</p>
+          <button onclick="showReunion()">결과 전체 보기 ›</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="footer">🌸 깨비는 항상 당신의 편이에요. 좋은 기운 가득한 하루 되세요! 🍀</div>
 </div>
 
 <script>
 const imgs={
-basic:'kkabbi-basic.png',
-wink:'kkabbi-wink.png',
-love:'kkabbi-love.png',
-talisman:'kkabbi-talisman.png',
-think:'kkabbi-think.png',
-cute:'kkabbi-cute.png'
+  basic:'kkabbi-basic.png', wink:'kkabbi-wink.png', love:'kkabbi-love.png',
+  talisman:'kkabbi-talisman.png', think:'kkabbi-think.png', cute:'kkabbi-cute.png'
 };
-const randomList=[imgs.basic,imgs.wink,imgs.love,imgs.talisman,imgs.think,imgs.cute];
-
-function setKabbi(src){
-document.getElementById('mainKabbi').src=src;
+const randomList=Object.values(imgs);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function setKabbi(src,msg){
+  document.getElementById('mainKabbi').src=src;
+  if(msg) document.getElementById('speechText').innerHTML=msg;
 }
-function speak(msg,src){
-setKabbi(src);
-document.getElementById('talkBox').innerHTML=
-'<div class="kabbiTalk"><img src="'+src+'"><div class="bubble">'+msg+'</div></div>';
+function result(title,text){
+  document.getElementById('resultBox').innerHTML='<h3>'+title+'</h3><div class="resultText">'+text+'</div>';
 }
-function box(t,m){
-document.getElementById('actionBox').innerHTML='<h3>'+t+'</h3><div class="result">'+m+'</div>';
-}
-function randImg(){ return randomList[Math.floor(Math.random()*randomList.length)] }
-
 function askKabbi(){
-const q=document.getElementById('question').value.trim();
-const r=randImg();
-if(!q){speak('질문을 입력해 주세요 😊',r);return;}
-if(q.includes('연락')) speak('기다리던 소식이 움직일 수 있어요. 오늘 저녁 흐름을 살펴보세요.',imgs.love);
-else if(q.includes('돈')) speak('지출은 줄이고 들어오는 기회는 놓치지 마세요.',imgs.wink);
-else if(q.includes('건강')) speak('오늘은 무리하지 말고 몸의 신호를 먼저 살펴보세요.',imgs.cute);
-else speak('좋은 기운이 곁에 있어요. 조급함보다 흐름을 믿어보세요.',r);
+  const q=document.getElementById('question').value.trim();
+  if(!q){setKabbi(imgs.cute,'질문을 입력해 주세요 😊<br>깨비가 기다리고 있어요.');return;}
+  if(q.includes('연락')){setKabbi(imgs.love,'연락운을 살펴볼게요 💗<br>답은 타이밍에 있어요.'); result('💌 연락운','기다리던 소식이 움직일 수 있어요. 다만 먼저 감정을 쏟기보다 짧고 따뜻하게 다가가세요.');}
+  else if(q.includes('돈')||q.includes('금전')){setKabbi(imgs.wink,'재물운이 궁금하군요 ✨'); result('💰 금전운','큰 지출은 줄이고 작은 기회를 놓치지 마세요. 오늘은 계산을 꼼꼼히 하면 복이 들어옵니다.');}
+  else if(q.includes('재회')||q.includes('사랑')){showReunion();}
+  else {setKabbi(pick(randomList),'깨비가 흐름을 살펴봤어요 ✨'); result('🔮 깨비 답변','좋은 기운이 곁에 있어요. 조급함보다 흐름을 믿고, 오늘 해야 할 한 가지에 집중해보세요.');}
 }
-
 function todayFortune(){
-box('🌙 오늘의 운세','오늘은 새로운 기회가 열리는 하루입니다.\n행운 숫자: 7\n행운 색상: 보라색');
-speak('오늘의 운세를 전해드릴게요. 기회를 놓치지 마세요.',imgs.basic);
+  setKabbi(imgs.basic,'오늘의 운세를 전해드릴게요 🌙<br>기회를 놓치지 마세요.');
+  result('🌙 오늘의 운세','🔮 총운: 새로운 제안이나 연락이 들어올 수 있습니다.\n❤️ 사랑운: 기다리던 연락운이 밝아집니다.\n💰 금전운: 계산은 꼼꼼히, 결정은 천천히 하세요.\n🌿 건강운: 소화와 컨디션 관리가 필요합니다.\n🍀 행운 숫자: 9\n🎨 행운 색상: 분홍색\n✨ 한줄 조언: 작은 기회를 가볍게 넘기지 마세요.');
 }
 function showReunion(){
-box('💞 재회 궁합','감정 연결도 87%\n상대 심리: 아직 미련은 있으나 자존심이 큼\n연락 타이밍: 5월 초 저녁 시간대\n피해야 할 행동: 감정적인 장문 메시지\n재회 가능성: 높음');
-speak('재회운이 강하게 보입니다. 가벼운 안부가 열쇠예요.',imgs.love);
+  setKabbi(imgs.love,'재회운이 강하게 보여요 💗<br>가벼운 안부가 열쇠입니다.');
+  result('💞 재회 궁합 결과','💞 감정 연결도 87%\n🌙 재회 가능성: 높음\n🧠 상대 심리: 아직 미련은 있으나 자존심이 커서 먼저 다가오지 못하는 흐름입니다.\n📩 연락 타이밍: 5월 초 저녁 시간대\n⚠️ 피해야 할 행동: 감정적인 장문 메시지, 과거 다툼 꺼내기\n🍀 좋은 날짜: 7일, 14일, 22일\n✨ 깨비 조언: 가벼운 안부가 열쇠입니다. 짧고 따뜻하게 시작하세요.');
+}
+function zodiacFortune(){
+  setKabbi(imgs.think,'띠별 흐름을 차분히 살펴볼게요 🤔');
+  result('🐭 띠별 운세','쥐띠: 새로운 기회가 옵니다.\n소띠: 꾸준함이 복을 부릅니다.\n호랑이띠: 추진력이 강해집니다.\n토끼띠: 인간관계가 좋아집니다.\n용띠: 큰 흐름이 열립니다.\n뱀띠: 지혜로운 선택이 필요합니다.\n말띠: 움직일수록 기회가 커집니다.\n양띠: 마음의 평온이 중요합니다.');
 }
 function specialFortune(){
-box('✨ 특별 운세','행운 부적의 기운이 들어옵니다.\n작은 소원이 이루어질 수 있어요.');
-speak('특별운이 열렸어요. 좋은 기운을 받아가세요.',imgs.talisman);
+  setKabbi(imgs.talisman,'특별운이 열렸어요 ✨<br>좋은 기운을 받아가세요.');
+  result('✨ 특별 운세','행운 부적의 기운이 들어옵니다.\n작은 소원이 이루어질 수 있어요.\n오늘은 뜻밖의 도움이 가까이에 있습니다.');
 }
-function adviceMode(){
-box('🤔 깨비 조언','서두르지 말고 지금 해야 할 한 가지에 집중해 보세요.');
-speak('생각이 많을수록 답은 멀어져요. 하나씩 정리해볼까요?',imgs.think);
+function premiumReunion(){
+  setKabbi(imgs.talisman,'프리미엄 운세는 더 깊게 봐드릴게요 👑');
+  result('👑 프리미엄 안내','프리미엄 서비스 준비 중입니다.\n정식 오픈 시 카카오페이 / 토스페이 / 계좌이체 지원 예정입니다.\n\n제공 예정:\n- 상대 심리 상세 분석\n- 연락 타이밍\n- 재회 가능 흐름\n- 결혼 궁합\n- 갈등 패턴');
 }
-
 todayFortune();
 </script>
 </body>
