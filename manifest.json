@@ -1,7 +1,6 @@
 {
   "name": "깨비 운세",
   "short_name": "깨비운세",
-  "description": "오늘의 운세, 재회운, 궁합을 보는 깨비 운세 앱",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
