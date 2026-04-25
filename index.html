@@ -1,43 +1,51 @@
-<!doctype html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>깨비 운세</title>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>깨비 운세</title>
 <style>
-body{margin:0;font-family:sans-serif;background:linear-gradient(#120022,#26004a);color:#fff}.w{max-width:430px;margin:auto;padding:18px}
-h1{text-align:center;color:#ffd86b}.hero{width:100%;border-radius:22px;background:#fff;padding:8px}
+body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(180deg,#120022,#26004a);color:#fff}
+.wrap{max-width:430px;margin:auto;padding:18px}
+.brand{position:relative;height:24px;margin-bottom:6px}
+.brand span{position:absolute;left:0;top:0;color:#ffd86b;font-style:italic;font-weight:800;transform:rotate(-12deg);letter-spacing:1px}
+h1{text-align:center;color:#ffd86b;margin:8px 0 14px;font-size:40px}
+.hero{width:100%;border-radius:22px;background:#fff;padding:8px}
 .box{background:#fff;color:#240840;border-radius:20px;padding:16px;margin-top:14px;white-space:pre-line;font-weight:700;line-height:1.55}
-.row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}input,select,button{padding:14px;border-radius:16px;font-size:16px}
-button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff}.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
+input,select,button{padding:14px;border-radius:16px;font-size:16px}
+button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .menu button{min-height:68px;background:rgba(255,255,255,.08);border:1px solid rgba(255,216,107,.3)}
-</style></head><body><div class="w">
-<h1>깨비 운세</h1><img id="img" class="hero" src="kkabbi.png">
-<div id="speech" class="box">무엇이든 물어보세요. 깨비가 알려드릴게요!</div>
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="brand"><span>╱ 터신전</span></div>
+<h1>깨비운세</h1>
+<img id="img" class="hero" src="kkabbi.png">
+<div id="speech" class="box">터신전의 깨비가 오늘의 운세를 알려드릴게요 ✨</div>
 <div class="row"><input id="q" placeholder="예: 오늘 연락 올까요?"><button onclick="ask()">질문하기</button></div>
-<div class="row"><select id="z"><option value="">띠 선택</option><option>쥐띠</option><option>소띠</option><option>호랑이띠</option><option>토끼띠</option><option>용띠</option><option>뱀띠</option><option>말띠</option><option>양띠</option><option>원숭이띠</option><option>닭띠</option><option>개띠</option><option>돼지띠</option></select><button onclick="myZ()">내 띠</button></div>
 <div id="out" class="box">오늘의 운세를 불러오는 중 ✨</div>
 <div class="menu">
-<button onclick="today()">🌙 오늘의 운세</button><button onclick="allZ()">🐭 띠별 운세</button>
-<button onclick="reunion()">💞 재회 궁합</button><button onclick="special()">✨ 특별 운세</button>
-<button onclick="talisman()">📜 행운 부적</button><button onclick="shareR()">📤 결과 공유</button>
-</div></div>
+<button onclick="today()">🌙 오늘의 운세</button>
+<button onclick="reunion()">💞 재회 궁합</button>
+<button onclick="special()">✨ 특별 운세</button>
+<button onclick="talisman()">📜 행운 부적</button>
+</div>
+</div>
 <script>
-const out=o=>document.getElementById('out').innerHTML=o;
-const img=s=>document.getElementById('img').src=s;
-const sp=t=>document.getElementById('speech').innerHTML=t;
+const O=t=>document.getElementById('out').innerHTML=t;
+const I=s=>document.getElementById('img').src=s;
+const S=t=>document.getElementById('speech').innerHTML=t;
+function seed(){let d=new Date();return d.getDate()%4}
 const F=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다."];
-function seed(){let d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()}
-function today(){let s=seed(),m=['아침운','오후운','저녁운'][(new Date()).getHours()<12?0:(new Date()).getHours()<18?1:2]; img('kkabbi-basic.png');sp('오늘의 운세를 전해드릴게요 ✨'); out(`🌙 ${m}
-🔮 총운: ${F[s%4]}
-❤️ 사랑운: 따뜻한 대화가 중요합니다.
-💰 금전운: 작은 절약이 복이 됩니다.
-🍀 행운 숫자: ${(s%9)+1}`)}
-const Z=["쥐띠","소띠","호랑이띠","토끼띠","용띠","뱀띠","말띠","양띠","원숭이띠","닭띠","개띠","돼지띠"];
-function allZ(){img('kkabbi-think.png');sp('12띠 흐름을 살펴볼게요');let s=seed(),t='🐭 12띠 운세\n\n';Z.forEach((z,i)=>t+=z+' : '+F[(s+i)%4]+'\n');out(t)}
-function myZ(){let z=document.getElementById('z').value;if(!z){out('띠를 선택해 주세요 😊');return;} img('kkabbi-think.png');sp(z+' 운세를 자세히 볼게요');out(`🔮 ${z}
-총운: ${F[seed()%4]}
-행운 색상: 금색
-행운 숫자: ${(seed()%9)+1}`)}
-function reunion(){img('kkabbi-love.png');sp('재회운을 볼게요 💗');out('💞 감정 연결도 87%\n상대는 아직 미련이 있습니다.\n짧은 안부가 열쇠입니다.')}
-function special(){img('kkabbi-wink.png');sp('좋은 기운이 보여요 ✨');out('✨ 오늘은 기대하지 않던 좋은 일이 생길 수 있어요.')}
-function talisman(){img('kkabbi-talisman.png');sp('행운 부적을 드릴게요');out('<img src="kkabbi-talisman.png" style="width:140px;border-radius:18px"><br><br><a href="kkabbi-talisman.png" download style="color:#7a3cff">부적 다운로드</a>')}
-function ask(){let q=document.getElementById('q').value;if(q.includes('연락')||q.includes('사랑')){reunion();return;} if(q.includes('돈')){img('kkabbi-talisman.png');sp('금전운이 보여요');out('💰 작은 기회를 잡으세요.');return;} if(q.includes('힘들')||q.includes('걱정')){img('kkabbi-cute.png');sp('괜찮아요. 깨비가 곁에 있어요');out('🌙 서두르지 말고 쉬어가세요.');return;} special();}
-function shareR(){const txt=document.getElementById('out').innerText;if(navigator.share){navigator.share({title:'깨비 운세',text:txt});}else{navigator.clipboard.writeText(txt);alert('결과가 복사되었어요!');}}
+function today(){I('kkabbi-basic.png');S('오늘의 운세를 전해드릴게요 ✨');O('🌙 오늘의 운세<br><br>'+F[seed()]);}
+function reunion(){I('kkabbi-love.png');S('재회운을 볼게요 💗');O('💞 감정 연결도 87%<br><br>짧은 안부가 열쇠입니다.');}
+function special(){I('kkabbi-wink.png');S('좋은 기운이 보여요 ✨');O('✨ 기대하지 않던 좋은 일이 생길 수 있어요.');}
+function talisman(){I('kkabbi-talisman.png');S('행운 부적을 드릴게요');O('<img src="kkabbi-talisman.png" style="width:140px;border-radius:18px"><br><br><a href="kkabbi-talisman.png" download style="color:#7a3cff">부적 다운로드</a>');}
+function ask(){let q=document.getElementById('q').value;if(q.includes('연락')||q.includes('사랑')){reunion()}else if(q.includes('돈')){talisman()}else{special()}}
 today();
-</script></body></html>
+</script>
+</body>
+</html>
