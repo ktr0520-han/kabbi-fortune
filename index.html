@@ -1,46 +1,218 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>깨비 운세</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>깨비 운세</title>
+<meta name="theme-color" content="#140428">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:linear-gradient(180deg,#120022,#26004a,#100019);
+  color:#fff;
+}
+.wrap{
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  padding:22px 18px 36px;
+}
+h1{
+  text-align:center;
+  color:#ffd86b;
+  font-size:42px;
+  margin:18px 0 24px;
+}
+.hero{
+  width:100%;
+  border-radius:26px;
+  display:block;
+  background:#fff;
+  padding:8px;
+}
+.bubble{
+  background:#fff;
+  color:#240840;
+  border-radius:22px;
+  padding:18px;
+  margin-top:18px;
+  text-align:center;
+  font-size:21px;
+  line-height:1.55;
+  font-weight:900;
+}
+.askRow{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  margin-top:16px;
+}
+input{
+  width:100%;
+  padding:16px;
+  border-radius:18px;
+  border:3px solid #fff;
+  font-size:16px;
+}
+button{
+  border:none;
+  border-radius:18px;
+  padding:15px 18px;
+  background:linear-gradient(90deg,#7a3cff,#ff3ca6);
+  color:#fff;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+}
+.result{
+  background:#fff;
+  color:#240840;
+  border-radius:22px;
+  padding:18px;
+  margin-top:16px;
+  text-align:center;
+  font-size:20px;
+  line-height:1.55;
+  font-weight:900;
+  white-space:pre-line;
+}
+.menu{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:18px;
+}
+.menu button{
+  min-height:72px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,216,107,.35);
+  color:#fff;
+}
+.footer{
+  text-align:center;
+  color:#d8b4fe;
+  margin-top:18px;
+  font-size:14px;
+}
+</style>
 </head>
-<body class="home-body">
-  <main class="home-wrap">
-    <section class="home-hero">
-      <img src="kkabbi.png" alt="깨비 캐릭터" class="home-kabbi" onerror="this.style.display='none'" />
-      <p class="home-label">깨비 운세</p>
-      <h1>오늘의 운세를<br />깨비와 함께 확인해보세요</h1>
-      <p class="home-subtitle">
-        띠별 운세, 오늘의 기운, 소원 부적까지 매일 보는 재미를 담았습니다.
-      </p>
+<body>
+<div class="wrap">
+  <h1>깨비 운세</h1>
 
-      <div class="home-actions">
-        <a href="zodiac.html" class="main-btn">🐭 오늘의 12띠 운세 보기</a>
-        <a href="#wish" class="sub-btn">✨ 소원 부적 보기</a>
-      </div>
-    </section>
+  <img class="hero" id="mainImage" src="kkabbi.png" alt="깨비 운세">
 
-    <section class="home-menu">
-      <a href="zodiac.html" class="menu-card">
-        <span>🐭</span>
-        <strong>12띠 운세</strong>
-        <p>내 띠를 선택하고 오늘의 흐름을 확인하세요.</p>
-      </a>
+  <div class="bubble" id="speech">
+    무엇이든 물어보세요.<br>깨비가 알려드릴게요!
+  </div>
 
-      <div class="menu-card">
-        <span>🔮</span>
-        <strong>오늘의 기운</strong>
-        <p>하루의 분위기와 조심할 점을 가볍게 확인하세요.</p>
-      </div>
+  <div class="askRow">
+    <input id="question" placeholder="예: 오늘 연락 올까요?">
+    <button type="button" id="askBtn">질문하기</button>
+  </div>
 
-      <div class="menu-card" id="wish">
-        <span>🧧</span>
-        <strong>소원 부적</strong>
-        <p>마음속 소원을 담아 좋은 기운을 받아보세요.</p>
-      </div>
-    </section>
-  </main>
+  <div class="result" id="answer">
+    오늘의 운세가 열리고 있어요 ✨
+  </div>
+
+  <div class="menu">
+    <button type="button" id="todayBtn">🌙 오늘의 운세</button>
+    <button type="button" id="reunionBtn">💞 재회 궁합</button>
+    <button type="button" id="zodiacBtn">🐭 띠별 운세</button>
+    <button type="button" id="specialBtn">✨ 특별 운세</button>
+  </div>
+
+  <div class="footer">🌸 깨비는 항상 청야선생님 편이에요 🍀</div>
+</div>
+
+<script>
+const answer = document.getElementById("answer");
+const speech = document.getElementById("speech");
+const mainImage = document.getElementById("mainImage");
+
+function show(text, msg, img){
+  answer.textContent = text;
+  if(msg) speech.innerHTML = msg;
+  if(img) mainImage.src = img;
+}
+
+function askKabbi(){
+  const q = document.getElementById("question").value.trim();
+
+  if(!q){
+    show("질문을 입력해 주세요 😊", "깨비가 기다리고 있어요!", "kkabbi.png");
+    return;
+  }
+
+  if(q.includes("연락") || q.includes("재회") || q.includes("사랑")){
+    show(
+      "💞 사랑/재회운\\n기다리던 소식이 움직일 수 있어요.\\n다만 먼저 감정을 쏟기보다 짧고 따뜻하게 다가가세요.",
+      "연락운을 살펴볼게요 💗<br>답은 타이밍에 있어요.",
+      "kkabbi-love.png"
+    );
+  } else if(q.includes("돈") || q.includes("금전") || q.includes("복")){
+    show(
+      "💰 금전운\\n작은 기회가 복이 됩니다.\\n큰 지출은 천천히 결정하세요.",
+      "금전운이 움직이고 있어요 ✨",
+      "kkabbi-talisman.png"
+    );
+  } else if(q.includes("힘들") || q.includes("고민") || q.includes("걱정")){
+    show(
+      "🤔 깨비 조언\\n지금은 서두르기보다 흐름을 보는 지혜가 필요합니다.\\n마음이 급할수록 한 걸음 쉬어가세요.",
+      "괜찮아요. 깨비가 곁에 있어요.",
+      "kkabbi-cute.png"
+    );
+  } else {
+    show(
+      "🔮 깨비 답변\\n좋은 기운이 곁에 있어요.\\n오늘은 작은 신호를 놓치지 않는 것이 중요합니다.",
+      "좋은 소식이 보여요 ✨<br>기대해도 좋아요.",
+      "kkabbi-wink.png"
+    );
+  }
+}
+
+function todayFortune(){
+  show(
+    "🌙 오늘의 운세\\n총운: 새로운 제안이나 연락이 들어올 수 있습니다.\\n사랑운: 기다리던 연락운이 밝아집니다.\\n금전운: 계산은 꼼꼼히, 결정은 천천히 하세요.\\n행운 숫자: 9",
+    "오늘의 운세를 전해드릴게요 ✨",
+    "kkabbi-basic.png"
+  );
+}
+
+function reunionFortune(){
+  show(
+    "💞 재회 궁합 결과\\n감정 연결도 87%\\n재회 가능성: 높음\\n상대 심리: 아직 미련은 있으나 자존심이 큼\\n연락 타이밍: 5월 초 저녁 시간대\\n피해야 할 행동: 감정적인 장문 메시지\\n깨비 조언: 가벼운 안부가 열쇠입니다.",
+    "재회운이 강하게 보여요 💗",
+    "kkabbi-love.png"
+  );
+}
+
+function zodiacFortune(){
+  show(
+    "🐭 띠별 운세\\n쥐띠: 기회가 옵니다.\\n소띠: 꾸준함이 복입니다.\\n호랑이띠: 추진력이 강합니다.\\n토끼띠: 관계운 상승.\\n용띠: 큰 흐름이 열립니다.",
+    "띠별 흐름을 살펴볼게요.",
+    "kkabbi-think.png"
+  );
+}
+
+function specialFortune(){
+  show(
+    "✨ 특별 운세\\n행운 부적의 기운이 들어옵니다.\\n작은 소원이 이루어질 수 있어요.\\n오늘은 뜻밖의 도움이 가까이에 있습니다.",
+    "특별운이 열렸어요 ✨",
+    "kkabbi-talisman.png"
+  );
+}
+
+document.getElementById("askBtn").addEventListener("click", askKabbi);
+document.getElementById("todayBtn").addEventListener("click", todayFortune);
+document.getElementById("reunionBtn").addEventListener("click", reunionFortune);
+document.getElementById("zodiacBtn").addEventListener("click", zodiacFortune);
+document.getElementById("specialBtn").addEventListener("click", specialFortune);
+</script>
 </body>
 </html>
