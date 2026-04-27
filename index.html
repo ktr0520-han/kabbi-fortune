@@ -1,117 +1,43 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>깨비 운세</title>
+<!doctype html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>깨비 운세</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(180deg,#120022,#26004a,#100019);color:#fff}
-.wrap{max-width:430px;margin:0 auto;min-height:100vh;padding:22px 18px 36px}
-h1{text-align:center;color:#ffd86b;font-size:42px;margin:18px 0 24px}
-.hero{width:100%;border-radius:26px;display:block;background:#fff;padding:8px}
-.box{background:#fff;color:#240840;border-radius:22px;padding:18px;margin-top:16px;text-align:center;font-size:19px;line-height:1.6;font-weight:900;white-space:pre-line}
-.askRow{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:16px}
-input,select{width:100%;padding:14px;border-radius:18px;border:3px solid #fff;font-size:16px}
-button{border:none;border-radius:18px;padding:15px 18px;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;font-size:17px;font-weight:900;cursor:pointer}
-.menu{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
-.menu button{min-height:72px;background:rgba(255,255,255,.08);border:1px solid rgba(255,216,107,.35)}
-.footer{text-align:center;color:#d8b4fe;margin-top:18px;font-size:14px}
-</style>
-</head>
-<body>
-<div class="wrap">
-<h1>깨비 운세</h1>
-<img class="hero" id="mainImage" src="kkabbi.png">
-<div class="box" id="speech">12띠 운세가 더 풍부해졌어요 ✨</div>
-
-<div class="askRow">
-<select id="zodiacSelect">
-<option value="">띠를 선택하세요</option>
-<option>쥐띠</option><option>소띠</option><option>호랑이띠</option><option>토끼띠</option>
-<option>용띠</option><option>뱀띠</option><option>말띠</option><option>양띠</option>
-<option>원숭이띠</option><option>닭띠</option><option>개띠</option><option>돼지띠</option>
-</select>
-<button id="myZodiacBtn">내 띠 보기</button>
-</div>
-
-<div class="box" id="answer">오늘의 운세를 눌러보세요 🌙</div>
-
+body{margin:0;font-family:sans-serif;background:linear-gradient(#120022,#26004a);color:#fff}.w{max-width:430px;margin:auto;padding:18px}
+h1{text-align:center;color:#ffd86b}.hero{width:100%;border-radius:22px;background:#fff;padding:8px}
+.box{background:#fff;color:#240840;border-radius:20px;padding:16px;margin-top:14px;white-space:pre-line;font-weight:700;line-height:1.55}
+.row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}input,select,button{padding:14px;border-radius:16px;font-size:16px}
+button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff}.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.menu button{min-height:68px;background:rgba(255,255,255,.08);border:1px solid rgba(255,216,107,.3)}
+</style></head><body><div class="w">
+<h1>깨비 운세</h1><img id="img" class="hero" src="kkabbi.png">
+<div id="speech" class="box">무엇이든 물어보세요. 깨비가 알려드릴게요!</div>
+<div class="row"><input id="q" placeholder="예: 오늘 연락 올까요?"><button onclick="ask()">질문하기</button></div>
+<div class="row"><select id="z"><option value="">띠 선택</option><option>쥐띠</option><option>소띠</option><option>호랑이띠</option><option>토끼띠</option><option>용띠</option><option>뱀띠</option><option>말띠</option><option>양띠</option><option>원숭이띠</option><option>닭띠</option><option>개띠</option><option>돼지띠</option></select><button onclick="myZ()">내 띠</button></div>
+<div id="out" class="box">오늘의 운세를 불러오는 중 ✨</div>
 <div class="menu">
-<button id="todayBtn">🌙 오늘의 운세</button>
-<button id="zodiacBtn">🐭 띠별 운세</button>
-<button id="reunionBtn">💞 재회 궁합</button>
-<button id="specialBtn">✨ 특별 운세</button>
-</div>
-
-<div class="footer">🌸 매일 바뀌는 12띠 운세 시스템 🍀</div>
-</div>
-
+<button onclick="today()">🌙 오늘의 운세</button><button onclick="allZ()">🐭 띠별 운세</button>
+<button onclick="reunion()">💞 재회 궁합</button><button onclick="special()">✨ 특별 운세</button>
+<button onclick="talisman()">📜 행운 부적</button><button onclick="shareR()">📤 결과 공유</button>
+</div></div>
 <script>
-const answer=document.getElementById('answer');
-const speech=document.getElementById('speech');
-
-const zodiacData={
-"쥐띠":["새로운 기회가 다가옵니다.","대인관계에서 좋은 흐름이 있습니다.","작은 결단이 큰 결과를 만듭니다."],
-"소띠":["꾸준함이 복이 되는 날입니다.","늦더라도 원하는 방향으로 갑니다.","성실함이 인정받는 하루입니다."],
-"호랑이띠":["추진력이 강해지는 날입니다.","도전이 행운을 부릅니다.","과감함이 빛을 발합니다."],
-"토끼띠":["관계운이 상승합니다.","부드러운 대화가 기회를 만듭니다.","평온 속에 복이 깃듭니다."],
-"용띠":["큰 흐름이 열립니다.","자신감을 가지면 길이 보입니다.","주목받는 기회가 옵니다."],
-"뱀띠":["지혜로운 선택이 중요합니다.","말보다 관찰이 도움이 됩니다.","차분함이 행운을 부릅니다."],
-"말띠":["움직일수록 기회가 커집니다.","새로운 만남운이 있습니다.","활동성이 복을 부릅니다."],
-"양띠":["마음의 평온이 중요합니다.","가까운 사람과의 시간이 힘이 됩니다.","무리하지 않으면 좋은 날입니다."],
-"원숭이띠":["재치가 빛나는 하루입니다.","아이디어가 성과로 이어집니다.","센스 있는 선택이 중요합니다."],
-"닭띠":["성실함이 인정받습니다.","계획대로 움직이면 좋습니다.","작은 성취가 이어집니다."],
-"개띠":["믿음이 좋은 결과를 만듭니다.","인연운이 좋아집니다.","진심이 통하는 날입니다."],
-"돼지띠":["재물운이 따릅니다.","풍요로운 기운이 있습니다.","즐거운 소식이 들려옵니다."]
-};
-
-function daySeed(){
- const d=new Date();
- return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
-}
-
-function show(text){answer.textContent=text;}
-
-function todayFortune(){
- show("🌙 오늘의 운세\n오늘은 좋은 흐름이 시작됩니다.\n새로운 기회를 놓치지 마세요.");
-}
-
-function zodiacAll(){
- let out="🐭 12띠 오늘의 운세\n\n";
- const seed=daySeed();
- for(const name in zodiacData){
-   const arr=zodiacData[name];
-   const pick=arr[seed % arr.length];
-   const num=(seed + arr.length) % 9 + 1;
-   out += name + " : " + pick + " 행운숫자 " + num + "\n";
- }
- show(out);
- speech.textContent="오늘의 12띠 운세를 펼쳐볼게요 ✨";
-}
-
-function myZodiac(){
- const z=document.getElementById('zodiacSelect').value;
- if(!z){show("띠를 먼저 선택해 주세요 😊");return;}
- const seed=daySeed();
- const arr=zodiacData[z];
- const pick=arr[seed % arr.length];
- const num=(seed + arr.length) % 9 + 1;
- const colors=["빨강","파랑","초록","보라","금색","분홍","하늘색"];
- const color=colors[seed % colors.length];
- show("🔮 "+z+" 오늘의 운세\n총운: "+pick+"\n사랑운: 따뜻한 말 한마디가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: "+num+"\n행운 색상: "+color);
- speech.textContent=z+" 운세를 자세히 살펴볼게요.";
-}
-
-function reunion(){show("💞 재회 궁합\n감정 연결도 87%\n짧고 따뜻한 안부가 열쇠입니다.");}
-function special(){show("✨ 특별 운세\n좋은 기운이 가까이에 있습니다.");}
-
-document.getElementById('todayBtn').onclick=todayFortune;
-document.getElementById('zodiacBtn').onclick=zodiacAll;
-document.getElementById('myZodiacBtn').onclick=myZodiac;
-document.getElementById('reunionBtn').onclick=reunion;
-document.getElementById('specialBtn').onclick=special;
-todayFortune();
-</script>
-</body>
-</html>
+const out=o=>document.getElementById('out').innerHTML=o;
+const img=s=>document.getElementById('img').src=s;
+const sp=t=>document.getElementById('speech').innerHTML=t;
+const F=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다."];
+function seed(){let d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()}
+function today(){let s=seed(),m=['아침운','오후운','저녁운'][(new Date()).getHours()<12?0:(new Date()).getHours()<18?1:2]; img('kkabbi-basic.png');sp('오늘의 운세를 전해드릴게요 ✨'); out(`🌙 ${m}
+🔮 총운: ${F[s%4]}
+❤️ 사랑운: 따뜻한 대화가 중요합니다.
+💰 금전운: 작은 절약이 복이 됩니다.
+🍀 행운 숫자: ${(s%9)+1}`)}
+const Z=["쥐띠","소띠","호랑이띠","토끼띠","용띠","뱀띠","말띠","양띠","원숭이띠","닭띠","개띠","돼지띠"];
+function allZ(){img('kkabbi-think.png');sp('12띠 흐름을 살펴볼게요');let s=seed(),t='🐭 12띠 운세\n\n';Z.forEach((z,i)=>t+=z+' : '+F[(s+i)%4]+'\n');out(t)}
+function myZ(){let z=document.getElementById('z').value;if(!z){out('띠를 선택해 주세요 😊');return;} img('kkabbi-think.png');sp(z+' 운세를 자세히 볼게요');out(`🔮 ${z}
+총운: ${F[seed()%4]}
+행운 색상: 금색
+행운 숫자: ${(seed()%9)+1}`)}
+function reunion(){img('kkabbi-love.png');sp('재회운을 볼게요 💗');out('💞 감정 연결도 87%\n상대는 아직 미련이 있습니다.\n짧은 안부가 열쇠입니다.')}
+function special(){img('kkabbi-wink.png');sp('좋은 기운이 보여요 ✨');out('✨ 오늘은 기대하지 않던 좋은 일이 생길 수 있어요.')}
+function talisman(){img('kkabbi-talisman.png');sp('행운 부적을 드릴게요');out('<img src="kkabbi-talisman.png" style="width:140px;border-radius:18px"><br><br><a href="kkabbi-talisman.png" download style="color:#7a3cff">부적 다운로드</a>')}
+function ask(){let q=document.getElementById('q').value;if(q.includes('연락')||q.includes('사랑')){reunion();return;} if(q.includes('돈')){img('kkabbi-talisman.png');sp('금전운이 보여요');out('💰 작은 기회를 잡으세요.');return;} if(q.includes('힘들')||q.includes('걱정')){img('kkabbi-cute.png');sp('괜찮아요. 깨비가 곁에 있어요');out('🌙 서두르지 말고 쉬어가세요.');return;} special();}
+function shareR(){const txt=document.getElementById('out').innerText;if(navigator.share){navigator.share({title:'깨비 운세',text:txt});}else{navigator.clipboard.writeText(txt);alert('결과가 복사되었어요!');}}
+today();
+</script></body></html>
