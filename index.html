@@ -1,1 +1,85 @@
-<html><body><script>document.write('업그레이드 파일 준비 완료');</script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>깨비 운세</title>
+<style>
+body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(180deg,#120022,#26004a);color:#fff;overflow:hidden}
+#intro{
+position:fixed;inset:0;z-index:9999;
+display:flex;align-items:center;justify-content:center;flex-direction:column;
+background:radial-gradient(circle,#3a0a63,#120022);
+animation:hideIntro .8s ease forwards;
+animation-delay:1.8s;
+}
+#intro .brand{color:#ffd86b;font-size:30px;font-weight:900;font-style:italic;transform:rotate(-10deg);margin-bottom:10px}
+#intro .title{font-size:42px;font-weight:900}
+#intro .orb{
+width:92px;height:92px;border-radius:50%;
+margin:18px 0;
+background:linear-gradient(135deg,#ffd86b,#ff3ca6,#7a3cff);
+box-shadow:0 0 40px rgba(255,216,107,.6);
+animation:pulse 1.2s infinite;
+}
+#intro .txt{font-size:16px;color:#f7d48b}
+@keyframes pulse{50%{transform:scale(1.12)}}
+@keyframes hideIntro{to{opacity:0;visibility:hidden}}
+
+.wrap{max-width:430px;margin:auto;padding:18px;overflow:auto;height:100vh;box-sizing:border-box}
+.topbrand{height:36px}.topbrand span{color:#ffd86b;font-style:italic;font-weight:900;font-size:28px;display:inline-block;transform:rotate(-12deg)}
+h1{text-align:center;color:#ffd86b;margin:0 0 14px}
+.hero{width:100%;border-radius:22px;background:#fff;padding:8px}
+.box{background:#fff;color:#240840;border-radius:20px;padding:16px;margin-top:14px;white-space:pre-line;font-weight:800;line-height:1.6}
+.row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
+input,button{padding:14px;border-radius:16px;font-size:16px}
+button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;font-weight:900}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.menu button{min-height:68px;background:rgba(255,255,255,.08);border:1px solid rgba(255,216,107,.3)}
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="brand">╱ 터신전</div>
+  <div class="title">깨비운세</div>
+  <div class="orb"></div>
+  <div class="txt">오늘의 운세를 여는 중...</div>
+</div>
+
+<div class="wrap">
+<div class="topbrand"><span>╱ 터신전</span></div>
+<h1>깨비운세</h1>
+
+<img id="img" class="hero" src="kkabbi.png">
+<div id="speech" class="box">터신전의 깨비가 오늘의 운세를 알려드릴게요 ✨</div>
+
+<div class="row">
+<input id="q" placeholder="예: 오늘 연락 올까요?">
+<button onclick="ask()">질문하기</button>
+</div>
+
+<div id="out" class="box">오늘의 운세를 불러오는 중 ✨</div>
+
+<div class="menu">
+<button onclick="today()">🌙 오늘의 운세</button>
+<button onclick="reunion()">💞 재회 궁합</button>
+<button onclick="special()">✨ 특별 운세</button>
+<button onclick="talisman()">📜 행운 부적</button>
+</div>
+</div>
+
+<script>
+const O=t=>document.getElementById('out').innerHTML=t;
+const I=s=>document.getElementById('img').src=s;
+const S=t=>document.getElementById('speech').innerHTML=t;
+const F=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다."];
+function seed(){return new Date().getDate()%4}
+function today(){I('kkabbi-basic.png');S('오늘의 운세를 전해드릴게요 ✨');O('🌙 오늘의 운세<br><br>'+F[seed()]);}
+function reunion(){I('kkabbi-love.png');S('재회운을 볼게요 💗');O('💞 감정 연결도 87%<br><br>짧은 안부가 열쇠입니다.');}
+function special(){I('kkabbi-wink.png');S('좋은 기운이 보여요 ✨');O('✨ 기대하지 않던 좋은 일이 생길 수 있어요.');}
+function talisman(){I('kkabbi-talisman.png');S('행운 부적을 드릴게요');O('<img src="kkabbi-talisman.png" style="width:140px;border-radius:18px"><br><br><a href="kkabbi-talisman.png" download style="color:#7a3cff">부적 다운로드</a>');}
+function ask(){let q=document.getElementById('q').value;if(q.includes('연락')||q.includes('사랑'))reunion();else if(q.includes('돈'))talisman();else special();}
+today();
+</script>
+</body>
+</html>
