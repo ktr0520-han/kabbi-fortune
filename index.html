@@ -45,6 +45,7 @@ button{border:none;border-radius:18px;padding:15px 18px;background:linear-gradie
 </div>
 <script>
 const answer=document.getElementById("answer"),speech=document.getElementById("speech"),mainImage=document.getElementById("mainImage");
+
 const fortunes=[
 {total:"막혀 있던 일이 조금씩 풀리는 날입니다.",love:"따뜻한 말 한마디가 관계를 살립니다.",money:"작은 지출을 줄이면 복이 쌓입니다.",health:"몸을 따뜻하게 하세요.",num:3,color:"금색",advice:"웃는 얼굴이 귀인을 부릅니다."},
 {total:"새로운 제안이나 연락이 들어올 수 있습니다.",love:"기다리던 연락운이 밝아집니다.",money:"계산은 꼼꼼히 하세요.",health:"소화와 컨디션 관리가 필요합니다.",num:9,color:"분홍색",advice:"작은 기회를 넘기지 마세요."},
@@ -52,17 +53,91 @@ const fortunes=[
 {total:"기다리던 기회가 조용히 다가옵니다.",love:"오해가 풀릴 수 있습니다.",money:"뜻밖의 이익이 따를 수 있습니다.",health:"물과 휴식을 챙기세요.",num:7,color:"보라색",advice:"서두르지 말고 흐름을 보세요."},
 {total:"사람 속에서 복이 들어오는 날입니다.",love:"짧은 안부가 좋은 흐름을 만듭니다.",money:"작은 이익이 안정적입니다.",health:"잠깐의 휴식이 힘이 됩니다.",num:2,color:"하늘색",advice:"먼저 웃어주면 길이 열립니다."}
 ];
-function show(text,msg,img){answer.textContent=text;if(msg)speech.innerHTML=msg;if(img)mainImage.src=img}
-function getTimeLabel(){const h=new Date().getHours();return h<12?"아침운":h<18?"오후운":"저녁운"}
-function idx(extra=0){const d=new Date();return (d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()+extra)%fortunes.length}
-function format(f){return "🌙 오늘의 "+getTimeLabel()+"\\n🔮 총운: "+f.total+"\\n❤️ 사랑운: "+f.love+"\\n💰 금전운: "+f.money+"\\n🌿 건강운: "+f.health+"\\n🍀 행운 숫자: "+f.num+"\\n🎨 행운 색상: "+f.color+"\\n✨ 깨비 조언: "+f.advice}
-function todayFortune(){show(format(fortunes[idx(new Date().getHours())]),"오늘의 운세를 새롭게 열어볼게요 ✨<br>시간의 기운도 함께 봅니다.","kkabbi-basic.png")}
-function askKabbi(){const q=document.getElementById("question").value.trim();if(!q){show("질문을 입력해 주세요 😊","깨비가 기다리고 있어요!","kkabbi.png");return}if(q.includes("연락")||q.includes("재회")||q.includes("사랑"))show("💞 사랑/재회운\\n기다리던 소식이 움직일 수 있어요.\\n짧고 따뜻한 안부가 좋아요.","연락운을 살펴볼게요 💗<br>답은 타이밍에 있어요.","kkabbi-love.png");else if(q.includes("돈")||q.includes("금전")||q.includes("복"))show("💰 금전운\\n작은 기회가 복이 됩니다.\\n큰 지출은 천천히 결정하세요.","금전운이 움직이고 있어요 ✨","kkabbi-talisman.png");else if(q.includes("힘들")||q.includes("고민")||q.includes("걱정"))show("🤔 깨비 조언\\n지금은 서두르기보다 흐름을 보는 지혜가 필요합니다.","괜찮아요. 깨비가 곁에 있어요.","kkabbi-cute.png");else show("🔮 깨비 답변\\n좋은 기운이 곁에 있어요.\\n오늘은 작은 신호를 놓치지 마세요.","좋은 소식이 보여요 ✨<br>기대해도 좋아요.","kkabbi-wink.png")}
-function reunionFortune(){show("💞 재회 궁합 결과\\n감정 연결도 87%\\n재회 가능성: 높음\\n상대 심리: 아직 미련은 있으나 자존심이 큼\\n연락 타이밍: 5월 초 저녁 시간대\\n깨비 조언: 가벼운 안부가 열쇠입니다.","재회운이 강하게 보여요 💗","kkabbi-love.png")}
-function zodiacFortune(){show("🐭 띠별 운세\\n쥐띠: 기회가 옵니다.\\n소띠: 꾸준함이 복입니다.\\n호랑이띠: 추진력이 강합니다.\\n토끼띠: 관계운 상승.\\n용띠: 큰 흐름이 열립니다.\\n뱀띠: 지혜로운 선택이 필요합니다.\\n말띠: 움직일수록 기회가 커집니다.\\n양띠: 마음의 평온이 중요합니다.\\n원숭이띠: 재치가 빛납니다.\\n닭띠: 성실함이 인정받습니다.\\n개띠: 믿음이 좋은 결과를 만듭니다.\\n돼지띠: 재물운이 따릅니다.","띠별 흐름을 살펴볼게요.","kkabbi-think.png")}
-function specialFortune(){show("✨ 특별 운세\\n행운 부적의 기운이 들어옵니다.\\n작은 소원이 이루어질 수 있어요.","특별운이 열렸어요 ✨","kkabbi-talisman.png")}
-function talismanDownload(){answer.innerHTML='<div>📜 오늘의 행운 부적<br><br><img src="kkabbi-talisman.png" style="width:150px;border-radius:22px;border:2px solid #ffd86b"><br><br><a href="kkabbi-talisman.png" download="kkaebbi-luck-talisman.png" style="display:inline-block;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;padding:14px 18px;border-radius:18px;text-decoration:none">부적 다운로드</a><br><br><span style="font-size:13px">휴대폰에서는 이미지를 길게 눌러 저장하세요.</span></div>';speech.innerHTML="오늘의 행운 부적을 드릴게요 ✨<br>핸드폰에 저장해 지니고 계세요.";mainImage.src="kkabbi-talisman.png"}
-function premiumInfo(){show("👑 프리미엄 준비 중\\n재회 상세판과 궁합 심층판을 준비하고 있습니다.\\n카카오페이 / 토스페이 / 계좌이체 연결 예정입니다.","프리미엄 운세는 더 깊게 봐드릴게요 👑","kkabbi-talisman.png")}
+
+function show(text,msg,img){
+  answer.textContent=text;
+  if(msg) speech.innerHTML=msg;
+  if(img) mainImage.src=img;
+}
+function getTimeLabel(){
+  const h=new Date().getHours();
+  return h<12 ? "아침운" : h<18 ? "오후운" : "저녁운";
+}
+function idx(extra=0){
+  const d=new Date();
+  return (d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()+extra)%fortunes.length;
+}
+function format(f){
+  return `🌙 오늘의 ${getTimeLabel()}
+🔮 총운: ${f.total}
+❤️ 사랑운: ${f.love}
+💰 금전운: ${f.money}
+🌿 건강운: ${f.health}
+🍀 행운 숫자: ${f.num}
+🎨 행운 색상: ${f.color}
+✨ 깨비 조언: ${f.advice}`;
+}
+function todayFortune(){
+  show(format(fortunes[idx(new Date().getHours())]),"오늘의 운세를 새롭게 열어볼게요 ✨<br>시간의 기운도 함께 봅니다.","kkabbi-basic.png");
+}
+function askKabbi(){
+  const q=document.getElementById("question").value.trim();
+  if(!q){show("질문을 입력해 주세요 😊","깨비가 기다리고 있어요!","kkabbi.png");return}
+  if(q.includes("연락")||q.includes("재회")||q.includes("사랑")){
+    show(`💞 사랑/재회운
+기다리던 소식이 움직일 수 있어요.
+짧고 따뜻한 안부가 좋아요.`,"연락운을 살펴볼게요 💗<br>답은 타이밍에 있어요.","kkabbi-love.png");
+  }else if(q.includes("돈")||q.includes("금전")||q.includes("복")){
+    show(`💰 금전운
+작은 기회가 복이 됩니다.
+큰 지출은 천천히 결정하세요.`,"금전운이 움직이고 있어요 ✨","kkabbi-talisman.png");
+  }else if(q.includes("힘들")||q.includes("고민")||q.includes("걱정")){
+    show(`🤔 깨비 조언
+지금은 서두르기보다 흐름을 보는 지혜가 필요합니다.`,"괜찮아요. 깨비가 곁에 있어요.","kkabbi-cute.png");
+  }else{
+    show(`🔮 깨비 답변
+좋은 기운이 곁에 있어요.
+오늘은 작은 신호를 놓치지 마세요.`,"좋은 소식이 보여요 ✨<br>기대해도 좋아요.","kkabbi-wink.png");
+  }
+}
+function reunionFortune(){
+  show(`💞 재회 궁합 결과
+감정 연결도 87%
+재회 가능성: 높음
+상대 심리: 아직 미련은 있으나 자존심이 큼
+연락 타이밍: 5월 초 저녁 시간대
+깨비 조언: 가벼운 안부가 열쇠입니다.`,"재회운이 강하게 보여요 💗","kkabbi-love.png");
+}
+function zodiacFortune(){
+  show(`🐭 띠별 운세
+쥐띠: 기회가 옵니다.
+소띠: 꾸준함이 복입니다.
+호랑이띠: 추진력이 강합니다.
+토끼띠: 관계운 상승.
+용띠: 큰 흐름이 열립니다.
+뱀띠: 지혜로운 선택이 필요합니다.
+말띠: 움직일수록 기회가 커집니다.
+양띠: 마음의 평온이 중요합니다.
+원숭이띠: 재치가 빛납니다.
+닭띠: 성실함이 인정받습니다.
+개띠: 믿음이 좋은 결과를 만듭니다.
+돼지띠: 재물운이 따릅니다.`,"띠별 흐름을 살펴볼게요.","kkabbi-think.png");
+}
+function specialFortune(){
+  show(`✨ 특별 운세
+행운 부적의 기운이 들어옵니다.
+작은 소원이 이루어질 수 있어요.`,"특별운이 열렸어요 ✨","kkabbi-talisman.png");
+}
+function talismanDownload(){
+  answer.innerHTML='<div>📜 오늘의 행운 부적<br><br><img src="kkabbi-talisman.png" style="width:150px;border-radius:22px;border:2px solid #ffd86b"><br><br><a href="kkabbi-talisman.png" download="kkaebbi-luck-talisman.png" style="display:inline-block;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;padding:14px 18px;border-radius:18px;text-decoration:none">부적 다운로드</a><br><br><span style="font-size:13px">휴대폰에서는 이미지를 길게 눌러 저장하세요.</span></div>';
+  speech.innerHTML="오늘의 행운 부적을 드릴게요 ✨<br>핸드폰에 저장해 지니고 계세요.";
+  mainImage.src="kkabbi-talisman.png";
+}
+function premiumInfo(){
+  show(`👑 프리미엄 준비 중
+재회 상세판과 궁합 심층판을 준비하고 있습니다.
+카카오페이 / 토스페이 / 계좌이체 연결 예정입니다.`,"프리미엄 운세는 더 깊게 봐드릴게요 👑","kkabbi-talisman.png");
+}
 document.getElementById("askBtn").addEventListener("click",askKabbi);
 document.getElementById("todayBtn").addEventListener("click",todayFortune);
 document.getElementById("reunionBtn").addEventListener("click",reunionFortune);
