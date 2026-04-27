@@ -151,7 +151,7 @@ function today(){
   O('🌙 오늘의 운세\n\n총운: '+daily[seed()%daily.length]+'\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: '+((seed()%9)+1));
 }
 function allZodiac(){
-  I('kkabbi-think.png');
+  I('kkabbi-basic.png');
   S('12띠 운세를 모두 펼쳐볼게요 🐭');
   let txt='🐭 오늘의 12띠 운세\n\n';
   zodiacNames.forEach((z,i)=>{txt+=z+' : '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n';});
