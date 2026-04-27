@@ -2,34 +2,14 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>깨비 운세</title>
+<title>깨비운세 상담 고도화</title>
 <style>
-body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(180deg,#120022,#26004a);color:#fff;overflow:hidden}
-#intro{
-position:fixed;inset:0;z-index:9999;
-display:flex;align-items:center;justify-content:center;flex-direction:column;
-background:radial-gradient(circle,#3a0a63,#120022);
-animation:hideIntro .8s ease forwards;
-animation-delay:1.8s;
-}
-#intro .brand{color:#ffd86b;font-size:30px;font-weight:900;font-style:italic;transform:rotate(-10deg);margin-bottom:10px}
-#intro .title{font-size:42px;font-weight:900}
-#intro .orb{
-width:92px;height:92px;border-radius:50%;
-margin:18px 0;
-background:linear-gradient(135deg,#ffd86b,#ff3ca6,#7a3cff);
-box-shadow:0 0 40px rgba(255,216,107,.6);
-animation:pulse 1.2s infinite;
-}
-#intro .txt{font-size:16px;color:#f7d48b}
-@keyframes pulse{50%{transform:scale(1.12)}}
-@keyframes hideIntro{to{opacity:0;visibility:hidden}}
-
-.wrap{max-width:430px;margin:auto;padding:18px;overflow:auto;height:100vh;box-sizing:border-box}
-.topbrand{height:36px}.topbrand span{color:#ffd86b;font-style:italic;font-weight:900;font-size:28px;display:inline-block;transform:rotate(-12deg)}
+body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(180deg,#120022,#26004a);color:#fff}
+.wrap{max-width:430px;margin:auto;padding:18px}
+.brand{height:36px}.brand span{color:#ffd86b;font-style:italic;font-weight:900;font-size:28px;display:inline-block;transform:rotate(-12deg)}
 h1{text-align:center;color:#ffd86b;margin:0 0 14px}
 .hero{width:100%;border-radius:22px;background:#fff;padding:8px}
-.box{background:#fff;color:#240840;border-radius:20px;padding:16px;margin-top:14px;white-space:pre-line;font-weight:800;line-height:1.6}
+.box{background:#fff;color:#240840;border-radius:20px;padding:16px;margin-top:14px;white-space:pre-line;font-weight:800;line-height:1.65}
 .row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
 input,button{padding:14px;border-radius:16px;font-size:16px}
 button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;font-weight:900}
@@ -38,33 +18,24 @@ button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;
 </style>
 </head>
 <body>
-
-<div id="intro">
-  <div class="brand">╱ 터신전</div>
-  <div class="title">깨비운세</div>
-  <div class="orb"></div>
-  <div class="txt">오늘의 운세를 여는 중...</div>
-</div>
-
 <div class="wrap">
-<div class="topbrand"><span>╱ 터신전</span></div>
+<div class="brand"><span>╱ 터신전</span></div>
 <h1>깨비운세</h1>
-
 <img id="img" class="hero" src="kkabbi.png">
-<div id="speech" class="box">터신전의 깨비가 오늘의 운세를 알려드릴게요 ✨</div>
+<div id="speech" class="box">더 깊고 따뜻한 상담으로 답해드릴게요 ✨</div>
 
 <div class="row">
-<input id="q" placeholder="예: 오늘 연락 올까요?">
+<input id="q" placeholder="예: 그 사람이 왜 연락이 없을까요?">
 <button onclick="ask()">질문하기</button>
 </div>
 
-<div id="out" class="box">오늘의 운세를 불러오는 중 ✨</div>
+<div id="out" class="box">질문을 입력해 주세요 😊</div>
 
 <div class="menu">
-<button onclick="today()">🌙 오늘의 운세</button>
-<button onclick="reunion()">💞 재회 궁합</button>
-<button onclick="special()">✨ 특별 운세</button>
-<button onclick="talisman()">📜 행운 부적</button>
+<button onclick="sample('그 사람이 왜 연락이 없을까요?')">💗 연애</button>
+<button onclick="sample('재회 가능할까요?')">💞 재회</button>
+<button onclick="sample('돈운이 좋아질까요?')">💰 금전</button>
+<button onclick="sample('요즘 너무 지쳐요')">🌙 마음</button>
 </div>
 </div>
 
@@ -72,14 +43,55 @@ button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;
 const O=t=>document.getElementById('out').innerHTML=t;
 const I=s=>document.getElementById('img').src=s;
 const S=t=>document.getElementById('speech').innerHTML=t;
-const F=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다."];
-function seed(){return new Date().getDate()%4}
-function today(){I('kkabbi-basic.png');S('오늘의 운세를 전해드릴게요 ✨');O('🌙 오늘의 운세<br><br>'+F[seed()]);}
-function reunion(){I('kkabbi-love.png');S('재회운을 볼게요 💗');O('💞 감정 연결도 87%<br><br>짧은 안부가 열쇠입니다.');}
-function special(){I('kkabbi-wink.png');S('좋은 기운이 보여요 ✨');O('✨ 기대하지 않던 좋은 일이 생길 수 있어요.');}
-function talisman(){I('kkabbi-talisman.png');S('행운 부적을 드릴게요');O('<img src="kkabbi-talisman.png" style="width:140px;border-radius:18px"><br><br><a href="kkabbi-talisman.png" download style="color:#7a3cff">부적 다운로드</a>');}
-function ask(){let q=document.getElementById('q').value;if(q.includes('연락')||q.includes('사랑'))reunion();else if(q.includes('돈'))talisman();else special();}
-today();
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function sample(t){document.getElementById('q').value=t;ask();}
+
+const DB={
+love:[
+"상대가 완전히 멀어진 것보다 먼저 다가가는 부담을 느끼는 흐름이 보여요. 지금은 답을 재촉하기보다 가벼운 안부가 더 좋은 반응을 만듭니다. 이번 주 후반 작은 변화 가능성이 있습니다.",
+"마음은 남아 있지만 표현이 늦는 기운입니다. 서운함을 꺼내기보다 편안한 대화의 문을 여는 것이 먼저예요.",
+"연락의 문제보다 타이밍의 문제에 가깝습니다. 조급함을 내려놓으면 흐름이 다시 움직일 수 있어요."
+],
+reunion:[
+"재회 가능성은 있습니다. 다만 예전 방식으로 돌아가는 것이 아니라 더 성숙한 관계로 다시 시작해야 합니다.",
+"서로의 미련은 남아 있으나 자존심이 막고 있는 모습입니다. 짧고 담백한 안부가 열쇠가 됩니다.",
+"지금은 밀어붙이는 시기가 아닙니다. 시간을 두고 자연스럽게 다시 연결되는 흐름이 좋습니다."
+],
+money:[
+"큰돈보다 작은 흐름이 먼저 열립니다. 지출을 정리하면 들어오는 복이 커집니다.",
+"금전운은 서서히 회복 중입니다. 급한 투자보다 안정적인 선택이 유리합니다.",
+"돈운은 사람운과 함께 들어옵니다. 좋은 제안이나 소개를 가볍게 넘기지 마세요."
+],
+mind:[
+"많이 지쳐 있었네요. 지금 필요한 것은 더 버티는 힘이 아니라 잠시 숨을 고를 여유입니다. 쉬어도 괜찮습니다.",
+"마음이 흔들리는 건 약해서가 아니라 오래 애써왔기 때문입니다. 오늘은 스스로를 다정하게 대해주세요.",
+"지금 당장 답을 못 찾아도 괜찮아요. 오늘 하루만 무사히 건너도 충분히 잘하고 있는 겁니다."
+],
+general:[
+"지금은 속도보다 방향이 중요합니다. 조용히 정리하면 길이 열립니다.",
+"작은 신호를 놓치지 마세요. 변화는 늘 조용히 먼저 옵니다.",
+"오늘의 운은 사람 속에서 열립니다. 혼자 고민하지 말고 대화를 나눠보세요."
+]
+};
+
+function type(q){
+ if(q.includes('재회')||q.includes('헤어')||q.includes('전남')||q.includes('전여')) return 'reunion';
+ if(q.includes('연락')||q.includes('사랑')||q.includes('연애')||q.includes('남자')||q.includes('여자')) return 'love';
+ if(q.includes('돈')||q.includes('금전')||q.includes('재물')||q.includes('장사')) return 'money';
+ if(q.includes('지쳐')||q.includes('힘들')||q.includes('불안')||q.includes('외로')||q.includes('고민')) return 'mind';
+ return 'general';
+}
+
+function ask(){
+ const q=document.getElementById('q').value.trim();
+ if(!q){O('질문을 입력해 주세요 😊');return;}
+ const t=type(q);
+ const img={love:'kkabbi-love.png',reunion:'kkabbi-love.png',money:'kkabbi-talisman.png',mind:'kkabbi-cute.png',general:'kkabbi-wink.png'}[t];
+ const title={love:'💗 사랑 상담',reunion:'💞 재회 상담',money:'💰 금전 상담',mind:'🌙 마음 상담',general:'🔮 깨비 상담'}[t];
+ I(img);
+ S('깨비가 마음을 담아 살펴보았어요 ✨');
+ O(title+'\n\n'+pick(DB[t])+'\n\n🍀 깨비 한마디: 급할수록 말은 짧고 마음은 따뜻하게 전해보세요.');
+}
 </script>
 </body>
 </html>
