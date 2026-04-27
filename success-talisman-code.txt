@@ -1,0 +1,17 @@
+<!-- 합격 부적 버튼 예시 -->
+<button onclick="successTalisman()">🎓 합격 부적</button>
+
+<script>
+function successTalisman(){
+  document.getElementById('img').src = 'success-talisman-preview.png';
+  document.getElementById('speech').innerHTML = '합격 부적을 드릴게요 ✨<br>시험과 취업 준비에 좋은 기운을 담았습니다.';
+  document.getElementById('out').innerHTML =
+    '<div style="text-align:center">' +
+    '<h3>🎓 합격 부적</h3>' +
+    '<img src="success-talisman-preview.png" style="width:180px;border-radius:18px;border:2px solid #ffd86b">' +
+    '<p>공무원 시험, 취업, 자격증, 승진 시험을 준비하는 분들을 위한 부적입니다.</p>' +
+    '<a href="success-talisman.png" download="success-talisman.png" style="color:#7a3cff;font-weight:900">합격 부적 다운로드</a>' +
+    '<p style="font-size:13px">휴대폰에서는 이미지를 길게 눌러 저장하세요.</p>' +
+    '</div>';
+}
+</script>
