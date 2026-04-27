@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>깨비운세 실행본</title>
+<title>깨비아씨 운세 실행본</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -45,11 +45,11 @@ button,.download{
 <body>
 <div class="wrap">
   <div class="brand"><span>╱ 터신전</span></div>
-  <h1>깨비운세</h1>
+  <h1>깨비아씨 운세</h1>
 
-  <img id="img" class="hero" src="kkabbi.png" alt="깨비운세">
+  <img id="img" class="hero" src="kkabbi.png" alt="깨비아씨 운세">
 
-  <div id="speech" class="card">무엇이든 물어보세요.<br>깨비가 마음을 담아 알려드릴게요 ✨</div>
+  <div id="speech" class="card">무엇이든 물어보세요.<br>깨비아씨가 마음을 담아 알려드릴게요 ✨</div>
 
   <div class="row">
     <input id="q" placeholder="예: 그 사람이 왜 연락이 없을까요?">
@@ -73,7 +73,7 @@ button,.download{
     <button onclick="allZodiac()">🐭 띠별 운세</button>
     <button onclick="reunion()">💞 재회 궁합</button>
     <button onclick="talismanMenu()">📜 부적</button>
-    <button onclick="youtube()">📺 깨비 운세 TV</button>
+    <button onclick="youtube()">📺 깨비아씨 운세 TV</button>
     <button onclick="about()">🏢 회사 소개</button>
   </div>
 
@@ -188,19 +188,19 @@ function ask(){
   if(q.includes('돈')||q.includes('금전')||q.includes('재물')) type='money';
   if(q.includes('힘들')||q.includes('고민')||q.includes('불안')) type='mind';
   const img={love:'kkabbi-love.png',money:'kkabbi-talisman.png',mind:'kkabbi-cute.png',general:'kkabbi-wink.png'}[type];
-  const title={love:'💗 사랑 상담',money:'💰 금전 상담',mind:'🌙 마음 상담',general:'🔮 깨비 상담'}[type];
+  const title={love:'💗 사랑 상담',money:'💰 금전 상담',mind:'🌙 마음 상담',general:'🔮 깨비아씨 상담'}[type];
   I(img);
-  S('깨비가 마음을 담아 살펴보았어요 ✨');
+  S('깨비아씨가 마음을 담아 살펴보았어요 ✨');
   O(title+'\n\n'+pick(consult[type])+'\n\n🍀 깨비 한마디: 급할수록 말은 짧고 마음은 따뜻하게 전해보세요.');
 }
 function youtube(){
-  O('📺 깨비 운세 TV\n\n유튜브 채널 링크를 넣으면 이 버튼으로 바로 이동할 수 있습니다.');
+  O('📺 깨비아씨 운세 TV\n\n유튜브 채널 링크를 넣으면 이 버튼으로 바로 이동할 수 있습니다.');
   S('유튜브 연결도 곧 넣어드릴게요 📺');
 }
 function about(){
   I('kkabbi-wink.png');
-  S('깨비운세를 소개해드릴게요 ✨');
-  O('🏢 회사 소개 / 제작 취지\n\n법인: 터엔터테이먼트\n브랜드: 터신전\n서비스명: 깨비운세\n\n전통 감성과 따뜻한 위로를 담아 누구나 편하게 즐길 수 있는 운세 서비스를 만들었습니다.\n\n문의 전화: 010-9420-4886');
+  S('깨비아씨 운세를 소개해드릴게요 ✨');
+  O('🏢 회사 소개 / 제작 취지\n\n법인: 터엔터테이먼트\n브랜드: 터신전\n서비스명: 깨비아씨 운세\n\n전통 감성과 따뜻한 위로를 담아 누구나 편하게 즐길 수 있는 운세 서비스를 만들었습니다.\n\n문의 전화: 010-9420-4886');
 }
 today();
 </script>
