@@ -146,7 +146,7 @@ general:[
 
 function seed(){let d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
 function today(){
-  I('kkabbi-basic.png');
+  I('kkabbi-cute.png');
   S('오늘의 운세를 전해드릴게요 ✨');
   O('🌙 오늘의 운세\n\n총운: '+daily[seed()%daily.length]+'\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: '+((seed()%9)+1));
 }
