@@ -15,8 +15,7 @@ input,select,button{padding:14px;border-radius:16px;font-size:16px}
 button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;font-weight:900}
 .menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .menu button{min-height:68px;background:rgba(255,255,255,.08);border:1px solid rgba(255,216,107,.3)}
-.footer{margin:18px 0 30px;text-align:center;color:#d8c7ff;font-size:13px;line-height:1.6;opacity:.95}
-.smallbtn{margin-top:10px;width:100%}
+.footer{margin:18px 0 30px;text-align:center;color:#d8c7ff;font-size:13px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -49,13 +48,15 @@ button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;
 <button onclick="allZodiac()">🐭 띠별 운세</button>
 <button onclick="reunion()">💞 재회 궁합</button>
 <button onclick="talisman()">📜 행운 부적</button>
+<button onclick="aboutPage()">🏢 회사 소개</button>
+<button onclick="premium()">👑 프리미엄</button>
 </div>
 
-<button class="smallbtn" onclick="aboutPage()">🏢 회사 소개 / 제작 취지</button>
-
 <div class="footer">
-터신전이 전하는 따뜻한 운세 서비스 ✨<br>
-© 2026 터신전. All rights reserved.
+법인: 터엔터테이먼트<br>
+브랜드: 터신전<br>
+문의: 010-9420-4886<br>
+© 2026 터엔터테이먼트 / 터신전. All rights reserved.
 </div>
 </div>
 
@@ -67,25 +68,87 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 
 const daily=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다."];
 const zodiacNames=["쥐띠","소띠","호랑이띠","토끼띠","용띠","뱀띠","말띠","양띠","원숭이띠","닭띠","개띠","돼지띠"];
+const zodiacFortunes=[
+"작은 기회가 큰 흐름으로 이어집니다.",
+"꾸준함이 복이 되는 날입니다.",
+"추진력이 강해지는 하루입니다.",
+"관계운이 부드럽게 열립니다.",
+"큰 흐름이 당신 쪽으로 움직입니다.",
+"지혜로운 선택이 필요한 날입니다.",
+"움직일수록 좋은 기회가 생깁니다.",
+"마음의 평온이 운을 살립니다.",
+"재치와 센스가 빛나는 날입니다.",
+"성실함이 좋은 평가로 돌아옵니다.",
+"믿음과 진심이 통하는 날입니다.",
+"재물운과 즐거운 소식이 따릅니다."
+];
+
+const DB={
+love:[
+"상대가 완전히 멀어진 것보다 먼저 다가가는 부담을 느끼는 흐름이 보여요. 지금은 답을 재촉하기보다 가벼운 안부가 더 좋은 반응을 만듭니다.",
+"마음은 남아 있지만 표현이 늦는 기운입니다. 서운함을 꺼내기보다 편안한 대화의 문을 여는 것이 먼저예요.",
+"연락의 문제보다 타이밍의 문제에 가깝습니다. 조급함을 내려놓으면 흐름이 다시 움직일 수 있어요."
+],
+reunion:[
+"재회 가능성은 있습니다. 다만 예전 방식으로 돌아가는 것이 아니라 더 성숙한 관계로 다시 시작해야 합니다.",
+"서로의 미련은 남아 있으나 자존심이 막고 있는 모습입니다. 짧고 담백한 안부가 열쇠가 됩니다.",
+"지금은 밀어붙이는 시기가 아닙니다. 시간을 두고 자연스럽게 다시 연결되는 흐름이 좋습니다."
+],
+money:[
+"큰돈보다 작은 흐름이 먼저 열립니다. 지출을 정리하면 들어오는 복이 커집니다.",
+"금전운은 서서히 회복 중입니다. 급한 투자보다 안정적인 선택이 유리합니다.",
+"돈운은 사람운과 함께 들어옵니다. 좋은 제안이나 소개를 가볍게 넘기지 마세요."
+],
+mind:[
+"많이 지쳐 있었네요. 지금 필요한 것은 더 버티는 힘이 아니라 잠시 숨을 고를 여유입니다. 쉬어도 괜찮습니다.",
+"마음이 흔들리는 건 약해서가 아니라 오래 애써왔기 때문입니다. 오늘은 스스로를 다정하게 대해주세요.",
+"지금 당장 답을 못 찾아도 괜찮아요. 오늘 하루만 무사히 건너도 충분히 잘하고 있는 겁니다."
+],
+general:[
+"지금은 속도보다 방향이 중요합니다. 조용히 정리하면 길이 열립니다.",
+"작은 신호를 놓치지 마세요. 변화는 늘 조용히 먼저 옵니다.",
+"오늘의 운은 사람 속에서 열립니다. 혼자 고민하지 말고 대화를 나눠보세요."
+]
+};
 
 function seed(){let d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
-function today(){I('kkabbi-basic.png');S('오늘의 운세를 전해드릴게요 ✨');O('🌙 오늘의 운세\n\n총운: '+daily[seed()%4]+'\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.');}
-function allZodiac(){I('kkabbi-think.png');S('12띠 운세를 모두 펼쳐볼게요 🐭');let t='🐭 오늘의 12띠 운세\n\n';zodiacNames.forEach((z,i)=>t+=z+' : '+daily[(seed()+i)%4]+'\n');O(t);}
-function myZodiac(){const z=document.getElementById('zodiacSelect').value;if(!z){O('띠를 먼저 선택해 주세요 😊');return;}I('kkabbi-think.png');S(z+' 운세를 자세히 볼게요 ✨');O('🔮 '+z+' 오늘의 운세\n\n총운: 좋은 흐름이 있습니다.\n사랑운: 따뜻한 대화가 열쇠입니다.\n금전운: 작은 복이 들어옵니다.');}
-function reunion(){I('kkabbi-love.png');S('재회운을 볼게요 💗');O('💞 재회 궁합\n\n감정 연결도 87%\n짧은 안부가 열쇠입니다.');}
+function today(){I('kkabbi-basic.png');S('오늘의 운세를 전해드릴게요 ✨');O('🌙 오늘의 운세\n\n총운: '+daily[seed()%4]+'\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: '+((seed()%9)+1));}
+function allZodiac(){
+ I('kkabbi-think.png');S('12띠 운세를 모두 펼쳐볼게요 🐭');
+ let txt='🐭 오늘의 12띠 운세\n\n';
+ zodiacNames.forEach((z,i)=>{txt+=z+' : '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n';});
+ O(txt);
+}
+function myZodiac(){
+ const z=document.getElementById('zodiacSelect').value;
+ if(!z){O('띠를 먼저 선택해 주세요 😊');return;}
+ const i=zodiacNames.indexOf(z);
+ I('kkabbi-think.png');S(z+' 운세를 자세히 살펴볼게요 ✨');
+ O('🔮 '+z+' 오늘의 운세\n\n총운: '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n사랑운: 좋은 인연의 말이 오갈 수 있습니다.\n금전운: 작은 복이 들어오는 흐름입니다.\n건강운: 무리하지 말고 몸을 따뜻하게 하세요.\n행운 숫자: '+(((seed()+i)%9)+1));
+}
+function reunion(){I('kkabbi-love.png');S('재회운을 볼게요 💗');O('💞 재회 궁합\n\n감정 연결도 87%\n상대 심리: 아직 미련은 있으나 자존심이 큽니다.\n연락 타이밍: 저녁 시간대 짧은 안부\n깨비 조언: 감정적인 장문 메시지는 피하세요.');}
 function talisman(){I('kkabbi-talisman.png');S('행운 부적을 드릴게요 ✨');O('<img src="kkabbi-talisman.png" style="width:140px;border-radius:18px"><br><br><a href="kkabbi-talisman.png" download style="color:#7a3cff;font-weight:900">부적 다운로드</a>');}
 function aboutPage(){
-I('kkabbi-wink.png');
-S('깨비운세를 소개해드릴게요 ✨');
-O('🏢 회사 소개 / 제작 취지\n\n회사명: 터신전\n\n제작 취지:\n전통 감성과 따뜻한 위로를 담아 누구나 편하게 즐길 수 있는 운세 서비스를 만들었습니다.\n\n제공 서비스:\n- 오늘의 운세\n- 띠별 운세\n- 재회 상담\n- 행운 부적\n\n문의:\n추후 공식 문의 채널이 추가될 예정입니다.\n\n© 2026 터신전');
+ I('kkabbi-wink.png');
+ S('깨비운세를 소개해드릴게요 ✨');
+ O('🏢 회사 소개 / 제작 취지\n\n법인: 터엔터테이먼트\n브랜드: 터신전\n서비스명: 깨비운세\n\n제작 취지:\n전통 감성과 따뜻한 위로를 담아 누구나 편하게 즐길 수 있는 운세 서비스를 만들었습니다.\n\n제공 서비스:\n- 오늘의 운세\n- 띠별 운세\n- 재회 상담\n- 행운 부적\n\n문의 전화:\n010-9420-4886\n\n© 2026 터엔터테이먼트 / 터신전');
+}
+function premium(){I('kkabbi-talisman.png');S('프리미엄 운세를 준비하고 있어요 👑');O('👑 프리미엄 준비 중\n\n재회 상세판과 궁합 심층판을 준비하고 있습니다.');}
+function type(q){
+ if(q.includes('재회')||q.includes('헤어')||q.includes('전남')||q.includes('전여')) return 'reunion';
+ if(q.includes('연락')||q.includes('사랑')||q.includes('연애')||q.includes('남자')||q.includes('여자')) return 'love';
+ if(q.includes('돈')||q.includes('금전')||q.includes('재물')||q.includes('장사')) return 'money';
+ if(q.includes('지쳐')||q.includes('힘들')||q.includes('불안')||q.includes('외로')||q.includes('고민')) return 'mind';
+ return 'general';
 }
 function ask(){
-const q=document.getElementById('q').value.trim();
-if(!q){O('질문을 입력해 주세요 😊');return;}
-if(q.includes('연락')||q.includes('사랑')||q.includes('재회')){reunion();return;}
-if(q.includes('돈')){I('kkabbi-talisman.png');S('금전운을 살펴볼게요 ✨');O('💰 금전운\n\n작은 기회를 놓치지 마세요.');return;}
-if(q.includes('힘들')||q.includes('고민')){I('kkabbi-cute.png');S('깨비가 곁에 있어요 🌙');O('🌙 마음 조언\n\n지금은 잠시 쉬어가도 괜찮습니다.');return;}
-I('kkabbi-wink.png');S('질문의 기운을 보았어요 ✨');O('🔮 깨비 답변\n\n지금은 속도보다 방향이 중요합니다.');
+ const q=document.getElementById('q').value.trim();
+ if(!q){O('질문을 입력해 주세요 😊');return;}
+ const t=type(q);
+ const img={love:'kkabbi-love.png',reunion:'kkabbi-love.png',money:'kkabbi-talisman.png',mind:'kkabbi-cute.png',general:'kkabbi-wink.png'}[t];
+ const title={love:'💗 사랑 상담',reunion:'💞 재회 상담',money:'💰 금전 상담',mind:'🌙 마음 상담',general:'🔮 깨비 상담'}[t];
+ I(img);S('깨비가 마음을 담아 살펴보았어요 ✨');
+ O(title+'\n\n'+pick(DB[t])+'\n\n🍀 깨비 한마디: 급할수록 말은 짧고 마음은 따뜻하게 전해보세요.');
 }
 today();
 </script>
