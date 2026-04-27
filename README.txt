@@ -1,20 +1,11 @@
-깨비아씨 PWA 수정팩
+업로드할 파일 이름 안내
 
-해야 할 일:
-1. GitHub 메인 폴더에 아래 4개 파일 업로드/덮어쓰기
-   - manifest.json
-   - sw.js
-   - icon-192.png
-   - icon-512.png
+kkabbi.png -> 메인 기본 이미지(필요시 함께 교체)
+kkabbi-basic.png -> 깨비아씨 (운세)
+kkabbi-wink.png -> 윙크 깨비아씨 (긍정)
+kkabbi-love.png -> 사랑운 깨비아씨 (연애, 재회운세)
+kkabbi-talisman.png -> 부적 깨비아씨 (소원성취)
+kkabbi-think.png -> 진지한 깨비아씨 (신타로카드)
+kkabbi-cute.png -> 턱 괸 깨비아씨 (궁금한 이야기)
 
-2. index.html의 <head> 안에 pwa-head-code.txt 내용을 넣기
-   절대 </body> 아래에 넣지 마세요.
-
-3. Commit changes 저장 후 Vercel 배포 1~2분 기다리기
-
-4. 휴대폰 Chrome에서 확인
-   https://kabbi-fortune.vercel.app/manifest.json
-   https://kabbi-fortune.vercel.app/icon-192.png
-
-5. 기존 홈화면 아이콘 삭제 후 다시 추가
-   '앱 설치'가 뜨면 성공 가능성이 높습니다.
+깃허브에서 기존 같은 이름 파일을 덮어쓰기 업로드하면 됩니다.
