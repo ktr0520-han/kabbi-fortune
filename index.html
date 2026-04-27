@@ -1,19 +1,27 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>깨비 운세</title>
 <style>
 body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(180deg,#120022,#26004a);color:#fff}
 .wrap{max-width:430px;margin:auto;padding:18px}
-.brand{position:relative;height:24px;margin-bottom:6px}
-.brand span{position:absolute;left:0;top:0;color:#ffd86b;font-style:italic;font-weight:800;transform:rotate(-12deg);letter-spacing:1px}
-h1{text-align:center;color:#ffd86b;margin:8px 0 14px;font-size:40px}
+.brand{position:relative;height:38px;margin-bottom:2px}
+.brand span{
+position:absolute;left:0;top:0;
+color:#ffd86b;
+font-style:italic;
+font-weight:900;
+font-size:28px;
+transform:rotate(-12deg);
+letter-spacing:1px;
+text-shadow:0 2px 8px rgba(255,216,107,.35);
+}
+h1{text-align:center;color:#ffd86b;margin:4px 0 14px;font-size:40px}
 .hero{width:100%;border-radius:22px;background:#fff;padding:8px}
 .box{background:#fff;color:#240840;border-radius:20px;padding:16px;margin-top:14px;white-space:pre-line;font-weight:700;line-height:1.55}
 .row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
-input,select,button{padding:14px;border-radius:16px;font-size:16px}
+input,button{padding:14px;border-radius:16px;font-size:16px}
 button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff}
 .menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .menu button{min-height:68px;background:rgba(255,255,255,.08);border:1px solid rgba(255,216,107,.3)}
@@ -38,13 +46,13 @@ button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff}
 const O=t=>document.getElementById('out').innerHTML=t;
 const I=s=>document.getElementById('img').src=s;
 const S=t=>document.getElementById('speech').innerHTML=t;
-function seed(){let d=new Date();return d.getDate()%4}
 const F=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다."];
+function seed(){return new Date().getDate()%4}
 function today(){I('kkabbi-basic.png');S('오늘의 운세를 전해드릴게요 ✨');O('🌙 오늘의 운세<br><br>'+F[seed()]);}
 function reunion(){I('kkabbi-love.png');S('재회운을 볼게요 💗');O('💞 감정 연결도 87%<br><br>짧은 안부가 열쇠입니다.');}
 function special(){I('kkabbi-wink.png');S('좋은 기운이 보여요 ✨');O('✨ 기대하지 않던 좋은 일이 생길 수 있어요.');}
 function talisman(){I('kkabbi-talisman.png');S('행운 부적을 드릴게요');O('<img src="kkabbi-talisman.png" style="width:140px;border-radius:18px"><br><br><a href="kkabbi-talisman.png" download style="color:#7a3cff">부적 다운로드</a>');}
-function ask(){let q=document.getElementById('q').value;if(q.includes('연락')||q.includes('사랑')){reunion()}else if(q.includes('돈')){talisman()}else{special()}}
+function ask(){let q=document.getElementById('q').value;if(q.includes('연락')||q.includes('사랑'))reunion();else if(q.includes('돈'))talisman();else special();}
 today();
 </script>
 </body>
