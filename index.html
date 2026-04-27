@@ -5,51 +5,24 @@
 <title>깨비 운세</title>
 <style>
 body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(180deg,#120022,#26004a);color:#fff;overflow-x:hidden}
-body:before,body:after{
-content:"";position:fixed;inset:0;pointer-events:none;
-background:
-radial-gradient(circle at 20% 20%,rgba(255,255,255,.7) 0 2px,transparent 3px),
-radial-gradient(circle at 70% 30%,rgba(255,255,255,.5) 0 2px,transparent 3px),
-radial-gradient(circle at 40% 80%,rgba(255,255,255,.6) 0 2px,transparent 3px),
-radial-gradient(circle at 85% 70%,rgba(255,255,255,.4) 0 2px,transparent 3px);
-animation:stars 8s linear infinite;
-opacity:.45
-}
-body:after{animation-duration:13s;opacity:.25}
-@keyframes stars{from{transform:translateY(0)}to{transform:translateY(-40px)}}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.6) 0 2px,transparent 3px),radial-gradient(circle at 70% 30%,rgba(255,255,255,.5) 0 2px,transparent 3px),radial-gradient(circle at 40% 80%,rgba(255,255,255,.5) 0 2px,transparent 3px);animation:stars 9s linear infinite;opacity:.4}
+@keyframes stars{from{transform:translateY(0)}to{transform:translateY(-45px)}}
 .wrap{max-width:430px;margin:auto;padding:18px;position:relative}
 .brand{position:relative;height:38px;margin-bottom:2px}
 .brand span{position:absolute;left:0;top:0;color:#ffd86b;font-style:italic;font-weight:900;font-size:28px;transform:rotate(-12deg);text-shadow:0 0 12px rgba(255,216,107,.5)}
 h1{text-align:center;color:#ffd86b;margin:4px 0 14px;font-size:40px;text-shadow:0 0 18px rgba(255,216,107,.35)}
-.heroWrap{position:relative}
-.hero{
-width:100%;border-radius:22px;background:#fff;padding:8px;
-box-shadow:0 0 22px rgba(255,216,107,.28);
-animation:floaty 3.5s ease-in-out infinite
-}
-.spark{
-position:absolute;width:10px;height:10px;border-radius:50%;
-background:#fff;box-shadow:0 0 12px #fff;animation:blink 1.8s infinite
-}
-.s1{top:10%;left:8%}.s2{top:22%;right:10%;animation-delay:.6s}.s3{bottom:14%;left:14%;animation-delay:1.1s}.s4{bottom:18%;right:16%;animation-delay:1.5s}
-@keyframes blink{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1.4)}}
+.heroWrap{position:relative}.hero{width:100%;border-radius:22px;background:#fff;padding:8px;box-shadow:0 0 22px rgba(255,216,107,.28);animation:floaty 3.5s ease-in-out infinite}
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.box{
-background:rgba(255,255,255,.96);color:#240840;border-radius:20px;padding:16px;margin-top:14px;
-white-space:pre-line;font-weight:700;line-height:1.55;
-animation:fadeUp .55s ease
-}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.box{background:rgba(255,255,255,.96);color:#240840;border-radius:20px;padding:16px;margin-top:14px;white-space:pre-line;font-weight:800;line-height:1.6;animation:fadeUp .45s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
 input,button{padding:14px;border-radius:16px;font-size:16px}
-button{
-border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;
-box-shadow:0 0 0 rgba(255,60,166,0);
-animation:glow 2.2s infinite
-}
+button{border:none;background:linear-gradient(90deg,#7a3cff,#ff3ca6);color:#fff;font-weight:900;box-shadow:0 0 0 rgba(255,60,166,0);animation:glow 2.2s infinite}
 @keyframes glow{50%{box-shadow:0 0 18px rgba(255,60,166,.45)}}
 .menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .menu button{min-height:68px;background:rgba(255,255,255,.08);border:1px solid rgba(255,216,107,.3)}
+.tagRow{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tag{font-size:12px;background:rgba(255,216,107,.18);border:1px solid rgba(255,216,107,.3);border-radius:999px;padding:6px 9px;color:#ffe9a6}
 </style>
 </head>
 <body>
@@ -57,19 +30,28 @@ animation:glow 2.2s infinite
 <div class="brand"><span>╱ 터신전</span></div>
 <h1>깨비운세</h1>
 
-<div class="heroWrap">
-<img id="img" class="hero" src="kkabbi.png">
-<div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div><div class="spark s4"></div>
+<div class="heroWrap"><img id="img" class="hero" src="kkabbi.png"></div>
+
+<div id="speech" class="box">터신전의 깨비가 오늘의 고민을 들어드릴게요 ✨</div>
+
+<div class="row">
+<input id="q" placeholder="예: 그 사람에게 연락 올까요?">
+<button onclick="ask()">질문하기</button>
 </div>
 
-<div id="speech" class="box">터신전의 깨비가 오늘의 운세를 알려드릴게요 ✨</div>
-<div class="row"><input id="q" placeholder="예: 오늘 연락 올까요?"><button onclick="ask()">질문하기</button></div>
+<div class="tagRow">
+<span class="tag" onclick="sample('그 사람에게 연락 올까요?')">연락운</span>
+<span class="tag" onclick="sample('재회 가능할까요?')">재회</span>
+<span class="tag" onclick="sample('돈운이 좋아질까요?')">금전</span>
+<span class="tag" onclick="sample('요즘 너무 힘들어요')">마음고민</span>
+</div>
+
 <div id="out" class="box">오늘의 운세를 불러오는 중 ✨</div>
 
 <div class="menu">
 <button onclick="today()">🌙 오늘의 운세</button>
 <button onclick="reunion()">💞 재회 궁합</button>
-<button onclick="special()">✨ 특별 운세</button>
+<button onclick="zodiac()">🐭 띠별 운세</button>
 <button onclick="talisman()">📜 행운 부적</button>
 </div>
 </div>
@@ -78,13 +60,72 @@ animation:glow 2.2s infinite
 const O=t=>document.getElementById('out').innerHTML=t;
 const I=s=>document.getElementById('img').src=s;
 const S=t=>document.getElementById('speech').innerHTML=t;
-const F=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다."];
-function seed(){return new Date().getDate()%4}
-function today(){I('kkabbi-basic.png');S('오늘의 운세를 전해드릴게요 ✨');O('🌙 오늘의 운세<br><br>'+F[seed()]);}
-function reunion(){I('kkabbi-love.png');S('재회운을 볼게요 💗');O('💞 감정 연결도 87%<br><br>짧은 안부가 열쇠입니다.');}
-function special(){I('kkabbi-wink.png');S('좋은 기운이 보여요 ✨');O('✨ 기대하지 않던 좋은 일이 생길 수 있어요.');}
-function talisman(){I('kkabbi-talisman.png');S('행운 부적을 드릴게요');O('<img src="kkabbi-talisman.png" style="width:140px;border-radius:18px"><br><br><a href="kkabbi-talisman.png" download style="color:#7a3cff">부적 다운로드</a>');}
-function ask(){let q=document.getElementById('q').value;if(q.includes('연락')||q.includes('사랑'))reunion();else if(q.includes('돈'))talisman();else special();}
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+function sample(t){document.getElementById('q').value=t;ask();}
+
+const answers={
+love:[
+"마음이 아직 완전히 닫힌 흐름은 아니에요. 다만 지금은 감정보다 말의 온도가 중요합니다. 짧고 편안한 안부가 좋은 시작이 될 수 있어요.",
+"사랑운은 천천히 움직이고 있어요. 급하게 확인하려는 말보다 상대가 부담 없이 답할 수 있는 가벼운 대화가 좋습니다.",
+"인연의 기운은 남아 있습니다. 오늘은 직접적인 고백보다 자연스러운 관심 표현이 더 좋은 흐름을 만듭니다."
+],
+reunion:[
+"재회운은 아직 살아 있어요. 상대도 한 번쯤 당신을 떠올리는 기운이 보입니다. 다만 장문 메시지나 서운함 표현은 피하세요.",
+"다시 이어질 가능성은 있지만 타이밍이 중요합니다. 이번 흐름은 ‘가볍게 다가가기’가 핵심이에요.",
+"상대 마음에는 미련과 망설임이 함께 있어요. 먼저 마음을 쏟기보다 짧은 안부로 문을 열어보세요."
+],
+money:[
+"금전운은 조금씩 움직이고 있습니다. 큰 욕심보다 작은 수입과 절약이 복을 부르는 날이에요.",
+"오늘은 돈이 들어오는 운보다 새는 돈을 막는 운이 더 강합니다. 결제와 약속은 한 번 더 확인하세요.",
+"작은 기회가 재물운으로 이어질 수 있어요. 다만 충동구매는 피하는 것이 좋습니다."
+],
+health:[
+"몸이 보내는 작은 신호를 무시하지 마세요. 오늘은 무리보다 회복이 운을 살립니다.",
+"컨디션은 마음과 연결되어 있어요. 따뜻한 물, 가벼운 식사, 짧은 휴식이 큰 도움이 됩니다.",
+"피로가 쌓인 흐름입니다. 몸을 따뜻하게 하고 잠깐이라도 숨을 고르세요."
+],
+work:[
+"일운은 정리와 집중에서 열립니다. 오늘은 여러 가지를 벌이기보다 한 가지를 끝내는 것이 좋습니다.",
+"주변 사람의 말 속에 힌트가 있습니다. 혼자 고민하지 말고 필요한 조언을 들어보세요.",
+"막힌 일이 있다면 순서를 바꾸면 풀릴 수 있어요. 급한 것보다 중요한 것부터 보세요."
+],
+mind:[
+"많이 지쳐 있는 기운이 느껴져요. 지금은 억지로 강해지려 하지 않아도 됩니다. 잠시 쉬어가는 것도 앞으로 나아가는 길이에요.",
+"마음이 흔들릴 때는 큰 답을 찾으려 하지 말고 오늘 할 수 있는 작은 일 하나만 잡아보세요.",
+"혼자 버티느라 애썼어요. 오늘은 스스로에게 조금 더 다정하게 말해주는 날이면 좋겠습니다."
+],
+general:[
+"좋은 기운이 곁에 있어요. 조급함보다 흐름을 믿고 오늘 해야 할 한 가지에 집중해보세요.",
+"기다리던 변화는 아주 작은 신호로 먼저 옵니다. 오늘은 그 신호를 놓치지 마세요.",
+"깨비가 보기엔 지금 필요한 건 속도보다 방향이에요. 차분히 움직이면 길이 열립니다."
+]
+};
+
+function category(q){
+ if(q.includes('재회')||q.includes('전남')||q.includes('전여')||q.includes('헤어진')) return 'reunion';
+ if(q.includes('연락')||q.includes('사랑')||q.includes('연애')||q.includes('남자')||q.includes('여자')) return 'love';
+ if(q.includes('돈')||q.includes('금전')||q.includes('재물')||q.includes('복')||q.includes('장사')) return 'money';
+ if(q.includes('건강')||q.includes('아파')||q.includes('몸')||q.includes('피곤')) return 'health';
+ if(q.includes('일')||q.includes('사업')||q.includes('직장')||q.includes('계약')) return 'work';
+ if(q.includes('힘들')||q.includes('고민')||q.includes('걱정')||q.includes('불안')||q.includes('외로')) return 'mind';
+ return 'general';
+}
+
+function ask(){
+ const q=document.getElementById('q').value.trim();
+ if(!q){O('질문을 입력해 주세요 😊');S('깨비가 기다리고 있어요.');I('kkabbi-cute.png');return;}
+ const c=category(q);
+ const img={love:'kkabbi-love.png',reunion:'kkabbi-love.png',money:'kkabbi-talisman.png',health:'kkabbi-cute.png',work:'kkabbi-think.png',mind:'kkabbi-cute.png',general:'kkabbi-wink.png'}[c];
+ const title={love:'💗 사랑운',reunion:'💞 재회운',money:'💰 금전운',health:'🌿 건강운',work:'📌 일/사업운',mind:'🌙 마음 조언',general:'🔮 깨비 답변'}[c];
+ I(img);S('깨비가 질문의 기운을 살펴봤어요 ✨');
+ O(title+"\n\n"+pick(answers[c])+"\n\n✨ 깨비 한마디: 마음이 급할수록 말은 짧고 따뜻하게 해보세요.");
+}
+
+function today(){I('kkabbi-basic.png');S('오늘의 운세를 전해드릴게요 ✨');O('🌙 오늘의 운세\n\n총운: 새로운 기회가 열립니다.\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: 7');}
+function reunion(){I('kkabbi-love.png');S('재회운을 볼게요 💗');O('💞 재회 궁합\n\n감정 연결도 87%\n상대 심리: 아직 미련은 있으나 자존심이 큽니다.\n연락 타이밍: 저녁 시간대 짧은 안부\n피해야 할 행동: 감정적인 장문 메시지');}
+function zodiac(){I('kkabbi-think.png');S('12띠 운세를 살펴볼게요.');O('🐭 12띠 운세\n\n쥐띠: 기회가 옵니다.\n소띠: 꾸준함이 복입니다.\n호랑이띠: 추진력이 강합니다.\n토끼띠: 관계운 상승.\n용띠: 큰 흐름이 열립니다.\n뱀띠: 지혜로운 선택이 필요합니다.\n말띠: 움직일수록 기회가 커집니다.\n양띠: 마음의 평온이 중요합니다.\n원숭이띠: 재치가 빛납니다.\n닭띠: 성실함이 인정받습니다.\n개띠: 믿음이 좋은 결과를 만듭니다.\n돼지띠: 재물운이 따릅니다.');}
+function talisman(){I('kkabbi-talisman.png');S('행운 부적을 드릴게요 ✨');O('<img src="kkabbi-talisman.png" style="width:140px;border-radius:18px"><br><br><a href="kkabbi-talisman.png" download style="color:#7a3cff;font-weight:900">부적 다운로드</a>');}
 today();
 </script>
 </body>
