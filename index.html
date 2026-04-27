@@ -3,34 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>오늘의 띠별 운세</title>
+  <title>깨비 운세</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <main class="app">
-    <section class="hero">
-      <div>
-        <p class="today" id="todayText">오늘의 운세</p>
-        <h1>오늘의 12띠 운세</h1>
-        <p class="subtitle">
-          내 띠를 선택하면 총운, 애정운, 금전운, 일·사업운, 조심할 점을 한눈에 볼 수 있습니다.
-        </p>
+<body class="home-body">
+  <main class="home-wrap">
+    <section class="home-hero">
+      <img src="kkabbi.png" alt="깨비 캐릭터" class="home-kabbi" onerror="this.style.display='none'" />
+      <p class="home-label">깨비 운세</p>
+      <h1>오늘의 운세를<br />깨비와 함께 확인해보세요</h1>
+      <p class="home-subtitle">
+        띠별 운세, 오늘의 기운, 소원 부적까지 매일 보는 재미를 담았습니다.
+      </p>
+
+      <div class="home-actions">
+        <a href="zodiac.html" class="main-btn">🐭 오늘의 12띠 운세 보기</a>
+        <a href="#wish" class="sub-btn">✨ 소원 부적 보기</a>
       </div>
     </section>
 
-    <section class="zodiac-grid" id="zodiacGrid"></section>
+    <section class="home-menu">
+      <a href="zodiac.html" class="menu-card">
+        <span>🐭</span>
+        <strong>12띠 운세</strong>
+        <p>내 띠를 선택하고 오늘의 흐름을 확인하세요.</p>
+      </a>
 
-    <section class="selected-card" id="selectedCard"></section>
-
-    <section class="all-section">
-      <div class="section-title">
-        <h2>12띠 전체 운세</h2>
-        <p>다른 띠 운세도 함께 확인해보세요.</p>
+      <div class="menu-card">
+        <span>🔮</span>
+        <strong>오늘의 기운</strong>
+        <p>하루의 분위기와 조심할 점을 가볍게 확인하세요.</p>
       </div>
-      <div class="all-grid" id="allGrid"></div>
+
+      <div class="menu-card" id="wish">
+        <span>🧧</span>
+        <strong>소원 부적</strong>
+        <p>마음속 소원을 담아 좋은 기운을 받아보세요.</p>
+      </div>
     </section>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>

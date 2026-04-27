@@ -1,307 +1,49 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #fff7e6, #fff1f2, #fff);
-  color: #2d241f;
-}
-
-.app {
-  width: min(1100px, calc(100% - 28px));
-  margin: 0 auto;
-  padding: 28px 0 48px;
-}
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding: 28px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid #f3d7b5;
-  box-shadow: 0 18px 45px rgba(97, 64, 28, 0.12);
-}
-
-.hero::after {
-  content: "🔮";
-  position: absolute;
-  right: 24px;
-  top: 12px;
-  font-size: 92px;
-  opacity: 0.12;
-}
-
-.today {
-  display: inline-block;
-  margin: 0 0 12px;
-  padding: 8px 13px;
-  border-radius: 999px;
-  background: #fff1c7;
-  color: #8a5a00;
-  font-weight: 800;
-  font-size: 14px;
-}
-
-h1 {
-  margin: 0;
-  font-size: clamp(32px, 6vw, 54px);
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-}
-
-.subtitle {
-  margin: 14px 0 0;
-  max-width: 680px;
-  color: #6f625a;
-  font-size: 17px;
-  line-height: 1.65;
-}
-
-.zodiac-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 12px;
-  margin: 18px 0;
-  padding: 18px;
-  border-radius: 26px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid #f3d7b5;
-  box-shadow: 0 12px 35px rgba(97, 64, 28, 0.08);
-}
-
-.zodiac-btn {
-  border: 1px solid #efd8bd;
-  border-radius: 20px;
-  padding: 14px 8px;
-  background: #fff;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.zodiac-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(97, 64, 28, 0.13);
-}
-
-.zodiac-btn.active {
-  background: #2d241f;
-  color: #fff;
-  border-color: #2d241f;
-}
-
-.zodiac-emoji {
-  display: block;
-  font-size: 32px;
-  margin-bottom: 5px;
-}
-
-.zodiac-name {
-  font-weight: 900;
-}
-
-.selected-card {
-  display: grid;
-  grid-template-columns: 0.9fr 1.4fr;
-  gap: 18px;
-  margin: 18px 0;
-}
-
-.main-fortune,
-.detail-box,
-.all-card {
-  border: 1px solid #f3d7b5;
-  background: rgba(255, 255, 255, 0.88);
-  border-radius: 28px;
-  box-shadow: 0 14px 35px rgba(97, 64, 28, 0.1);
-}
-
-.main-fortune {
-  padding: 26px;
-}
-
-.big-emoji {
-  font-size: 78px;
-  line-height: 1;
-}
-
-.main-fortune h2 {
-  margin: 14px 0 8px;
-  font-size: 32px;
-  letter-spacing: -0.03em;
-}
-
-.years {
-  color: #776a62;
-  line-height: 1.5;
-}
-
-.one-line {
-  margin-top: 22px;
-  padding: 18px;
-  border-radius: 22px;
-  background: #fff8e5;
-  border: 1px solid #f2d595;
-}
-
-.one-line strong {
-  display: block;
-  color: #9a5f00;
-  margin-bottom: 8px;
-}
-
-.one-line p {
-  margin: 0;
-  font-size: 21px;
-  line-height: 1.45;
-  font-weight: 900;
-}
-
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.detail-box {
-  padding: 20px;
-}
-
-.detail-box h3 {
-  margin: 0 0 9px;
-  font-size: 18px;
-}
-
-.detail-box p {
-  margin: 0;
-  color: #655951;
-  line-height: 1.55;
-}
-
-.lucky {
-  grid-column: 1 / -1;
-  background: #2d241f;
-  color: #fff;
-}
-
-.lucky p {
-  color: #f4e6da;
-}
-
-.lucky-badge {
-  display: inline-block;
-  margin-top: 13px;
-  padding: 9px 14px;
-  border-radius: 999px;
-  background: #fff;
-  color: #2d241f;
-  font-weight: 900;
-}
-
-.all-section {
-  margin-top: 26px;
-}
-
-.section-title {
-  margin-bottom: 14px;
-}
-
-.section-title h2 {
-  margin: 0 0 6px;
-  font-size: 27px;
-}
-
-.section-title p {
-  margin: 0;
-  color: #776a62;
-}
-
-.all-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-
-.all-card {
-  padding: 18px;
-}
-
-.all-card-top {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.all-card .small-emoji {
-  font-size: 38px;
-}
-
-.all-card h3 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.all-card p {
-  color: #655951;
-  line-height: 1.55;
-}
-
-.all-card button {
-  border: 0;
-  border-radius: 999px;
-  padding: 9px 14px;
-  background: #fff1c7;
-  color: #7a4c00;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-@media (max-width: 860px) {
-  .zodiac-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .selected-card {
-    grid-template-columns: 1fr;
-  }
-
-  .all-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 560px) {
-  .app {
-    width: min(100% - 18px, 1100px);
-    padding-top: 16px;
-  }
-
-  .hero {
-    padding: 22px;
-  }
-
-  .zodiac-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 9px;
-    padding: 12px;
-  }
-
-  .zodiac-btn {
-    padding: 11px 5px;
-  }
-
-  .zodiac-emoji {
-    font-size: 28px;
-  }
-
-  .detail-grid,
-  .all-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .main-fortune h2 {
-    font-size: 28px;
-  }
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Pretendard","Noto Sans KR",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;background:linear-gradient(135deg,#fff7e6,#fff1f2,#fff);color:#2d241f}
+a{text-decoration:none;color:inherit}
+.home-body{min-height:100vh}
+.home-wrap{width:min(1060px,calc(100% - 28px));margin:0 auto;padding:34px 0 54px}
+.home-hero{position:relative;overflow:hidden;padding:34px;border-radius:34px;background:rgba(255,255,255,.86);border:1px solid #f3d7b5;box-shadow:0 18px 45px rgba(97,64,28,.12)}
+.home-hero:after{content:"🔮";position:absolute;right:22px;top:8px;font-size:104px;opacity:.12}
+.home-kabbi{width:108px;height:108px;object-fit:contain;margin-bottom:12px}
+.home-label{display:inline-block;margin:0 0 12px;padding:8px 14px;border-radius:999px;background:#fff1c7;color:#8a5a00;font-weight:900}
+.home-hero h1{margin:0;font-size:clamp(34px,7vw,62px);line-height:1.08;letter-spacing:-.05em}
+.home-subtitle{max-width:680px;margin:16px 0 0;color:#6f625a;font-size:18px;line-height:1.65}
+.home-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.main-btn,.sub-btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:15px 20px;font-weight:950}
+.main-btn{background:#2d241f;color:#fff;box-shadow:0 12px 30px rgba(45,36,31,.2)}
+.sub-btn{background:#fff1c7;color:#7a4c00;border:1px solid #f3d7b5}
+.home-menu{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+.menu-card{display:block;padding:24px;border-radius:28px;background:rgba(255,255,255,.88);border:1px solid #f3d7b5;box-shadow:0 14px 35px rgba(97,64,28,.09)}
+.menu-card span{font-size:42px}
+.menu-card strong{display:block;margin-top:10px;font-size:22px}
+.menu-card p{color:#6f625a;line-height:1.55}
+.app{width:min(1100px,calc(100% - 28px));margin:0 auto;padding:22px 0 48px}
+.top-link{margin-bottom:12px}
+.top-link a{display:inline-block;background:#fff;border:1px solid #f3d7b5;border-radius:999px;padding:10px 14px;font-weight:900;color:#6b4200}
+.hero{position:relative;overflow:hidden;padding:28px;border-radius:28px;background:rgba(255,255,255,.82);border:1px solid #f3d7b5;box-shadow:0 18px 45px rgba(97,64,28,.12)}
+.hero:after{content:"🔮";position:absolute;right:24px;top:12px;font-size:92px;opacity:.12}
+.today{display:inline-block;margin:0 0 12px;padding:8px 13px;border-radius:999px;background:#fff1c7;color:#8a5a00;font-weight:800;font-size:14px}
+h1{margin:0;font-size:clamp(32px,6vw,54px);line-height:1.05;letter-spacing:-.04em}
+.subtitle{margin:14px 0 0;max-width:680px;color:#6f625a;font-size:17px;line-height:1.65}
+.zodiac-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:18px 0;padding:18px;border-radius:26px;background:rgba(255,255,255,.72);border:1px solid #f3d7b5;box-shadow:0 12px 35px rgba(97,64,28,.08)}
+.zodiac-btn{border:1px solid #efd8bd;border-radius:20px;padding:14px 8px;background:#fff;cursor:pointer;transition:.2s}
+.zodiac-btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(97,64,28,.13)}
+.zodiac-btn.active{background:#2d241f;color:#fff;border-color:#2d241f}
+.zodiac-emoji{display:block;font-size:32px;margin-bottom:5px}.zodiac-name{font-weight:900}
+.selected-card{display:grid;grid-template-columns:.9fr 1.4fr;gap:18px;margin:18px 0}
+.main-fortune,.detail-box,.all-card{border:1px solid #f3d7b5;background:rgba(255,255,255,.88);border-radius:28px;box-shadow:0 14px 35px rgba(97,64,28,.1)}
+.main-fortune{padding:26px}.big-emoji{font-size:78px;line-height:1}
+.main-fortune h2{margin:14px 0 8px;font-size:32px;letter-spacing:-.03em}.years{color:#776a62;line-height:1.5}
+.one-line{margin-top:22px;padding:18px;border-radius:22px;background:#fff8e5;border:1px solid #f2d595}
+.one-line strong{display:block;color:#9a5f00;margin-bottom:8px}.one-line p{margin:0;font-size:21px;line-height:1.45;font-weight:900}
+.detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.detail-box{padding:20px}
+.detail-box h3{margin:0 0 9px;font-size:18px}.detail-box p{margin:0;color:#655951;line-height:1.55}
+.lucky{grid-column:1/-1;background:#2d241f;color:#fff}.lucky p{color:#f4e6da}
+.lucky-badge{display:inline-block;margin-top:13px;padding:9px 14px;border-radius:999px;background:#fff;color:#2d241f;font-weight:900}
+.all-section{margin-top:26px}.section-title{margin-bottom:14px}.section-title h2{margin:0 0 6px;font-size:27px}.section-title p{margin:0;color:#776a62}
+.all-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.all-card{padding:18px}
+.all-card-top{display:flex;gap:12px;align-items:center}.all-card .small-emoji{font-size:38px}.all-card h3{margin:0;font-size:20px}
+.all-card p{color:#655951;line-height:1.55}.all-card button{border:0;border-radius:999px;padding:9px 14px;background:#fff1c7;color:#7a4c00;font-weight:900;cursor:pointer}
+@media(max-width:860px){.home-menu{grid-template-columns:1fr}.zodiac-grid{grid-template-columns:repeat(4,1fr)}.selected-card{grid-template-columns:1fr}.all-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.home-wrap,.app{width:min(100% - 18px,1100px);padding-top:16px}.home-hero,.hero{padding:22px}.zodiac-grid{grid-template-columns:repeat(3,1fr);gap:9px;padding:12px}.zodiac-btn{padding:11px 5px}.zodiac-emoji{font-size:28px}.detail-grid,.all-grid{grid-template-columns:1fr}.main-fortune h2{font-size:28px}}
