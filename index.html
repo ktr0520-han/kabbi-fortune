@@ -1,249 +1,1129 @@
+
 <!doctype html>
 <html lang="ko">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>깨비아씨 운세</title>
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#1b0033">
+<meta name="theme-color" content="#0d001f">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="깨비아씨">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="/icon-192.png">
-
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function () {
-    navigator.serviceWorker.register('/sw.js');
-  });
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));
 }
 </script>
-
-</head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>깨비아씨 운세 실행본</title>
 <style>
-*{box-sizing:border-box}
+:root{
+  --gold:#F7D568;
+  --gold2:#E8A800;
+  --gold3:#FFF0A0;
+  --purple-900:#0d001f;
+  --purple-800:#150030;
+  --purple-700:#220050;
+  --purple-600:#3a0080;
+  --purple-500:#5c12b0;
+  --purple-400:#8b3fe8;
+  --pink:#ff6eb4;
+  --pink2:#ff3ca6;
+  --teal:#4fd8c4;
+  --text-primary:#fff0ff;
+  --text-muted:#c4a8e8;
+  --text-gold:#F7D568;
+  --card-bg:rgba(30,0,60,0.75);
+  --card-border:rgba(247,213,104,0.22);
+  --radius-lg:20px;
+  --radius-xl:28px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{
-  margin:0;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  color:#fff;
+  font-family:'Noto Sans KR',sans-serif;
+  background:var(--purple-900);
+  color:var(--text-primary);
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ── 배경 우주 효과 ── */
+.cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.cosmos::before{
+  content:'';position:absolute;inset:0;
   background:
-    radial-gradient(circle at 20% 10%,rgba(255,216,107,.18),transparent 28%),
-    radial-gradient(circle at 85% 18%,rgba(255,60,166,.16),transparent 30%),
-    linear-gradient(180deg,#120022,#26004a,#090010);
+    radial-gradient(ellipse 80% 60% at 15% 10%,rgba(92,18,176,0.55) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 80%,rgba(58,0,128,0.6) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 40% at 50% 50%,rgba(13,0,31,0.4) 0%,transparent 70%);
 }
-.wrap{max-width:430px;margin:auto;min-height:100vh;padding:18px}
-.brand{height:38px}
-.brand span{color:#ffd86b;font-style:italic;font-weight:900;font-size:28px;display:inline-block;transform:rotate(-12deg);text-shadow:0 0 12px rgba(255,216,107,.5)}
-h1{text-align:center;color:#ffd86b;font-size:42px;margin:0 0 12px;text-shadow:0 0 18px rgba(255,216,107,.35)}
-.hero{width:100%;border-radius:24px;background:#fff;padding:8px;box-shadow:0 18px 45px rgba(0,0,0,.35)}
-.card{background:rgba(255,255,255,.96);color:#240840;border-radius:22px;padding:17px;margin-top:14px;line-height:1.65;font-weight:850;text-align:center;white-space:pre-line}
-.row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
-input,select,button{padding:14px;border-radius:16px;font-size:16px}
-input,select{border:3px solid #fff;width:100%}
-button,.download{
-  border:none;
-  background:linear-gradient(90deg,#7a3cff,#ff3ca6);
-  color:#fff;
-  font-weight:900;
+.cosmos::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%,rgba(255,240,160,0.9) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 25% 40%,rgba(255,240,160,0.7) 0%,transparent 100%),
+    radial-gradient(1px 1px at 40% 10%,rgba(255,255,255,0.8) 0%,transparent 100%),
+    radial-gradient(2px 2px at 60% 30%,rgba(255,240,160,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 75% 60%,rgba(255,255,255,0.9) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 88% 20%,rgba(255,240,160,0.8) 0%,transparent 100%),
+    radial-gradient(1px 1px at 5% 70%,rgba(255,255,255,0.7) 0%,transparent 100%),
+    radial-gradient(2px 2px at 50% 80%,rgba(255,240,160,0.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 92% 45%,rgba(255,255,255,0.8) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 18% 90%,rgba(255,240,160,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 70% 5%,rgba(255,255,255,0.9) 0%,transparent 100%),
+    radial-gradient(1px 1px at 35% 65%,rgba(255,240,160,0.7) 0%,transparent 100%);
+  animation:twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle{0%{opacity:0.6}100%{opacity:1}}
+
+/* 초승달 */
+.moon{
+  position:fixed;top:18px;right:20px;
+  width:52px;height:52px;z-index:1;
+  background:radial-gradient(circle at 35% 35%,var(--gold3),var(--gold));
+  border-radius:50%;
+  box-shadow:0 0 20px rgba(247,213,104,0.4),0 0 60px rgba(247,213,104,0.15);
+  animation:moonGlow 3s ease-in-out infinite alternate;
+}
+.moon::after{
+  content:'';position:absolute;top:4px;left:12px;
+  width:42px;height:42px;border-radius:50%;
+  background:var(--purple-800);
+}
+@keyframes moonGlow{0%{box-shadow:0 0 20px rgba(247,213,104,0.4),0 0 60px rgba(247,213,104,0.15)}100%{box-shadow:0 0 30px rgba(247,213,104,0.6),0 0 80px rgba(247,213,104,0.25)}}
+
+/* ── 메인 래퍼 ── */
+.app{
+  position:relative;z-index:1;
+  max-width:440px;margin:0 auto;
+  padding:0 0 90px;
+}
+
+/* ── 헤더 ── */
+.header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px 12px;
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(180deg,rgba(13,0,31,0.95) 60%,transparent);
+  backdrop-filter:blur(8px);
+}
+.header-logo{
+  font-family:'Noto Serif KR',serif;
+  font-size:20px;font-weight:900;
+  color:var(--gold);
+  letter-spacing:1px;
+  text-shadow:0 0 16px rgba(247,213,104,0.6);
+}
+.header-logo small{font-size:11px;display:block;color:var(--text-muted);font-family:'Noto Sans KR',sans-serif;font-weight:400;letter-spacing:2px;margin-top:-2px}
+.header-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.08);border:1px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:16px;position:relative;
+  transition:background 0.2s;
+}
+.header-btn:hover{background:rgba(255,255,255,0.14)}
+.notif-dot{
+  position:absolute;top:4px;right:4px;
+  width:8px;height:8px;border-radius:50%;
+  background:#ff4455;border:1.5px solid var(--purple-900);
+}
+
+/* ── 히어로 섹션 ── */
+.hero{
+  padding:8px 20px 0;
+  text-align:center;
+  position:relative;
+}
+.hero-greeting{
+  font-size:13px;color:var(--text-muted);letter-spacing:1px;margin-bottom:6px;
+}
+.hero-title{
+  font-family:'Noto Serif KR',serif;
+  font-size:38px;font-weight:900;
+  color:var(--gold);
+  text-shadow:0 0 24px rgba(247,213,104,0.5),0 2px 0 rgba(0,0,0,0.5);
+  line-height:1.15;margin-bottom:4px;
+  animation:fadeInDown 0.6s ease;
+}
+.hero-sub{font-size:13px;color:var(--text-muted);margin-bottom:16px}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+
+/* 캐릭터 영역 */
+.character-wrap{
+  position:relative;display:inline-block;
+  margin-bottom:-10px;
+}
+.character-img{
+  width:200px;height:200px;object-fit:contain;
+  filter:drop-shadow(0 0 24px rgba(247,213,104,0.35)) drop-shadow(0 8px 20px rgba(0,0,0,0.5));
+  animation:floatChar 3.5s ease-in-out infinite;
+  transition:src 0.3s;
+}
+@keyframes floatChar{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* 말풍선 */
+.speech-bubble{
+  position:relative;
+  background:rgba(255,255,255,0.96);
+  color:#2a0050;border-radius:18px;
+  padding:14px 18px;margin:0 20px 14px;
+  font-size:14px;line-height:1.7;font-weight:500;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  min-height:52px;
+  animation:fadeIn 0.4s ease;
+}
+.speech-bubble::before{
+  content:'';position:absolute;
+  top:-10px;left:50%;transform:translateX(-50%);
+  border:10px solid transparent;
+  border-bottom-color:rgba(255,255,255,0.96);
+  border-top:none;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.speech-name{
+  font-size:11px;color:#8b3fe8;font-weight:700;
+  letter-spacing:1px;margin-bottom:4px;
+}
+.typing-cursor{display:inline-block;width:2px;height:14px;background:#8b3fe8;margin-left:2px;vertical-align:middle;animation:blink 0.7s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── 질문 입력 ── */
+.question-wrap{padding:0 16px;margin-bottom:16px}
+.question-box{
+  display:flex;gap:8px;align-items:center;
+  background:rgba(30,0,60,0.7);
+  border:1px solid var(--card-border);
+  border-radius:50px;padding:8px 8px 8px 18px;
+  backdrop-filter:blur(10px);
+}
+.question-box input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text-primary);font-size:14px;
+  font-family:'Noto Sans KR',sans-serif;
+}
+.question-box input::placeholder{color:var(--text-muted);font-size:13px}
+.ask-btn{
+  background:linear-gradient(135deg,var(--purple-500),var(--pink2));
+  border:none;border-radius:50px;color:#fff;
+  padding:10px 18px;font-size:13px;font-weight:700;
+  cursor:pointer;white-space:nowrap;
+  font-family:'Noto Sans KR',sans-serif;
+  transition:transform 0.15s,box-shadow 0.15s;
+  box-shadow:0 4px 16px rgba(139,63,232,0.4);
+}
+.ask-btn:hover{transform:scale(1.04);box-shadow:0 6px 20px rgba(139,63,232,0.55)}
+.ask-btn:active{transform:scale(0.97)}
+.hint-text{text-align:center;font-size:11px;color:var(--text-muted);margin-top:6px;padding:0 20px}
+
+/* ── 메뉴 카드 그리드 ── */
+.section-label{
+  padding:0 20px 10px;
+  font-size:13px;font-weight:700;color:var(--gold);
+  letter-spacing:2px;display:flex;align-items:center;gap:8px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--card-border),transparent)}
+.menu-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;padding:0 16px;margin-bottom:20px;
+}
+.menu-card{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius-lg);
+  padding:16px 14px;
   cursor:pointer;
-  text-decoration:none;
-  display:inline-block;
+  transition:transform 0.18s,border-color 0.18s,box-shadow 0.18s;
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(8px);
+  text-align:left;
 }
-.menu{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
-.menu button{min-height:70px;background:rgba(255,255,255,.08);border:1px solid rgba(255,216,107,.32)}
-.talismanGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.talismanCard{background:rgba(122,60,255,.12);border:1px solid rgba(122,60,255,.25);border-radius:18px;padding:12px;text-align:center}
-.talismanCard button{width:100%;margin-top:8px;font-size:14px;padding:10px}
-.download{padding:13px 18px;border-radius:16px;margin-top:12px}
-.footer{margin:18px 0 30px;text-align:center;color:#d8c7ff;font-size:13px;line-height:1.6}
+.menu-card::before{
+  content:'';position:absolute;inset:0;border-radius:var(--radius-lg);
+  background:linear-gradient(135deg,rgba(255,255,255,0.05) 0%,transparent 60%);
+  pointer-events:none;
+}
+.menu-card:hover{transform:translateY(-3px);border-color:rgba(247,213,104,0.45);box-shadow:0 12px 32px rgba(139,63,232,0.35)}
+.menu-card:active{transform:scale(0.97)}
+.menu-card.active{border-color:rgba(247,213,104,0.7);box-shadow:0 0 0 2px rgba(247,213,104,0.25),0 12px 32px rgba(139,63,232,0.4)}
+.menu-icon{
+  width:42px;height:42px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:10px;
+}
+.menu-card-title{font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:3px}
+.menu-card-sub{font-size:11px;color:var(--text-muted);line-height:1.4}
+/* 아이콘 배경 컬러 */
+.ic-moon{background:rgba(92,18,176,0.4)}
+.ic-heart{background:rgba(255,110,180,0.25)}
+.ic-zodiac{background:rgba(79,216,196,0.2)}
+.ic-reunion{background:rgba(247,213,104,0.2)}
+.ic-talisman{background:rgba(255,100,60,0.2)}
+.ic-tarot{background:rgba(139,63,232,0.3)}
+
+/* ── 결과 카드 ── */
+.result-section{padding:0 16px;margin-bottom:20px}
+.result-card{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius-xl);
+  overflow:hidden;
+  backdrop-filter:blur(10px);
+  animation:slideUp 0.4s ease;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.result-header{
+  padding:16px 18px 12px;
+  border-bottom:1px solid var(--card-border);
+  display:flex;align-items:center;gap:12px;
+}
+.result-icon-wrap{
+  width:44px;height:44px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+}
+.result-title-wrap .title{font-size:16px;font-weight:700;color:var(--gold)}
+.result-title-wrap .sub{font-size:12px;color:var(--text-muted);margin-top:2px}
+.result-body{padding:16px 18px}
+
+/* 별점 */
+.stars-row{display:flex;gap:4px;margin-bottom:14px;align-items:center}
+.star{font-size:20px;filter:grayscale(1);transition:filter 0.2s}
+.star.on{filter:none}
+.star-label{font-size:12px;color:var(--text-muted);margin-left:8px}
+
+/* 퍼센트 바 */
+.fortune-bars{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-label{font-size:12px;color:var(--text-muted);width:40px;flex-shrink:0}
+.bar-track{flex:1;height:7px;background:rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;border-radius:10px;transition:width 1s ease;width:0%}
+.bar-love{background:linear-gradient(90deg,#ff6eb4,#ff3ca6)}
+.bar-money{background:linear-gradient(90deg,var(--gold2),var(--gold))}
+.bar-work{background:linear-gradient(90deg,#5c12b0,#8b3fe8)}
+.bar-health{background:linear-gradient(90deg,#1db97a,#4fd8c4)}
+.bar-pct{font-size:12px;color:var(--text-gold);width:32px;text-align:right}
+
+/* 운세 텍스트 */
+.fortune-text{
+  font-size:14px;line-height:1.85;color:var(--text-primary);
+  white-space:pre-line;
+}
+.fortune-highlight{
+  display:inline-block;
+  background:linear-gradient(135deg,rgba(92,18,176,0.4),rgba(255,60,166,0.2));
+  border:1px solid rgba(247,213,104,0.2);
+  border-radius:12px;padding:10px 14px;margin-top:12px;
+  font-size:13px;color:var(--gold);font-weight:600;width:100%;
+}
+
+/* 오늘의 한마디 배너 */
+.daily-banner{
+  margin:0 16px 20px;
+  background:linear-gradient(135deg,rgba(58,0,128,0.6),rgba(92,18,176,0.4));
+  border:1px solid var(--card-border);border-radius:var(--radius-lg);
+  padding:16px 18px;display:flex;align-items:center;gap:14px;
+  backdrop-filter:blur(8px);
+}
+.banner-badge{
+  background:rgba(247,213,104,0.15);
+  border:1px solid rgba(247,213,104,0.3);
+  border-radius:12px;padding:6px 10px;
+  font-size:11px;font-weight:700;color:var(--gold);
+  text-align:center;flex-shrink:0;line-height:1.4;
+  letter-spacing:0.5px;
+}
+.banner-text{font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.6}
+.banner-sub{font-size:12px;color:var(--text-muted);margin-top:3px}
+
+/* ── 부적 그리드 ── */
+.talisman-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-bottom:20px}
+.talisman-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:var(--radius-lg);padding:16px 12px;text-align:center;
+  cursor:pointer;transition:transform 0.18s,box-shadow 0.18s;
+  backdrop-filter:blur(8px);position:relative;overflow:hidden;
+}
+.talisman-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(139,63,232,0.35)}
+.talisman-icon{font-size:28px;margin-bottom:8px}
+.talisman-name{font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+.talisman-badge{
+  display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;
+}
+.badge-free{background:rgba(79,216,196,0.2);color:#4fd8c4;border:1px solid rgba(79,216,196,0.3)}
+.badge-premium{background:rgba(247,213,104,0.2);color:var(--gold);border:1px solid rgba(247,213,104,0.3)}
+.badge-soon{background:rgba(255,255,255,0.08);color:var(--text-muted);border:1px solid rgba(255,255,255,0.12)}
+.talisman-btn{
+  width:100%;margin-top:10px;padding:8px;border-radius:12px;
+  border:1px solid var(--card-border);
+  background:rgba(139,63,232,0.25);
+  color:var(--text-primary);font-size:12px;font-weight:700;
+  cursor:pointer;font-family:'Noto Sans KR',sans-serif;
+  transition:background 0.2s;
+}
+.talisman-btn:hover{background:rgba(139,63,232,0.45)}
+
+/* ── 띠 선택 ── */
+.zodiac-select-wrap{padding:0 16px;margin-bottom:14px;display:flex;gap:8px}
+.zodiac-select-wrap select{
+  flex:1;background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:50px;color:var(--text-primary);
+  padding:12px 18px;font-size:14px;font-family:'Noto Sans KR',sans-serif;
+  outline:none;backdrop-filter:blur(8px);
+  appearance:none;cursor:pointer;
+}
+.zodiac-select-wrap select option{background:#220050;color:#fff}
+.zodiac-btn{
+  background:linear-gradient(135deg,var(--purple-500),var(--purple-400));
+  border:none;border-radius:50px;color:#fff;
+  padding:12px 20px;font-size:13px;font-weight:700;
+  cursor:pointer;white-space:nowrap;
+  font-family:'Noto Sans KR',sans-serif;
+  box-shadow:0 4px 16px rgba(139,63,232,0.4);
+  transition:transform 0.15s;
+}
+.zodiac-btn:hover{transform:scale(1.04)}
+
+/* ── 재회궁합 입력 ── */
+.reunion-form{padding:0 16px;margin-bottom:14px}
+.reunion-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.form-field{display:flex;flex-direction:column;gap:5px}
+.form-field label{font-size:12px;color:var(--text-muted);padding-left:4px}
+.form-field input,.form-field select{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:14px;color:var(--text-primary);
+  padding:12px 14px;font-size:13px;font-family:'Noto Sans KR',sans-serif;
+  outline:none;backdrop-filter:blur(8px);
+  transition:border-color 0.2s;
+}
+.form-field input:focus,.form-field select:focus{border-color:rgba(247,213,104,0.5)}
+.form-field select option{background:#220050}
+.submit-btn{
+  width:100%;padding:14px;border-radius:50px;border:none;
+  background:linear-gradient(135deg,var(--purple-500),var(--pink2));
+  color:#fff;font-size:15px;font-weight:700;
+  cursor:pointer;font-family:'Noto Serif KR',serif;
+  box-shadow:0 6px 24px rgba(139,63,232,0.45);
+  transition:transform 0.15s,box-shadow 0.15s;
+  margin-top:4px;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(139,63,232,0.55)}
+.submit-btn:active{transform:scale(0.97)}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+
+/* 로딩 스피너 */
+.loading{display:flex;gap:6px;align-items:center;justify-content:center;padding:20px}
+.loading-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:dotPulse 1.2s ease-in-out infinite}
+.loading-dot:nth-child(2){animation-delay:0.2s}
+.loading-dot:nth-child(3){animation-delay:0.4s}
+@keyframes dotPulse{0%,80%,100%{opacity:0.2;transform:scale(0.8)}40%{opacity:1;transform:scale(1.2)}}
+
+/* ── 하단 네비 ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:linear-gradient(180deg,transparent 0%,rgba(13,0,31,0.97) 20%);
+  backdrop-filter:blur(16px);
+  padding:8px 0 20px;
+  border-top:1px solid var(--card-border);
+  max-width:440px;margin:0 auto;
+}
+.nav-items{display:flex;justify-content:space-around;align-items:center}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:4px 12px;border-radius:14px;
+  transition:background 0.2s;min-width:56px;
+}
+.nav-item:hover{background:rgba(255,255,255,0.06)}
+.nav-item.active .nav-icon{color:var(--gold)}
+.nav-item.active .nav-label{color:var(--gold)}
+.nav-icon{font-size:20px;color:var(--text-muted);transition:color 0.2s}
+.nav-label{font-size:10px;color:var(--text-muted);transition:color 0.2s;letter-spacing:0.5px}
+
+/* ── 프리미엄 배너 ── */
+.premium-banner{
+  margin:0 16px 20px;
+  background:linear-gradient(135deg,rgba(247,213,104,0.12),rgba(232,168,0,0.08));
+  border:1px solid rgba(247,213,104,0.35);
+  border-radius:var(--radius-lg);padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;backdrop-filter:blur(8px);
+}
+.premium-left{flex:1}
+.premium-crown{font-size:20px;margin-bottom:4px}
+.premium-title{font-size:14px;font-weight:700;color:var(--gold)}
+.premium-sub{font-size:12px;color:var(--text-muted);margin-top:2px;line-height:1.5}
+.premium-badge{
+  font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;
+  background:var(--gold);color:#220050;display:inline-block;margin-left:6px;
+}
+.premium-btn{
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  border:none;border-radius:50px;color:#220050;
+  padding:10px 16px;font-size:12px;font-weight:700;
+  cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;
+  transition:transform 0.15s;
+}
+.premium-btn:hover{transform:scale(1.04)}
+
+/* ── 푸터 ── */
+.footer{
+  padding:16px 20px 4px;text-align:center;
+  color:var(--text-muted);font-size:12px;line-height:1.8;
+  border-top:1px solid var(--card-border);margin:0 16px;
+}
+
+/* ── 섹션 전환 ── */
+.page-section{display:none}
+.page-section.active{display:block}
+
+/* 궁합 결과 매칭 */
+.match-circle-wrap{display:flex;justify-content:center;padding:16px 0}
+.match-circle{
+  width:100px;height:100px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:conic-gradient(var(--gold) 0%,var(--gold) var(--pct, 0%),rgba(255,255,255,0.1) var(--pct, 0%) 100%);
+  position:relative;
+}
+.match-circle::after{
+  content:'';position:absolute;inset:8px;border-radius:50%;
+  background:var(--card-bg);
+}
+.match-num{position:relative;z-index:1;font-size:26px;font-weight:900;color:var(--gold)}
+.match-label{position:relative;z-index:1;font-size:11px;color:var(--text-muted)}
+
+/* 애니메이션 딜레이 */
+.delay-1{animation-delay:0.1s}.delay-2{animation-delay:0.2s}.delay-3{animation-delay:0.3s}
+
+/* 스크롤바 */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(139,63,232,0.4);border-radius:4px}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="brand"><span>╱ 터신전</span></div>
-  <h1>깨비아씨 운세</h1>
 
-  <img id="img" class="hero" src="kkabbi.png" alt="깨비아씨 운세">
+<div class="cosmos"></div>
+<div class="moon"></div>
 
-  <div id="speech" class="card">무엇이든 물어보세요.<br>깨비아씨가 마음을 담아 알려드릴게요 ✨</div>
+<div class="app">
 
-  <div class="row">
-    <input id="q" placeholder="예: 그 사람이 왜 연락이 없을까요?">
-    <button onclick="ask()">질문</button>
+  <!-- 헤더 -->
+  <div class="header">
+    <div>
+      <div class="header-logo">깨비아씨 운세
+        <small>✦ 운세 · 타로 · 사주 ✦</small>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <div class="header-btn" onclick="alert('설정')">⚙️</div>
+      <div class="header-btn" onclick="alert('알림')">🔔<span class="notif-dot"></span></div>
+    </div>
   </div>
 
-  <div class="row">
-    <select id="zodiacSelect">
-      <option value="">내 띠 선택</option>
-      <option>쥐띠</option><option>소띠</option><option>호랑이띠</option><option>토끼띠</option>
-      <option>용띠</option><option>뱀띠</option><option>말띠</option><option>양띠</option>
-      <option>원숭이띠</option><option>닭띠</option><option>개띠</option><option>돼지띠</option>
-    </select>
-    <button onclick="myZodiac()">내 띠</button>
+  <!-- 히어로 -->
+  <div class="hero">
+    <div class="hero-greeting">✦ 깨비아씨가 전해주는 오늘의 운세 ✦</div>
+    <div class="hero-title">깨비 운세<span style="font-size:22px;vertical-align:super;margin-left:4px">開運</span></div>
+    <div class="hero-sub">오늘의 운세가 궁금하신가요?</div>
+    <div class="character-wrap">
+      <img id="kabbi-img" class="character-img" src="data:image/webp;base64,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" alt="깨비아씨" onerror="this.src='icon-512.png'">
+    </div>
   </div>
 
-  <div id="out" class="card">오늘의 운세를 불러오는 중 ✨</div>
-
-  <div class="menu">
-    <button onclick="today()">🌙 오늘의 운세</button>
-    <button onclick="allZodiac()">🐭 띠별 운세</button>
-    <button onclick="reunion()">💞 재회 궁합</button>
-    <button onclick="talismanMenu()">📜 부적</button>
-    <button onclick="youtube()">📺 터신전 유튜브 TV</button>
-    <button onclick="about()">🔮 神 타로카드 </button>
+  <!-- 말풍선 -->
+  <div class="speech-bubble" id="speech-bubble">
+    <div class="speech-name">💜 깨비아씨</div>
+    <span id="speech-text">안녕하세요! 무엇이든 물어보세요.<br>깨비아씨가 정성껏 알려드릴게요 ✨</span>
   </div>
 
+  <!-- 질문 입력 -->
+  <div class="question-wrap">
+    <div class="question-box">
+      <input id="q-input" type="text" placeholder="예: 오늘 연락 올까요?" onkeydown="if(event.key==='Enter')askQuestion()">
+      <button class="ask-btn" onclick="askQuestion()">질문하기 ✦</button>
+    </div>
+  </div>
+  <div class="hint-text">💡 구체적으로 질문할수록 더 정확한 답을 받을 수 있어요!</div>
+
+  <!-- ═══ 홈 섹션 ═══ -->
+  <div id="page-home" class="page-section active" style="margin-top:20px">
+
+    <!-- 오늘의 한마디 배너 -->
+    <div class="daily-banner" id="daily-banner">
+      <div class="banner-badge">오늘의<br>한마디</div>
+      <div>
+        <div class="banner-text" id="daily-word">지금의 작은 노력이<br>큰 행운으로 돌아올 거예요.</div>
+        <div class="banner-sub">포기하지 말고, 끝까지 가보세요!</div>
+      </div>
+    </div>
+
+    <!-- 메뉴 -->
+    <div class="section-label">✦ 운세 메뉴</div>
+    <div class="menu-grid">
+      <div class="menu-card active" onclick="showSection('today')">
+        <div class="menu-icon ic-moon">🌙</div>
+        <div class="menu-card-title">오늘의 운세</div>
+        <div class="menu-card-sub">오늘 하루의 운세 확인</div>
+      </div>
+      <div class="menu-card" onclick="showSection('reunion')">
+        <div class="menu-icon ic-heart">💗</div>
+        <div class="menu-card-title">재회 궁합</div>
+        <div class="menu-card-sub">그 사람과의 재회 가능성</div>
+      </div>
+      <div class="menu-card" onclick="showSection('zodiac')">
+        <div class="menu-icon ic-zodiac">🐭</div>
+        <div class="menu-card-title">띠별 운세</div>
+        <div class="menu-card-sub">나의 띠로 보는 운세</div>
+      </div>
+      <div class="menu-card" onclick="showSection('couple')">
+        <div class="menu-icon ic-reunion">💑</div>
+        <div class="menu-card-title">커플 궁합</div>
+        <div class="menu-card-sub">두 사람의 궁합 분석</div>
+      </div>
+      <div class="menu-card" onclick="showSection('talisman')">
+        <div class="menu-icon ic-talisman">📜</div>
+        <div class="menu-card-title">행운 부적</div>
+        <div class="menu-card-sub">기운과 복을 드려요!</div>
+      </div>
+      <div class="menu-card" onclick="showSection('tarot')">
+        <div class="menu-icon ic-tarot">🔮</div>
+        <div class="menu-card-title">타로 운세</div>
+        <div class="menu-card-sub">신비한 타로카드 점</div>
+      </div>
+    </div>
+
+    <!-- 프리미엄 배너 -->
+    <div class="premium-banner">
+      <div class="premium-left">
+        <div class="premium-crown">👑</div>
+        <div class="premium-title">프리미엄 궁합 심층판 <span class="premium-badge">PREMIUM</span></div>
+        <div class="premium-sub">더 깊고 상세한 궁합 분석을 원하시나요?<br>프리미엄 서비스에서 확인하세요!</div>
+      </div>
+      <button class="premium-btn" onclick="alert('준비 중입니다!')">자세히 보기 ›</button>
+    </div>
+
+    <!-- 오늘의 종합운세 미리보기 -->
+    <div class="section-label">✦ 오늘의 종합운세</div>
+    <div class="result-section">
+      <div class="result-card" id="home-fortune-card">
+        <div class="result-header">
+          <div class="result-icon-wrap ic-moon">🌙</div>
+          <div class="result-title-wrap">
+            <div class="title">오늘의 종합운세</div>
+            <div class="sub" id="today-date-sub"></div>
+          </div>
+        </div>
+        <div class="result-body">
+          <div class="stars-row" id="home-stars">
+            <span class="star on">⭐</span><span class="star on">⭐</span><span class="star on">⭐</span><span class="star on">⭐</span><span class="star">⭐</span>
+            <span class="star-label">좋은 기운이 가득한 하루!</span>
+          </div>
+          <div class="fortune-bars">
+            <div class="bar-row"><span class="bar-label">❤️ 사랑</span><div class="bar-track"><div class="bar-fill bar-love" id="bar-love"></div></div><span class="bar-pct" id="pct-love">0%</span></div>
+            <div class="bar-row"><span class="bar-label">💰 금전</span><div class="bar-track"><div class="bar-fill bar-money" id="bar-money"></div></div><span class="bar-pct" id="pct-money">0%</span></div>
+            <div class="bar-row"><span class="bar-label">💼 직장</span><div class="bar-track"><div class="bar-fill bar-work" id="bar-work"></div></div><span class="bar-pct" id="pct-work">0%</span></div>
+            <div class="bar-row"><span class="bar-label">🌿 건강</span><div class="bar-track"><div class="bar-fill bar-health" id="bar-health"></div></div><span class="bar-pct" id="pct-health">0%</span></div>
+          </div>
+          <div class="fortune-highlight" id="home-fortune-msg">✨ 버튼을 눌러 오늘의 운세를 확인하세요!</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:0 16px 10px">
+      <button class="submit-btn" onclick="getTodayFortune()">🌙 오늘의 운세 보기</button>
+    </div>
+
+  </div>
+
+  <!-- ═══ 오늘의 운세 섹션 ═══ -->
+  <div id="page-today" class="page-section" style="margin-top:20px">
+    <div class="section-label">🌙 오늘의 운세</div>
+    <div style="padding:0 16px;margin-bottom:12px">
+      <button class="submit-btn" onclick="getTodayFortune()">✨ 오늘 운세 불러오기</button>
+    </div>
+    <div class="result-section" id="today-result"></div>
+  </div>
+
+  <!-- ═══ 재회 궁합 섹션 ═══ -->
+  <div id="page-reunion" class="page-section" style="margin-top:20px">
+    <div class="section-label">💗 재회 궁합</div>
+    <div class="reunion-form">
+      <div class="reunion-row">
+        <div class="form-field"><label>내 이름</label><input id="r-me" placeholder="이름 입력"></div>
+        <div class="form-field"><label>내 생년월일</label><input id="r-me-birth" type="date"></div>
+      </div>
+      <div class="reunion-row">
+        <div class="form-field"><label>상대 이름</label><input id="r-you" placeholder="이름 입력"></div>
+        <div class="form-field"><label>상대 생년월일</label><input id="r-you-birth" type="date"></div>
+      </div>
+      <div class="form-field" style="margin-bottom:10px">
+        <label>상황 메모 (선택)</label>
+        <input id="r-memo" placeholder="예: 3개월째 연락 없음, 마지막 만남은...">
+      </div>
+      <button class="submit-btn" id="reunion-btn" onclick="getReunion()">💗 재회 궁합 보기</button>
+    </div>
+    <div class="result-section" id="reunion-result"></div>
+  </div>
+
+  <!-- ═══ 띠별 운세 섹션 ═══ -->
+  <div id="page-zodiac" class="page-section" style="margin-top:20px">
+    <div class="section-label">🐭 띠별 운세</div>
+    <div class="zodiac-select-wrap">
+      <select id="zodiac-sel">
+        <option value="">내 띠를 선택하세요</option>
+        <option>쥐띠</option><option>소띠</option><option>호랑이띠</option><option>토끼띠</option>
+        <option>용띠</option><option>뱀띠</option><option>말띠</option><option>양띠</option>
+        <option>원숭이띠</option><option>닭띠</option><option>개띠</option><option>돼지띠</option>
+      </select>
+      <button class="zodiac-btn" onclick="getZodiac()">운세 보기</button>
+    </div>
+    <div class="result-section" id="zodiac-result"></div>
+    <div class="section-label" style="margin-top:10px">📋 12띠 전체 운세</div>
+    <div style="padding:0 16px;margin-bottom:12px">
+      <button class="submit-btn" onclick="getAllZodiac()" style="background:linear-gradient(135deg,#4fd8c4,#1db97a)">🐭 12띠 전체 보기</button>
+    </div>
+    <div class="result-section" id="all-zodiac-result"></div>
+  </div>
+
+  <!-- ═══ 커플 궁합 섹션 ═══ -->
+  <div id="page-couple" class="page-section" style="margin-top:20px">
+    <div class="section-label">💑 커플 궁합</div>
+    <div class="reunion-form">
+      <div class="reunion-row">
+        <div class="form-field"><label>첫 번째 이름</label><input id="c-me" placeholder="이름"></div>
+        <div class="form-field"><label>생년월일</label><input id="c-me-birth" type="date"></div>
+      </div>
+      <div class="reunion-row">
+        <div class="form-field"><label>두 번째 이름</label><input id="c-you" placeholder="이름"></div>
+        <div class="form-field"><label>생년월일</label><input id="c-you-birth" type="date"></div>
+      </div>
+      <button class="submit-btn" id="couple-btn" onclick="getCouple()">💑 궁합 분석하기</button>
+    </div>
+    <div class="result-section" id="couple-result"></div>
+  </div>
+
+  <!-- ═══ 부적 섹션 ═══ -->
+  <div id="page-talisman" class="page-section" style="margin-top:20px">
+    <div class="section-label">📜 행운 부적</div>
+    <div class="talisman-grid">
+      <div class="talisman-card" onclick="showTalisman('wish')">
+        <div class="talisman-icon">🎁</div>
+        <div class="talisman-name">소원성취 부적</div>
+        <span class="talisman-badge badge-free">무료</span>
+        <button class="talisman-btn">보기</button>
+      </div>
+      <div class="talisman-card" onclick="showTalisman('exam')">
+        <div class="talisman-icon">🎓</div>
+        <div class="talisman-name">합격 부적</div>
+        <span class="talisman-badge badge-premium">프리미엄</span>
+        <button class="talisman-btn">보기</button>
+      </div>
+      <div class="talisman-card" onclick="showTalisman('money')">
+        <div class="talisman-icon">💰</div>
+        <div class="talisman-name">금전재물 부적</div>
+        <span class="talisman-badge badge-soon">준비중</span>
+        <button class="talisman-btn">보기</button>
+      </div>
+      <div class="talisman-card" onclick="showTalisman('love')">
+        <div class="talisman-icon">💞</div>
+        <div class="talisman-name">인연 부적</div>
+        <span class="talisman-badge badge-soon">준비중</span>
+        <button class="talisman-btn">보기</button>
+      </div>
+      <div class="talisman-card" onclick="showTalisman('job')">
+        <div class="talisman-icon">💼</div>
+        <div class="talisman-name">취직 부적</div>
+        <span class="talisman-badge badge-soon">준비중</span>
+        <button class="talisman-btn">보기</button>
+      </div>
+      <div class="talisman-card" onclick="showTalisman('guardian')">
+        <div class="talisman-icon">🌟</div>
+        <div class="talisman-name">귀인 부적</div>
+        <span class="talisman-badge badge-soon">준비중</span>
+        <button class="talisman-btn">보기</button>
+      </div>
+    </div>
+    <div class="result-section" id="talisman-result"></div>
+  </div>
+
+  <!-- ═══ 타로 섹션 ═══ -->
+  <div id="page-tarot" class="page-section" style="margin-top:20px">
+    <div class="section-label">🔮 타로 운세</div>
+    <div style="padding:0 16px;margin-bottom:14px">
+      <div class="form-field" style="margin-bottom:10px">
+        <label>오늘의 질문</label>
+        <input id="tarot-q" placeholder="예: 이 결정이 옳을까요?">
+      </div>
+      <button class="submit-btn" id="tarot-btn" onclick="getTarot()" style="background:linear-gradient(135deg,#5c12b0,#3a0080)">🃏 타로카드 뽑기</button>
+    </div>
+    <div class="result-section" id="tarot-result"></div>
+  </div>
+
+  <!-- 푸터 -->
   <div class="footer">
-    법인: 터엔터테이먼트<br>
-    브랜드: 터신전<br>
+    법인: 터엔터테이먼트 · 브랜드: 터신전<br>
     문의: 010-9420-4886<br>
     © 2026 터엔터테이먼트 / 터신전. All rights reserved.
   </div>
+
 </div>
 
-<script>
-const O=t=>document.getElementById('out').innerHTML=t;
-const I=s=>document.getElementById('img').src=s;
-const S=t=>document.getElementById('speech').innerHTML=t;
-const pick=a=>a[Math.floor(Math.random()*a.length)];
+<!-- 하단 네비게이션 -->
+<nav class="bottom-nav">
+  <div class="nav-items">
+    <div class="nav-item active" id="nav-home" onclick="goNav('home')"><div class="nav-icon">🏠</div><div class="nav-label">홈</div></div>
+    <div class="nav-item" id="nav-today" onclick="goNav('today')"><div class="nav-icon">🌙</div><div class="nav-label">운세</div></div>
+    <div class="nav-item" id="nav-reunion" onclick="goNav('reunion')"><div class="nav-icon">💗</div><div class="nav-label">궁합</div></div>
+    <div class="nav-item" id="nav-talisman" onclick="goNav('talisman')"><div class="nav-icon">📜</div><div class="nav-label">부적</div></div>
+    <div class="nav-item" id="nav-tarot" onclick="goNav('tarot')"><div class="nav-icon">🔮</div><div class="nav-label">타로</div></div>
+  </div>
+</nav>
 
-const daily=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다."];
-const zodiacNames=["쥐띠","소띠","호랑이띠","토끼띠","용띠","뱀띠","말띠","양띠","원숭이띠","닭띠","개띠","돼지띠"];
-const zodiacFortunes=[
-"작은 기회가 큰 흐름으로 이어집니다.",
-"꾸준함이 복이 되는 날입니다.",
-"추진력이 강해지는 하루입니다.",
-"관계운이 부드럽게 열립니다.",
-"큰 흐름이 당신 쪽으로 움직입니다.",
-"지혜로운 선택이 필요한 날입니다.",
-"움직일수록 좋은 기회가 생깁니다.",
-"마음의 평온이 운을 살립니다.",
-"재치와 센스가 빛나는 날입니다.",
-"성실함이 좋은 평가로 돌아옵니다.",
-"믿음과 진심이 통하는 날입니다.",
-"재물운과 즐거운 소식이 따릅니다.",
-"가까운 사람의 말이 유난히 날카롭게 들립니다. 감정으로 받지 말고 의도를 읽으세요.",
-"기회는 눈앞에 왔지만 망설임이 길을 막습니다. 완벽을 기다리다 타이밍을 놓치지 마세요.",
-"돈은 들어와도 오래 머물지 않습니다. 오늘의 소비는 만족보다 허전함을 남길 수 있습니다.",
-"친절하게 다가오는 사람일수록 이유를 살펴보세요. 호의와 필요는 다를 수 있습니다.",
-"지친 마음이 판단을 흐립니다. 중요한 결정은 오늘 잠시 미뤄도 괜찮습니다.",
-"연락이 와도 반가움만 믿지 마세요. 진심은 행동에서 드러납니다.",
-"작은 오해가 큰 거리감을 만들 수 있습니다. 오늘은 설명보다 경청이 먼저입니다.",
-"멈춘 줄 알았던 일이 다시 움직입니다. 준비된 사람만 그 흐름을 잡습니다.",
-"억울한 마음이 남아 있네요. 증명하려 애쓰기보다 실력으로 보여주세요.",
-"피곤함 속에 실수가 숨어 있습니다. 서두르는 손보다 한 번 더 확인하는 눈이 필요합니다.",
-"사랑은 가까이 있는데 기대가 너무 큽니다. 상대를 바꾸려 하지 말고 온도를 맞추세요.",
-"오늘은 운보다 태도가 결과를 만듭니다. 작은 예의가 큰 기회를 부릅니다.",
-"숨겨둔 재능이 빛날 순간이 옵니다. 주저하지 말고 먼저 꺼내 보이세요.",
-"주변은 시끄럽지만 답은 이미 마음속에 있습니다. 남의 의견보다 자신의 기준을 믿으세요.",
-"잊었다 생각한 인연이 다시 떠오릅니다. 추억과 현실은 다르다는 것도 기억하세요.",
-"오늘의 분노는 내일의 후회를 부릅니다. 강한 말은 잠시 미뤄도 늦지 않습니다.",
-"새로운 제안이 들어오지만 조건을 자세히 봐야 합니다. 좋아 보이는 것엔 숨은 비용이 있습니다.",
-"혼자 버틴 시간이 헛되지 않았습니다. 이제는 결과로 드러날 차례입니다.",
-"주변 정리가 곧 운의 정리입니다. 쌓인 물건과 미뤄둔 일을 정리해보세요.",
-"큰 변화보다 작은 수정이 필요합니다. 방향을 조금만 틀어도 결과가 달라집니다."
+<script>
+// ═══ 유틸 ═══
+const KABBI_B64 = "data:image/webp;base64,UklGRrw6AABXRUJQVlA4ILA6AADw/gCdASoYAUABPm0ukkekIiGhKVTsmIANiUAX7lBLL+svfpsv6SHHvdN9a/Cecvtd7G86jp7zq+m/+u/8D2I/6l6afTp/xvRH+5Pqlemf0LP2Z67j0PvLy9qD94Mf2lb838bnVKL68G/sGpZ4Zw+8CCDf8/gp+hH226OP/F5ef5D/oewb+pfWF/2fKj+w/732FfLm9kX71ezWdvRqmYXTw/RsHK2kR+3gHEi4oTbsMtvBYeSyx4VTZ5cPFJmutMQ+ahz4xG6Z0RGWpR0oTfAbq6bWi+TDDrw44+6FvBG8IpTmCf45d1jkHkE21iA0hXzr5CkJiWY6cpsrn5DMXqyLcZBVCbiw5X3QhfC5Yhr1VMLE6RoUZcEH9iuX/Oao9kO17hCtS3YGoxbSbwBU+SsTsVGCkd1DXUMJm10PNcv2pXp7CKrqoGsxjWtXjB+SCemeI2PHXspQEQm9vxITiD64j8hobq16i+vkwWWZZMyktg7x55YYG9z7MPF9nb4nA9twDgEuqIf4oOKNpSwRY7bRw3tqafIMY6MD8idmxY58xq2zkeE43/TI4dt73RHXBA0erS/QO+kCcXLJTXjqLRfKKRxgq8CEk09/i+SdBXGi/y7ZAC1eVLIutWtB/LtyD+On94IRlt+RS5H+9FAHTnFHl1jGnc9+GZZ5fQIt+oJsFbPSm9O6QByFZBo6WEwq4IaEWiECAB5mDnGwHuokLoNU/tTj+FrdXBH07pmrpl+xnJckPw5JlZQ8Dpew8BncVnuh03dsqlX/pfwmy0aw3q0rVxKUHPD6K/Ld5jl/KJts8js1H1yRL6+FgP15ctJ8P/QRaIJiAo0TstJyZldIcawZXAJXJP8wXL6gq2kXgP6HRTFw+rnW9Fch9jUxMEdsXMy/vz3LsvKPr0tbz4Je1GvX8TxtXKIFbsMOv2WJm3LXyUvBwyI933ndDM9iBVbMu2OjDt1ruWMMXEJEaXgTS4IRrnSJUjaPSCNz+E1GNI5gvzox9ByixqvF1qBQa1FfciDD9SyOyMHEWsQK0Qrs7KczAPxzGlDNjtOw7jCWRCzudcfcO1xFThrWmY3mr7KGOQNGoMQ5KBuWH1TSuedNa0ivLlklzaZ/nGTB6W74Mm98O/3/e+MJRqCqNo2HojrkQrEnzETItYiULtW+1mI61P6wsKFTGfTDGIIH7aLyv0iCM1LQnkZeS/tGaUIBfLNmKkkYx9Y5I1gYLyGy/PcAHvwVfNFwmKGOpelPUmmzPxeA07TkRJ5JnK4VofusLQ6j1kJBfyKxpggWLTEcRouhRdm6CKG7scyJjRvIjkGTj4OMY2dubp5bvZV5dDOT+c0yeYl0A8iYlVzDPj+3hkYOy0bTSsScJPqzIHQ3yF5hnvhqdd3ahj7rxi7IjoUeDaGnRVcB4BfEqBrzFvvrj3/VgYauS9pZK7nTuynWabKh/5Oy78B8y6IL/1G7whS5NSczfFXPyMdIKFqcZUFHTEMrZNn9iw14vNEDGPfhPi47tAtYQiDQmGpeBelBoXRO8HKHS/sHFnQHVr5L6akIyOoKU3lyrlw5303/4L+A5Vn1Nt/k/Jyhg/NfYfKyjFK1I2xShXmYVVYUGvhrCYVSKPsfrJfF80V5pmDpNaXDjplNK3jQf3JpX0KZFJc/o06KdhCyhdOb4N5wyJV+YexeDEQidIJKewCujZtobCn+iNfMXKBdXyctH4k0Q4gRvCft3D7aER1Mh2bIW+XYDzRC3RqZ3ojM8KIghmjhiZ/5CDPrOAt6GNzXXqKH17S4LDiLMi8V664y5mgmHU7gnq+cnN33AnTqjxpQE77FU0TKp1yYcYWynqG3NCYkLiHyJ2k+/d3cZ5GXruk1RKCLceJeyl1kBCY97+0m6D96+E18AtG9qR8YGl72C0iIkOzd5okZF55pQxnRbtHiNt4o5siJmDZQWr/uj17Y/jAwisXNPAeOMkm8h4CFy3Q1J1+A9dqZoFKnhNNzwt5DkIcG4JuSg3TDw/nNtS+fuUPuW1HM6KTPLYKRg7vSf92vRCl5iIm/G1AqqDtkiCM3xdkUNTUbWZpdVG0oZ6PvHeHGbBgtwmkT2b3f/hfDIKcynz4uFR6fZVfLR3yJ3PnnmUlGwD5p7UulxfDNAtBdnGqxb7s7Ra/kHvIdLfqNPU61JocE/6GO1hdYExiZJjdgjGcVQbePCV/9jertA6S8mJhpop3gtlWzNKD9a0+RRv1yi0yjVSo3hTbhPxgYUEzu1X2O85S3DN9DDbwQzeUpfnawIcrHS8ChGwsR7BCye5wsquUCU0ncb9EmcBM6EmcHvw1aYQUKvd8VLBqo1O/fIi3LZOkCJ6W4HxAwPKeg+EOuN7aqCmNl9rxVHrN2stZEG2Kwlnz40srcR3sjxRBWEHOWSqssEZRLV+wVQagXa2pgjGC14tGeNUeLhcQ6yqQ3w7JfkvD/MDKTNTKrF/hct/hgdCwTW7g1eUegNl3ICVhgxsbk5mtDYpO1IEnrtxzSM57nUTZRM02xwZxgJNCHLgUluoTIpGVVQrbQS62kLnsVkc3j50YbDUpZufOfHKukdu69wbDvSfVoZj8VDXhZCdTEIL0I18SHh1mBf1JZPYH6oUMKl8cdQehBuioOiLsrdzwQIdlZRqtsknYFMhMzMN3Ng0OFQW4HdCwQUt0gzM67ZEZfgepGMXccbeqtkAyWC8XOOkep0cIMCST+F1FV6wCe2BPtTiFV515lAAD++tLE6eH9f1ACnVqo7dK/2xXuENrjLUvs2vN9Xqzh39x9Vx1O0IxrKYtksmILAmz7K2T6SaobFYTPlFpYDAYVZDkgjLqi4vNxSw8gV5id1QpoBv5btGnYMlpyj4PSJOsRgtsZrSdpwIx7U+hzmaJh62RIdEvolQU7tR/1X4+xc7IkvuEkybet+LAZgMYF8ijenmTEm703h8KC4vrNmpbonCWwWY6OdjuhkbPhEHIZ7iuG4hxmATeJoR0ZZyX38laOqfTQws0l5JYGNNaR42um74VYAEKsffDeKrfWaU0yj+EI5FnLmqfv/iQTDycAJG0Bi5GyMPf7wATAMCgIiiKVYlbbxwDRIBKzTEjKpZ2fWMZduohrJpISRMOtWTeXSesbjormG9IW3JE70UJLl7PpiKptdHdXYLBx9EjwueE/GbUaWzcfWS2fs+DAGagGW8iNVXJllqHjmYTNXgoMQ6N9BN0m3y0o+0h7rxs189j4f3ZDr/ybdfPB0byv3uAurtCNzB+fmYgH0Rv1sLX5WE7j70osyJV9c+wmP4yFA41jSNsuNyGA7y+LaNiyJj06AmWOhgDjBbUMM2ZPAgiNiUS/SGhZqbYCF1uAFs0+ADBqt+/keDwaiDYzJ7Nv8xUfRZuySzIC9+ahlSZ0ump4pPuLu2kgdHHD5W2bbmMBhiL2HwG/mUp8jV4I6Py3T1tFi/hNNIDTCEp4hwnmY7UtEWYHh1xo5T4AFH/AaiXaBIMTPZf7qTJH9qHVABON9WEjOaNyCchubZOMyIu9RAdG2i+tI0inkFWOKu45M9qmJLAspea+qmdS5KWId7TWkvPUMTqe73tlCQS5OXBZcF+LhWan1GxeH+QDINQMjhjPKawRoRkTLt3bh78u+KoYTyqoMuE0TQXDx6kFyxDC+r8+MSUlsR0zE/ewafFFGJbeeNB02qrd8/oaiYuzb1LJ8hwCGWbzg5IRd9nC57Fe6XzqDfLi+qt3eK4vjRg0A7fATJH/wcZgEEMcvNT8RpByunygINgSIileVr/1YNrl5p6/2Did67KGS6LtupTLseqbp57jWm0pr6djyf3As7+6Pu99RPC950XZ9aeyrKdIlv1vxQ4j2S/PdINtjesO9zs9LTou08ed4lKe6vcclevNkjph12puUKRdBPFvxfQySvq3Ls6cD7K5Wvi9cdYQVVVnW+QxQklEkMfJT+nbFRlimat/NDgUT94QHuXnqDweYw23Mzts27yi7JIVJb8nozh4FVSYVZZs09GViOesHqAsaZwxL6IsUiCTLSodX2BB5/KY0UQ0zwKxXeQGtPUpSEo08P++8TfMEHJbUqMdEkeMizbZps+e0fDJMv7IyR+JSdBMFguJowOfCmbdEHpe5kTsboR3Zd2rp7+iI5TBJruDB1qpabJtE+c5JYYRchx2crexWfqUxz1u6HwHQ6Ne0CbDBQcCE8JmckN8G3+uj7x1ePALKqD7ap2e1JYtbw6Pb0kJP9pw2IIiGwhOirT9cIrFOoTYCD0FRBkbQCy7EVYZn1eVMqIVub9CXVjd9npVi+NWgjp+NJ1ng3MJ3LqdSbAE1CuxiAltQx6A8vSK27c1ZVE1VxtjJza7+Gfs97vdrFPR7814cY9xPz1Nx7n6Naha3y7bHr+jTHNfkiqqoIxkMszZM7pGEXPoz0ZQ13jRwIpJMgqUUH3+1cbHwZnEt8ddJbGRp8AonykMMAWYXPFGqcJswXO08X1FXNG2nCMgTBf3Mpbx4FvNxT5kjxp4vZIP9gDMeDH9Gb136gSAXcoxOSpdZjWvUBWmVDMkzI8K5zqZzhMb7rNZZyLvjFgBJN/fzRkaQ/EH46g1lUrVs/LrDf16U/NwVOgsFsRM2nWhNVxLqbI7D7geXJayl2IiyGXL7EQIUW7Aq2u/IhsbW15g67HmKbE+xWyTcXv+DeTLS/CAi+Sa1ZQFDAsm5Bo6L/OSNkyh6dsSbQ/IIJjErw6fDjF9szokjiBezH5F5H1fikz1TwkAS6oN3UVNi/droucc729Kz0e/vnVPXuxwRAClFRFUbteeGylVSTi73C6IyVpy3Z2vdZk7d40gDFrSgB7lUR/SlwPlfjBlKBQZpaTjCU0ifm4U1DLOZ3eitYn2CYdhIT8zUnXll207KnSa16n1Qlkhu/x45NouNnABm4m6tHViiGAYQPOpHuBgP1E8fenvqvGD8ne4IqwTAo7Xs/e46kOAasAdYbKKzW2UqXSSKX+6dUOCKSLLVsIcQpLnOepbyDvl0Bo7aU5X4wHQZI1FIXhvY7JrEoNAyJxDO5zLKhWq0MfnYRPG9cpGuqTrxGCyCzMmIFGRYJgravu8B+1Nrq1g2UjvSiL02DHGRL0sbRhJAPWSni0ABwvrYZAEgBwm0nTE5zvngC4QiNSWpGy2NJoCU0N5GGBsJFM/uScIzgkpbFdeyFLfE7uKxKrg8zvQ898c1OITHtQtGyvF1d6tXdfNBc+OMtxj31OaLkXLw5EaiJlFKRJu5IFcVWsrBlUdmKvrpFY6igXZpohAd0jlCVsC3JbHtTXRgSnv/D1A3UN+Pl5hW+IHK7DvbZRfILfzLAlMdpuqPiMUNj78hWYN+Ftz0APaHrq8G9HFWrX69lwOJJWCGQ7tMLildtfYWSCKluyHb5Npbm7f+3PhEzlsgHVBA9Q99D8bG7zloz15w0tkQD2WaCt4Qvakj3a1bPjTk2PwfAm1Y4MO4oRsMzeDRFeuJNqe5aGyq9w+SNZgzUM4PfDPQm02ac3xHAYhZTVW/QALK9vC3i3OmS/qXtJHri61ML9tGkRUzajoj7uL1Fgul4FANwlyxjIUHT2+nLzw9+f9CFqAfdXNbKDQV7ZV5nTPdk/3NqnDcZU7aQWOw+nAJaXNxKv/NPJIRf6qB4uGx6DswzwILcovD4W2MOWm8SxHYl4/RefzSZZ8F1A2fsh4kq8nbeTqsebgmr2SYNr6QXuIfsrrCAmsS2bchMqLZB4WSzfI/4/Wuhbrla3gm4SmTRCr5SQX/NvTRRKlFE/Da6cTAEbzXOVzphm9zPXc0MhBq1+qqnvj5bYvoLq9NmKDiz8wvlWUhTPyfHR8q5PXsrOv9zxAzNY/NOyR7PZvrmmIyBF+p5SGZ6NsNX/CIFQFBprxcLGLEWb/D7U/fuPPPt+NLOJIf48ykJCJN9WYyM8yStwr3HkV0rrZ3eXCsodajCeM/e/JpZ56dhfCuhMrTG/Pe2YS4TNSwHGjniAjw0oHDCeDkWRdTEozW76B8ALyU6cmP2qaEcShEb5TxwhHJ6i09Lit1ZXst933k7a+rpYNimULOjwAgq03mkkvGsdZzeV9cvCQfJkTl2WBtolxE6Oysh1kF5CwWYo87gRzcp+vsIx391Nw0V5rXtDww3uWsdC7IOhNKwfFB2AiLiAZdgyaS2EeDCIiQlV0FFMEC/rdnMFJChL7xCLzqs4BA4dfd473JTNk8HX0jsqV2O7rkm+Jy0/2lDM9shsTEnxarWCqv7Inagh/W2KIb/SdofgBxisQ1lO0k9YYMOnhs1+4p+ZwokYYs9RQ1/mGZTqIgTuS2cqeET7s/t/iLQ8AAJObJ03hiVXvVHv9Xigceq382xnX2pchOs95eRlTR4rAP6S2ZkUlPI9RGYDaFNcnDgrRoIwrYrJc7jDdyjpZXWpB0f20Kq5F5gHadxiL7nEM+WwxROEZ+ftmBLghh2Y3GskVu6ZPjNQjAyswTpKoVl3woB1OM3FWKmDK2lT5kYjvy7EbEDq4WDGQD8QQFDARoIq3SkOh+bFFTssPdUz/2qdOENU5zyW4DNhaaqjiFFfgsK6Lwgxj5FgPwkRnr8InTmTObEc55qsMq9Fj5C69iMWzpwy2Rjss9M8BeHOgdtmTdDD58uM/RmqwqdvoLPcUOX27N76lm+4lmT5DUUvq76tGJCRbEjLDbX64IBLu4n0Gefkz/qpif8Q6QT4DsLJVfXN/bckYIeD8FwZsn8/0xGTWKIY6Mzl5tLDdouSOyvvOqqsEwxZB7xMTJqO1G1cAh0MmuEsSft8wU8rV/AQYyUPSsKKZoh1BBJCgOf3xodg0PDnVdBOusCaXtOzXCj0f+R0k1HIpU0o/2Bk2MY2J5Nnx2frcrTFOrUEVNBETpN9PmFvv9BM767wNIxLXZxhdmwFFMUzjYIicT0vGAfWTwxGv4Pqgf0sJLXCPyk/eBHQ9Gah6h3xuN7P1zLZXOx98Jxg8HcN85i7WEYuSwx6vAfAzIb8ggdT5uuX/+LIJgnhLgOiaxTk9Yg0awOce7rrIhKK9tQaKpYe8O8VV5fH84aFYdYHtC7YQHSv3L1o2WhSqFvuKlkatf/4SyTna7qvROTR6kuTJGIYmwc5rL936bJ+G9TVuNdXoQpXXtzLv/aYfbPb7TsQ/komnJyTtwCPe7+w1TCa0mRDTPTZ+crjt4Jyn1mUGob+aG3wfL09CgLB4FlSoTCeC3sdXgSYaKrmxOCWIJO8DkFr+Mjyzm7BMxmYkOmWIxjMCoWscDuz8Sgmrx4vFOoI5mf3KOjURr/OUkpsMm56rFS1n/BdKr9egUM9YlAH86S/sarWweM5oywd7d4a5LfcroNpakgLzP+HGtZYGlnZw+L7EpHoRf477HTGMGiwkQTSSQcEKkJvpRxXy0cnV256eSVuxNUkBp1dbaewSj5LSmaheSuO5tcUrIjw1YaSsazfhxUBjjUS3tyVUpMoOqLnLyyZpH9jLTeZxecFz63YLvoRuEzS6hzvYMf8xNOWh0FXq/s1DboD233F2eaWcLLSG2AALFiN29HxVSwqoRKjJnjC6McjZgUiz5beYxOSTqRqPylqpC7vMQu82RfJnCGn8pS08j1/l4iHPCZOkMpJ5KNdrguE5HYp7UWVt0gpmYhlMWRHVwWb62aTAxN3StkjojkharNquVLT1SdpQipCBs23FphDzZwR+qeaoHMIWSc8n3af6DQeTyRCXt3mNBoSk+cZeipbM4AG/lzMbJAKfuujELbTRXLzdHDWm0w2Eo17n3FJqLrECqvBuFh93Dq4PTiztmjCDpTMHR1MKOG8pCwP2xrQfRfKGUQXnA3ZHbaeEa/lU9fHRMGqIMGcivUiyHLQfwlyQohPs/fqFMUp5U1dhADZK+BOMyM0AXUrdmEbg1IUOv3+ZOu0GZ+IkbFME5GlcL7eMIPStmOfzr51SwSiVFC0MxMVbfjJ1OSH8gqSiFdoGqJnPGsKczn4NR+0RoZYQVWw90iV6SrFO89wcOAj+feinzY7ShSjVA6Lpd2lN6x7bgcCNDNMCSdihdEQP6qPlKTn9K++NR95qkuYZ7/tTZ/dKM45A1AToFdD3wySKoV2lMIvSbBll6HVJg5YtisuCKtuVV/LrAoN8Cc7AE6sOsSC2umhv5BjfYNncX1pcq/sU3cpvZTrYGZzNuYcV6SGNNhSFKb1zM1T2sME2ccY9ZxXRBBZCKkjyHcLA8UX1/PPP87/YPZ5X7GRS2VrBaGvELwUT3Edr+ae9BqOIF+J5FEjTj7Qs/6Z71RMueN3E9vs5wIFDEONHhT/WSc+GKJzm3EZ+bJ1f/gMGLFxlOskR56Zr8bwonF2IlHJNs2BYUYazM3lOjRwgPdVpUMygwYqTX8vwfaExEK6qfDTU9XnQ/IwfAm0/gebho6Zb8odbT6L3R9+A986s/1ZL6/KTDrbWLADM/V3o1l3a5L1dVCLnm5g1GzEYY54Se0DnPXrY33zt9Al4SF+E9OpdPfXJzsgokWefy1ECHMpqfZByTiQZ0KALXDLjuqyRUS10RL5DaP98MDkCE6cbcSRYH9B1lGe9FLi2y4sgaeInRMBqZchBNdYjf7Ekd4j2YLC6EtBAiUSuURgIDOS3HoEO4P1lBlf9PIK2+gZ0z06Ax5JoA43lQIEtttlZNp6eIu3+6uvHvoY1ff3tCnt/2vxox5z3DDjRt9cj2fviCXQCX6+LxZNQJvgXbb9e5EMDn2OLeqgoc+IkITCJq+TePpYkdgIqMSyqHYnNWIcJN6iwlYEnO8TV42DzEQ3UGkW7KA7NoKGslMJj1y7Rce1bNKeAXz775pv6HLJKb4I9VD3hbkmzV2aCe3AXKVFkSIkV9xDRX3fwB9yJUslIbtul70wS9GwieRQbRumkYn9QfQIHZTkYYevVDWUc8JdTAkfuNZOlHFI6EPB/xY/+P2IBzMAJV+nwRQ7OQVoQp7gzzpGOzIXCeLko5zU+0limVBvLwe+UPfW5e79tw/VvjeOt/gpFC/xv8DNBOo7v5j/xNXj46PjKwPesvqdQ/oD87AoTLMp5UQkNWFI3U+qsqaCJRkyvPbhyPFi6axhQDU2VcqsoL8acG4Da+n3ERA5IyDHIfzt6at0xdVogCoO/iDfaO3m5xcr3h8k8XlqAZGnx6fk9p43aKS9bfeI2v953nbOo5DhzkKzRE8iFjp6Vd5CsGL7T1x6LCCuA7G82r0r+XNdUqMZzkuY53Rc2K2O3Z51cmulas1DMTsaEu4EcDCFw6oLPkPyCZfrZS3pVntTuCNnp8OqiCCEbrFBPwdS7ODqlooLCBvIvZ76t2pxBg36mL/PZzG1eBNCyA+XzO8f7dBSIBlL/jVqWlQUbamOntfpGvXYFgIayyfciqERIGn49To+9FTpn5OV/pKHQp5Or8YbyW4tR7wh+LClKPffywBHXi8N1xoU4gKCxyKsFFlLV45lxeOiFKKFuLVFmDsHgUf1yztoFX9JVMVVzPCmXkoZkm9zyS5XavU0gd2e0ARr5txzvmBeqZwZGQEVw1r/QaVB52qzRFcW7wIfM+c0fyDXlyYUVrXoMCoaS0MO605BozQTH0HxoHBC2HbH7HsOS4+DJ2JCnn4k8v1MengHSV+Cufk3zzWgVGk4E+rqwBA9bFKhTTN1ieOTJzKSlESepOgexW5YdP02vovTf0Oaak1ZAs1QURbVNgZjV24ZpQSRxCkqlx23dZF1PtSuX0G+XOSTz3dzl89LMGcp106HvbTlLGyT+12p06p+zgbzqY8W9EYYl7Qq5QrtHk9l1n4R0caZc024FfglPgMB6NVenpJ94qXTXIbatvmuyKFVwK+Na4v1IsIi4cVs2EGM1iQs/+qQzPzKDeWUjwzC+SU0CasaQRTCn9soin/PGlPqZ96y9ZBAquNtEa7BzFy2kzVreYTFjwehBYRg/XBQWWSgx7csWE7pSiP8Qx615LNHmHWGjveEpyfFSM7ktqZRIJFORbUS4xz5Q2oCSDiMF8FjJxukpnkYD2WnKA4kDKeSQDbLpjHR4LWUVdqTS/Xzmj3dGZKwhmJMODa0gGS9zUeAWsOULtJ+j18xsoPZODDU0Jk9UB/jxO6vfumMwP2EphtiSxfctVAllWsz+3z4PGMnLT+las7lXOwKoZmi83t8VYgmSC1+BzsBpSrJLeJoS2EyXc+ybIGbvHrU7QiRzFOdFwZvBh0deR8movdsaKcnw9gDg4Yr6D0UfJN+cMAVd5Awb91MrSXCbzWBwPTOI572PPvLp3JegX/yqq/wlLMUFefm9Z8uGMSPCVjaVSWFydWv3GNcvJoZtWjUF9mEGPe2QtHmF/xbzJBMBOvhpwU8Tc2INVBkE4kRTkgj6vMFeCwUncqACCd1groyh+NzPW1G/P0c3MChBx5DoKgroDhcVktrqCVl6n1cX2sU+ViN5kPbD+66B91WLnVbtDmHQ3nH2fnRWGjMT+EYyLXyeRaiGwhB2eZsPgUDTMSUpcAYQkOM8Q3DyOPWm1oPY/KTh9836PP3Yq+4744EG5/NOCwpvxliXo7CAIAqfzF4cDW1bbFrGHKs2Pj8g/E5dPK+xtWSsmod6n565Rnc7tq/bXX3MTtswWTTwhpcHJMQRKw2nMqbylRstKM46pX2YCtMADLSHWDlSWY9Fhr7YjmzDvej+L8yOMFSHczLf455n0GLtiC9QCUK2D5dGlxRDnNHJ1Ecyp0HYGwADYEkMejb2DbLerGpjUn6iJWBV+QuwAUnvHUA4cHxWSt4XcOfoKUVI+ZN4zNA99vDwPGQbkcCnO92us9bvLn3jUp+tkItC3vcOlhV7x1ap9NRg42syLSB8+6kYOIMa7rKoUkdzoP1zrkNEpvgkIMe+e15XhqoBcSUJ1Au5R5Gaz+FhYfhQ4RLj3VugANefm2WjOjDPXSDLHLwQjokGeSDCaUcbTRK7ygs75pWFPxGhLmihRJW+TVFmQbO6sMPAe6BR7z5iL2TkZSVRYjq6c1XkeY05ldSDPY/7XNiMKrhk2/um2Sw/asoKyeqY/WUIhoJnl09qAbWF/Bqa2YNhidDYlkgOIi8nYa2cedTBtbQHh+byQ55uQjDUmKlPrSAAeif3zzR6V7prDQrpMu2KsvlIqgoo4y4xjM5lFUiHLx5BPqSyLLimXbEaexcQr3I6CtR0qW2myxJ5NrqIwtmKaXqBmXPGd7DVonCvbDJwuAd+v1CBziA2beWLS2gFFgZH0hrz+7REAtIvXMtWta+xO+34bdJEJZWkmxGvZz7vL6Sx5iH8EyvzOE8zeW2uXEsBZyg3JpBKXv6NyXQUyHuyZhHWJQ+Nm/rc4pJfA4FaGImwTL+p3HxtBmUR9OciSw20kEhJYOIOW1pu5/WGnBff+POpyWj5KiRioJgk6S3IYXKU6BDWCAb4w7y+K0ahwt5iBFGu7EKtIT0t8o0ViIMnQZOVh012rvrrILdxOsufnsSg4R5USgPEDyjhlbDyNstqehQNhvs8UEgnwbAnr2jlTML/70qO5ypwdUIUqAeWl1yZ+0UJYnYA5YATgNoK98e+8eWMCZ205hOPSveDHub0q7neXEZwAObkYanfLN1mOLr53JSz6fbpVIQlNIqusaEy8vRL82OLLZ5iO9V5iAsCYQS0EE7ZqRyw7zljIhmIm1RTEe4WJio52VOPRIU7oAAcW37IJE6Byoss/RyxOHeIQcbVXifBDAX1rwqQ8MsjFc3i9J3ppiqU6D4TJLB88nKYmA3lX1k5zfNYUX6M9mcR1lyIu4dYv3enRH7AeeO5UGYrVPz+GWJRCY5nbHkXtXe/r3wS6Ar0iv9GtujQRQTjM+1Zh6tDNIy4oACz4SFZV0W01JwKGxL055UGYbb6H/LzVgR/dqACyVdXo+lUDMm0kESsz4cLDzAOOsH2D7DDoPamV54fTHSVhzzPbrDeVMGE18lYZxTm9mv3p+t0cY8DrgmI9SU1OLnnsu9ZaGTke2WmWirLru0QG5+XMi1chpqyJ/r4jg6Qj+S9tCOWCSkMrOXUjGYJBhUGZCURyoUOn4o6j35fXcG5qr2M6YhP6eWAsK0KwVgrfn5JQzGm/jyQqXA6vNeVRPJ8av+PA7f2M6pZvyNE0sEAB4VVO2eW6c2Jlm/Oatl/j1HZhi+9HbThxSZSSwyqrpQow+mHD/2W7rd5x5nE3i34ZJlr5Ah6S1OA9Jvxb1viKWfBQk4tiGeMLPyJ3bbd97zcsLgxsXCPmi6sqSAWgF3IKCwFm7Y3doHPno9xModQplLDBXTXhQ86ovPAVAQR0GCIfCfDFzeuAJk1bxobom7XdvVUG5oHKlrnTVTK2rMlxcBHES89ytJPF/DaBSknVO7uCunGBISha6iOe7nD16TooApfLwBxwzH7nPu5D/SIBWibP7txNEaWac4RW//rfNZzxFZPKhAEN0QwqhDkxRFb5+ZLlksrbGtfODSprXwKL7+vTVeV7E/zy+GE25/eIwG6stwgTNgWYyNVDj2LYWRjoXBJJt4JmWRFYVJVYD3bQbVJbwRBc8J/70sXVJm/1tsq8XrzBvyZ4SRVo8jkrz78VaSA1SS2CfB8iI6oNG7HBZA7t6R4Ks/fVSfZ5LoZY6b/fge8q9wVXHBr+tT/vs1LO3eiK37+T/hV7NWHoUnHiHpK/4ev5tPUVBObjkMfVpnn1FdSld+CUeUOa03Hs78OICALG1A5TJ6XYGBJfKngs52G8jzy1vlZVqzUKbAFUpn8h6+6DfFdqDDVGakiqwQOmqZwG8Ao7Ya79U7DXkq9KFpNmci4NaXPWccAqaJ9fgtCiqtwWSg0KMet6KVHt1reQ2xLpU6xFh3zxc6x/lQ54V0N92t4uMCoIh9/6UtNH80TlcghFk9Ynlq0E0c+pgtK0XxMD2RYcjVwlKrgrfL2VqLFnc/cbcaq5cO/27q5nrR6GstCHxbtCO1kmkicSOieGkSux7AtpbVAVPMUjQ8s7+OsghME0sStaVsaPIbMK499mRgzSlxbUCsPdeUTu0GNQai5PjUiYrdXE1ZhKz5fR/Dv25HFEom9XtcD6/B44Qnsl93pJdcNkyxmmQpznSHWX6Ipb50q25fL2hKgqfxg3gIF0hjqRf8Pm5Ycu59nwZtaFWpw9y0GenxzwjI0WWgt/6rzjTTdWE6NONTFcTToCd6uhjUodHIfriPxNekWlVMHhPJmxVOMfMIXlinqudLStzvHVHxoZLhoz6pAKXBd5niz8UoHMFyyZKIRxuJJqd3FPeTv/vq6nrJ/NE9nb7P7s/Bu7BPy2n7lhyN6cKrZt4OOuoLqgSb3D6a2mcmTDuWYui/NnfLzc1OMODDrYQdUWhfL3I4c8tllhkntktFSdE8Q/zi73AJT8/2Sdi7Zibg988L24pF5+Er7Kmw6+OTFW39BVN0JuTU8d2tEffLZKc9+34Uu+am6Va60p96QOzVdGgxPEUvEJdRyR4+/HwcZTG9A/+7+dJPSyRE2NQDo3X7R68G37mC+qVh2/HI5KoR4x2LZCRvBCX8I4u5JhpWIjU4LmUaiGhFi0v/e4EzbV/1lj7afBclY6quhBggMi5eeyFX1UlhctEymkQMAxNDjv5oOLcSKVDovs2j+ZU7IHYrMRSJhIAgIOqbkDh7jWx41GnC9ji3DewXrVE9W1cHNaAly6fN6oOwLYdFoI3oBhUPpTSGiTo+N/1kLcEvBQWfnhmWzwe+mAPwxVmnprX0l1lCSx8kqZ4RfnEhWu6bcAFXAt7LOIvVl1IRrNRRrDSo2jDxlq+a6GI9meQKaqIuy/DY904M1nQuhhipFKNDP51xgyOCm3EC8SQ2TuKe91MUFXRhlLe3GlLKtkGRw2ZhKN8MxIz7AwsXuCv4Bx9MQY87uCDWVKrjnltT2GG5h/RqBUTZu1xfTKK8GMEwA7EM7+ySwNXNdsjGw6NWw5HODdvjSSwcmSEacZ3auL0uIE3pQQRHLBGwmVx5Hs6TSezqv7FfftcmW9mpi+fzH4QyOBYB8N/0iAIUcdZfEzIsltznplwoQlN68B2d2ItWGLonPcGIBiasZmudT8g/Vz4NYQa38TnC52Bhv4u6j9ruTSGFSflXSlkUy4T5qdUda2nxK6Ru8Nail0mvxzyLQrNU750hXuIDUIFImjoYyK12s1Bn8Bivh9UE99Wi2gJLl+I5eDiA3UklXN2oaqxEx9013K0Rxqw/GaSRzQBa7dqVI1ZxKee78GFNBbIxpJiXt8l0wwqJPG/hqMnMj8lJZzuEyg3iznyFkLHmtifY0aCUELZNTiPwNf2izPd2nVgtasmy5shHuQKdXtiTH53dkBRAvvOyb8uzJdp1v/HZg1zfoqDz4gL4FQQIyu+6NAg3UoragrvWAsv0InUbm/hYfShO83pkyctV45tAYOCFE+NUM1B1v3HVtjuNvgJG1dZEiU9L8L7Q3q1m1Akett41tJ/4+bWjsHIt7L9iD1XLy4QEoJrWVp6uGWF474/Pl7D+GjBtL8KCJqUwMMMWScFN4t3KCHD1oXCL/ai00UZMP4SWhU633lJnkvAlclN6iJRlQkjpGj3f053lZh6SxNkQUVu4uCfGOPmS/Z5r1yf329wZt2znKfRo3rLP2H05ZrevlLxzsp2MFV+u0z3vnzsrxpfHVoTkD6qhYYbx6ujR1mS9ejXqk0RmvYPCPSORRyv4abaLTkHRQpeIZDOqPCQYwCr4DF0A6uPCF3KgyG9kDQ6OSmvMZA3NPFE9CmW09vdqbFW3uW529x1dj88Nm6dFt71zk7sj5zx7fWZrRO31ClEuoXtcj4ZfPGdr1rNtw6RW+2WY0tGUjHkr1jv/ydkT2jjwPZhOFW93RVaEuB7OcAhCl+rgBqd/l7xAER4vFoIw477UMIIpA8qKH9nt6H0gBM+nx5YMKwyAhHjRryLIyXPbv1rDQ8zMhgEJjg9G23HQ+28ucEpRqfoXcmww3dKRwO6OsYIzBfEbzQpQUoAneVHFLlEDtjPWexKj6my2Aqy+qZlt9Jlo7Btw8IGPzDPKKYjnorWIuiWU96sAV1ndoVVfjSAf8WR/yYT6yKhbQuUGcOxgZtzH5dRgBmv2UWAlrhv5iIJwqk99geKk+kswzplktzsWWlnGWY5ptsic716z1Pdk3D6ombloqLpYb3P4pg0boi3nfldJcTEiFd+VdwnNzjwhPxL1KnK3JXEBcg5+GA4yDHQ9gq/UcjQ1zeI4juXoAqY68cHHSitea0IqdgW/ok4lzVT9I70eSV+XImmgRiXbIfEU3SsUJxHPRiGA6G2dySFuWW311WiIs4P+TFqFer6Q3TrJk3i1M8KCg6Kc8Qc4+cgVfZz6w/+Y3CPUk9ZB/6G0R44BNKdR8Idf0SX4Vhad5UPRQUL51FnwkK16t43tb+F/3PmXE40LHGiUums2tWl/7/16sv+Q5/c+vw41bUI3Rb7CvqL4seQiDGoSHZhNlHE/xfof5rCOZEuHJP06WLR/tUMePr3rvIfznaiRtdAsXwfo+6LdWz+5gV4kDUf5h58SJfLApnAXbOcpGoU0fwFPYohqP9N9Y5neZtmE6q6u4s+Kjsefk/zXAUYfA7Y7hjyi6bB5LVK4mnc/V549NOpzz+wq3Fs5RoQrfoC8+4X9hUolG27Mcm47aYaYPaVAWg6cj4/aR/jx+YgIUGRSDoEgpzoB+g7vJ2q7ubnbPMl3AtLRQIMM51lx0W35s9aJ+fIfq2ZFloWWN6wjVpu2KMX7hyH50f/5gMx90QsIuYSmI+CoDzc7bmHBp35JWBPZWDFCYEMhcH6hipvrFVydLmwV5VvGK97/KYOhCg1sNOSdtHLY6TDbp/4pig9D0HTNLBDPI6zcpP4dA118n8obvYhHV3nn1+vyAWYOQ2mS3OqcsOXc8IDhZuyqvzcNArVHQnrdynR4DW0lyWnGedgBCdQqWxaIxlySpqKG5Mo27WnUFyWc9VGj/AQrGcqSTvv8Ny2INgn2Yq5s/Zm1oRWE8rkfCoNCyS+9GhMICDfHckSUNVC8K2IouoYrUzBieOHCOvcSy/3zmqYwMsHrZqcMh8S9JY70ye0LvNOEvABzuhskBEG7NOxNcOLqju9IxaXwXnAo7KMi46qiL779TuobZTo5TxLkxAI7mUAZitx5c9FBFn45h837zYwQCVN+4DKtOlRtaY+HdWyJ57LXtNaWB4/w53h1EWmq7d+lMmOLUhHnxhBAXNW3CkDMSWUl3IvXEnhCttQQCgCMjPynNL2h0Qi0jsN9otujEFU7Oxm5fMXFHqaDq7gf4puxgrRp9QuKtnSJyj5G3TTc0ccQ6AnCDDALY8A/IReCM/boBjZikP+ek0TY7IZFSx2Se7xYq8oBG40bf9Ioy6VBFvw6yiaQ/httGbY1glZHzRdY9IXyxNiNljsxUEHCi/v+sbqyL0gvfDBdIPlBnhgg+yrFbxRqCL5a5YH0HnJ9uwCM5qtif9rzmaR84aczGwGMW9gDxMUeU/7CD2W1DkB+CNbUNb6vDRr/03thfW+rJrHuspTxZHX5nTpTVqSENVklq2diBIZ3MPcju73Ect5bevbbXRNMDKKegBmBwWTzvMaClE1pJkJ4xKO3OjJClaMYCpYrRxnpqs/tcK9NSifYDJMbUjtwYAog+JnaF8yHvYGm3cLmv59FqC8svr5HHmR55JC/8S0ernBnRIc/BbZMb0tXmxNZ1/huswG4Y2BhniIn1rBZUvY7i0e4mLpeJTe+Q8GNQ5rf7ftt4fZYF8j4kKG9PlANcLNMT9JOVRXIyNCLlPp7r2/XOvBq16QotqbNyu/JmMys5/Hegz0bxFNVLoVY7bx7l/zPECzVEhCVaSZ6AmeiDTUjZGSDbSt54CB0R5RQ1dcOUQR1Z/TgEY0FNGkG2W8OSdLgjubGDtZn/MXZgvbF7+Jq69xqSkn0FNm/R8GIi2R817rVW2pBd+beOxCzWRsGLPXqPK3WlAwTVAosEHCnGoxHDSM2p0qT7wLJ2oDbRkYHcN4Wu+1dlkzYTbKUpxi6ZfLcdWuY0d+FgESZ8q5Hb6CQg7PG0boNYVcQstC2i6vhFqQ109q3ED+3cJ2Kb2FRYpa44OMCjsCYXRKV8+r7lWcfmaB3Exwb+1+W3FFz14nnTXqOdp8ARmAXCa21FadF2P76dkp4YBEjJ8UFumd5eR699/wqL21fd3lXKyus+whAkFuz1FzPxVuQSTxRMQb9jqKyGQXHGc09RymaAHgdnME4OWRhJHkyOZGO3mtdGjm0xgDNWT8gqWlnqnkd72B/1VTdP8qujoySX97MGbxpYaQUx2jWbmMC8/+MLFCxeukiRHr50iHJ2zZjc9p1nA0i/w0CiIu5mY0o09qunS2BZkMOD16UlSdLq3hg8lsj2yQOO9GwrXbIFEscwTVYcD9mteXQMOlImXIk+5wkTRkSg6kVVSYr73zKk6YZ5DyiNi+G6nxV+5YubW/YS/QCQyLB5+HcuVbG9qPPWLdp1qyjSkBFyQMZyOqSdhn6XvRP8bmdKSMZ1TgP5+SigyBtBIDlNOBMnzT9B60agyKm+skbFB+ZSoH1rmqcnFDcq/euAD/wbNdcFZwhJfzbUWq0/IUhMz7Rs+tpZjXvOF/p99qQ2S/APPUPmTjwCYM59spK1qXPoi676ALNrRppR7eDdebBcTxX4+TrGD51nnnOLdC5uZP4ZsyAynAC/t+59b7NXDfqtQUzpgANqc/ivZkHNgoA4SRDJTfv7/dr3azHWRiWXyVQSEAuCJpk4WeEq0CGJ1VOz9Y+7E6eJxPpmm4AED859A6Dm/N79IZRcD07/l0XOvy7DmSoYFvtXxttPkPQCOY2bE8R6DENfM455qJ7TG4IngQc4rMnkWlOVOjj9GYfRvS9NZoFbBBRzBQcfzuuxkakx/wJGUJamrlRQEy2eM4CM5D0gRsytdxfeZ1u8Hm09uKuA6PG0gEKNE7+ypUC5XRmMwe4jbxwi9b6seeYNrL98NpSgJIqgVUHsroQiAvMrh1d035s8dYNXWDXRANND2/F2PHtT9breIPXPWGFx9MNO6EfA5Kz7gjS4CN5fs1e3hZ0a5VZO01+ReXSblz1gj5ALeTCyi0RUAYe/R121iQUnQwC0ByDu4LHLQdAoGXPhJe1LDcolsax5q7RkEceNPm358e/++wzoXKAW5CzkhLZsaIzvjoG0Q7cWa9UAN5yUqNzlvhXv9xvy321vpUnN37MzYP1HZiIyjg9h07hvnMG/lj5lutJeJvL4Ru8bD3jPA2RgdyHZObBfdOZP7KwdfTvoxUoa+BknJQX++BooV41AEtu7+pA8rmB5WA/D//Umrt5/0d4ITx/NG2oCD+fIGHVdbiL7S5vHIjCaRbxibqOl3y9HHoAmnzIieeUSh/hvypMaZIs2UZaXxu+sTP9ab24ysA/lB6H1GJ+8tdjlJXJypqcf3qibL3Y03OJctG2rPZp/DHuFM/fAPcpPeUZjrFrGWjqS/r4geuGixu1FoxJshn3OvMYl9xUJyi7LVXmppzpjM/4dP2sWGz7uQSFwfzzV52m25mKpkw7/py6ACUy+z4DKRic1Mh+9LVT9RSWqKgNGDE3NkKrr/UkhqVyv5yX2pOfGVwRCH5Un9XWlUzPafut2AI/YxQuM9+oGri3jgJEd8mNCHuPDNVXDh4m7jTznNdJOjfoex8GL7d1DJQ2/IsmLiOtaUP/lg+/CT1xHQATL3rcB9bu8Q4ZMu5jcfXNdotMVMsheuRxhCTG2s3uyKngN+zECPzuGa3IPr2aT3sy/6jMFCyjKIij+mSZK/04jNbFyYAgXDTkLHIO0oxajvMfgXt2d9pa/vTOZhHgB3hY7d07jd8yephZiZr+fUznkmTZkaXzIOCnXmUosFAO5P29SgWKRSW+rlgG7QobNXueSbCRIVO1SkpJZcHIkkT6Ss7hJfIyPv6wvsvBALicCNkXItzmZ+3hT0nGS0hOsOG3ypJFWqjUlDH90QTe9kEY3j/y7bZwEYilQ6NRnKDXJjyB3tBcup+hSCxRahsFmgBv8Kn3UbR5xIokjNmG8LmYahkMHdBaIh7JYKeoScODMz1fujC8mdnnxFEQAL5oMznvdPms6R/gy3P9o5bpMTbcVhP3wIGP24b3lw0/dQJ+7be7S4YOkmH274hYEwJYsgmW2zV8/c+QFPxw2gCTqYa1sjN8bJywIi/oiUXX4LXIUAPdQnULXXkQLnRIFwUzMLAlrbcKhhS42K3zk26N2YSF2vxsB/JKBl8JuF3miExn/Rp4loJbMzl2DoPnPUt4pUS+36iYh2D5vOOjHMk4rl9PSXj6D8lAAxPU+Gx2SHS5oOG548s+23AVF9BJY+o44YCP1iBfx7skEbTl2cUCc6m3HyPt+BJks8jGuOUyPuz40LzuSkRPmWiaKBcI5ZUINM/rknKI9Q+YZeDoeiUtH8kt3Iv1/p22hADFXwsmTF2brjoztaoZJ5zpSjmkfmqOKiL1HAD4Xgxv3aAuPeRWVyZTwNkRqDb9ZvnPn8iF5BwuwKIk1JtnqwxWOe4pCC4KNKlaYyxRzZCOJrm5Kq02qitWSd9wozW2ca3QuRmc1pJNSTqtWI9/it2u/uP9tfUPpcnDQ2ayamQIg9HTPjsRI/usPTbFb1Jds1tAwf7b/Mto8PuhMURuZa0X5Sehl1JUDBlUH8/+zqznag+FDfXRUBsAWVSKPTgIMB60JQ/91nSMTKh+FuAB0UfLUMElBke66D46SnevZZd7L1dp4zPatA92bRKZ2yETHB6xnMHvOmDMmxU0aCT8x3b231RV/69YI4VCBK740hI9rx5KycvirOXoWwMUOmajZ60saJMEoZROWdW1BjoqOg2Yk/JQxOkdZ/FHlPg+6t6Th751tRz+HHYJRszzwHaG2YFfq0F4OpPhLj6RAqk7nrF47Dk/U7ArK6eAHfjFSox794SsgAucmRYn1Rbgu3FIHi8kiIGx58A8s719IaI+XYJJw0T9AHF63w1WDO3TnC8nEZBew01tXrGQISMN8eqA11zj12hBCXIG7pOVPE2eHl6p9ZT29f5rsOzQvNxLuQVQg8MMPsmreHK5CxZKuyhQIH8A4AAA=";
+const KABBI_IMAGES = {
+  default: KABBI_B64,
+  cute:    KABBI_B64,
+  love:    KABBI_B64,
+  think:   KABBI_B64,
+  talisman:KABBI_B64,
+  wink:    KABBI_B64,
+  basic:   KABBI_B64
+};
+let isTyping = false;
+
+function setKabbi(mode='default'){
+  const img = document.getElementById('kabbi-img');
+  img.style.opacity = 0;
+  setTimeout(()=>{ img.src = KABBI_IMAGES[mode]||KABBI_IMAGES.default; img.style.opacity=1; },200);
+  img.style.transition='opacity 0.2s';
+}
+
+function setSpeech(text, mode='default'){
+  setKabbi(mode);
+  const el = document.getElementById('speech-text');
+  el.innerHTML = text;
+}
+
+function seed(){
+  const d=new Date();
+  return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+}
+
+function setDate(){
+  const d=new Date();
+  const days=['일','월','화','수','목','금','토'];
+  const sub=document.getElementById('today-date-sub');
+  if(sub) sub.textContent=`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})`;
+}
+
+function animateBars(love,money,work,health){
+  setTimeout(()=>{
+    const set=(id,pctId,val)=>{
+      document.getElementById(id).style.width=val+'%';
+      document.getElementById(pctId).textContent=val+'%';
+    };
+    set('bar-love','pct-love',love);
+    set('bar-money','pct-money',money);
+    set('bar-work','pct-work',work);
+    set('bar-health','pct-health',health);
+  },300);
+}
+
+function starsHTML(n,label=''){
+  let s='';
+  for(let i=1;i<=5;i++) s+=`<span class="star ${i<=n?'on':''}">⭐</span>`;
+  if(label) s+=`<span class="star-label">${label}</span>`;
+  return `<div class="stars-row">${s}</div>`;
+}
+
+function loadingHTML(){
+  return `<div class="loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>`;
+}
+
+function showResultCard(containerId, {icon, iconBg, title, sub, content}){
+  document.getElementById(containerId).innerHTML=`
+    <div class="result-card">
+      <div class="result-header">
+        <div class="result-icon-wrap" style="background:${iconBg||'rgba(92,18,176,0.3)'}">${icon}</div>
+        <div class="result-title-wrap">
+          <div class="title">${title}</div>
+          ${sub?`<div class="sub">${sub}</div>`:''}
+        </div>
+      </div>
+      <div class="result-body">${content}</div>
+    </div>`;
+}
+
+// ═══ 네비게이션 ═══
+let currentNav='home';
+function goNav(page){
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  const navEl=document.getElementById('nav-'+page);
+  if(navEl) navEl.classList.add('active');
+  showSection(page);
+  currentNav=page;
+}
+function showSection(page){
+  document.querySelectorAll('.page-section').forEach(el=>el.classList.remove('active'));
+  const el=document.getElementById('page-'+page);
+  if(el) el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══ 오늘의 말씀 ═══
+const DAILY_WORDS = [
+  {main:'지금의 작은 노력이\n큰 행운으로 돌아올 거예요.',sub:'포기하지 말고, 끝까지 가보세요!'},
+  {main:'막혀 있던 길이\n오늘 드디어 열립니다.',sub:'용기를 내세요, 때가 왔어요!'},
+  {main:'따뜻한 마음이\n좋은 인연을 불러옵니다.',sub:'먼저 웃으면 복이 따라와요.'},
+  {main:'기회는 준비된 사람에게\n반드시 찾아옵니다.',sub:'지금 하는 노력을 믿어보세요!'},
+  {main:'오늘의 선택이\n내일의 행운을 만듭니다.',sub:'신중하되 두려워하지 마세요.'},
+];
+function setDailyWord(){
+  const w=DAILY_WORDS[seed()%DAILY_WORDS.length];
+  const el=document.getElementById('daily-word');
+  if(el) el.innerHTML=w.main.replace('\n','<br>');
+  const sub=document.querySelector('.banner-sub');
+  if(sub) sub.textContent=w.sub;
+}
+
+// ═══ AI API 호출 ═══
+async function callKabbi(prompt, systemPrompt){
+  const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000,
+      system: systemPrompt || `당신은 '깨비아씨'입니다. 한국의 신비로운 운세 전문가 캐릭터로, 따뜻하고 신비로우며 때로는 장난기 있는 말투로 운세를 알려줍니다. 
+반드시 한국어로만 답변하세요. 
+이모지를 적절히 사용하세요.
+운세는 긍정적이지만 현실적으로, 너무 뻔하지 않게 개성 있게 말해주세요.
+답변은 200자 이내로 간결하게.`,
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  const data = await resp.json();
+  return data.content?.map(c=>c.text||'').join('')||'운세를 불러오지 못했어요 😥';
+}
+
+// ═══ 오늘의 운세 ═══
+const TODAY_FORTUNES = [
+  {love:80,money:70,work:90,health:75,stars:4,label:'좋은 기운이 가득한 하루!'},
+  {love:65,money:85,work:70,health:80,stars:4,label:'금전운이 특히 강한 날!'},
+  {love:90,money:60,work:75,health:70,stars:5,label:'사랑운이 최고조!'},
+  {love:70,money:75,work:60,health:90,stars:3,label:'건강에 집중하는 날'},
+  {love:55,money:80,work:85,health:65,stars:4,label:'일에서 빛나는 날!'},
+  {love:85,money:65,work:80,health:75,stars:4,label:'인간관계 운이 활짝!'},
+  {love:60,money:90,work:70,health:80,stars:4,label:'재물복이 들어오는 날!'},
 ];
 
-const consult={
-love:[
-"상대가 완전히 멀어진 것보다 먼저 다가가는 부담을 느끼는 흐름이 보여요. 답을 재촉하기보다 가벼운 안부가 더 좋은 반응을 만듭니다.",
-"연락의 문제보다 타이밍의 문제에 가깝습니다. 조급함을 내려놓으면 흐름이 다시 움직일 수 있어요."
-],
-money:[
-"큰돈보다 작은 흐름이 먼저 열립니다. 지출을 정리하면 들어오는 복이 커집니다.",
-"금전운은 서서히 회복 중입니다. 급한 투자보다 안정적인 선택이 유리합니다."
-],
-mind:[
-"많이 지쳐 있었네요. 지금 필요한 것은 더 버티는 힘이 아니라 잠시 숨을 고를 여유입니다.",
-"마음이 흔들리는 건 약해서가 아니라 오래 애써왔기 때문입니다. 오늘은 스스로를 다정하게 대해주세요."
-],
-general:[
-"지금은 속도보다 방향이 중요합니다. 조용히 정리하면 길이 열립니다.",
-"작은 신호를 놓치지 마세요. 변화는 늘 조용히 먼저 옵니다."
-]
-};
+async function getTodayFortune(){
+  const f = TODAY_FORTUNES[seed()%TODAY_FORTUNES.length];
+  setKabbi('cute');
+  setSpeech('오늘의 운세를 살펴볼게요 🔮<br><span class="typing-cursor"></span>','cute');
 
-function seed(){let d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
-function today(){
-  I('kkabbi-cute.png');
-  S('오늘의 운세를 전해드릴게요 ✨');
-  O('🌙 오늘의 운세\n\n총운: '+daily[seed()%daily.length]+'\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: '+((seed()%9)+1));
-}
-function allZodiac(){
-  I('kkabbi-basic.png');
-  S('12띠 운세를 모두 펼쳐볼게요 🐭');
-  let txt='🐭 오늘의 12띠 운세\n\n';
-  zodiacNames.forEach((z,i)=>{txt+=z+' : '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n';});
-  O(txt);
-}
-function myZodiac(){
-  const z=document.getElementById('zodiacSelect').value;
-  if(!z){O('띠를 먼저 선택해 주세요 😊');return;}
-  const i=zodiacNames.indexOf(z);
-  I('kkabbi-think.png');
-  S(z+' 운세를 자세히 살펴볼게요 ✨');
-  O('🔮 '+z+' 오늘의 운세\n\n총운: '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n사랑운: 좋은 인연의 말이 오갈 수 있습니다.\n금전운: 작은 복이 들어오는 흐름입니다.\n건강운: 무리하지 말고 몸을 따뜻하게 하세요.\n행운 숫자: '+(((seed()+i)%9)+1));
-}
-function reunion(){
-  I('kkabbi-love.png');
-  S('재회운을 볼게요 💗');
-  O('💞 재회 궁합\n\n감정 연결도 87%\n상대 심리: 아직 미련은 있으나 자존심이 큽니다.\n연락 타이밍: 저녁 시간대 짧은 안부\n깨비 조언: 감정적인 장문 메시지는 피하세요.');
-}
-function talismanMenu(){
-  I('kkabbi-talisman.png');
-  S('부적 메뉴가 열렸어요 ✨<br>필요한 부적을 골라보세요.');
-  O('<div>📜 부적</div><div class="talismanGrid">'+
-    '<div class="talismanCard">🎁<br><b>소원성취부적</b><br><small>무료</small><br><button onclick="wish()">보기</button></div>'+
-    '<div class="talismanCard">🎓<br><b>합격부적</b><br><small>프리미엄</small><br><button onclick="premiumTalisman()">보기</button></div>'+
-    '<div class="talismanCard">🌟<br><b>귀인부</b><br><small>준비중</small><br><button onclick="coming()">보기</button></div>'+
-    '<div class="talismanCard">💰<br><b>금전재물부적</b><br><small>준비중</small><br><button onclick="coming()">보기</button></div>'+
-    '<div class="talismanCard">💞<br><b>인연부적</b><br><small>준비중</small><br><button onclick="coming()">보기</button></div>'+
-    '<div class="talismanCard">💼<br><b>취직부적</b><br><small>준비중</small><br><button onclick="coming()">보기</button></div>'+
-    '</div>');
-}
-function wish(){
-  I('wish-talisman-preview.png');
-  S('소원성취부적을 무료로 드릴게요 ✨<br>소원을 빌며 지니고 계세요.');
-  O('🌟 소원성취부적\n\n간절한 소원이 반드시 이루어지도록 돕는 신비의 부적입니다.\n\n[부적의 효능]\n간절한 소망을 신령님의 기운과 연결하여 막힌 길을 열고 원하는 바를 이루도록 이끌어줍니다.\n\n[이런 분께 추천합니다]\n• 이루고 싶은 소원이 있는 분\n• 인생의 중요한 목표가 있는 분\n• 시험, 취업, 합격을 원하는 분\n• 새로운 시작을 앞둔 분\n• 모든 일이 잘 풀리길 바라는 분\n\n[사용 방법]\n지갑, 다이어리, 가방 등에 넣고 소지하거나 원하는 곳에 모셔두세요.\n마음으로 간절히 기원하면 그 기운이 더욱 강해집니다.\n\n🔒 부적 이미지는 결제 후 공개됩니다.\n\n<button onclick=\"payWish()\">💳 소원성취부적 결제하기</button>');
-}
-function premiumTalisman(){
-  I('kkabbi-talisman.png');
-  S('합격부적은 프리미엄 부적입니다 👑');
-  O('🎓 합격부적\n\n공무원 시험, 취업, 자격증, 승진 시험을 준비하는 분들을 위한 프리미엄 부적입니다.\n\n🔒 부적 이미지는 결제 후 공개됩니다.\n결제 완료 후 고화질 다운로드가 가능합니다.\n\n<button onclick="payExam()">💳 합격부적 결제하기</button>');
-}
-function coming(){
-  I('kkabbi-talisman.png');
-  S('이 부적은 곧 열릴 예정입니다 ✨');
-  O('📜 준비 중인 부적입니다.\n\n설명 페이지와 다운로드 기능을 곧 연결할 예정입니다.');
-}
-function ask(){
-  const q=document.getElementById('q').value.trim();
-  if(!q){O('질문을 입력해 주세요 😊');return;}
-  let type='general';
-  if(q.includes('연락')||q.includes('사랑')||q.includes('재회')) type='love';
-  if(q.includes('돈')||q.includes('금전')||q.includes('재물')) type='money';
-  if(q.includes('힘들')||q.includes('고민')||q.includes('불안')) type='mind';
-  const img={love:'kkabbi-love.png',money:'kkabbi-talisman.png',mind:'kkabbi-cute.png',general:'kkabbi-wink.png'}[type];
-  const title={love:'💗 사랑 상담',money:'💰 금전 상담',mind:'🌙 마음 상담',general:'🔮 깨비아씨 상담'}[type];
-  I(img);
-  S('깨비아씨가 마음을 담아 살펴보았어요 ✨');
-  O(title+'\n\n'+pick(consult[type])+'\n\n🍀 깨비 한마디: 급할수록 말은 짧고 마음은 따뜻하게 전해보세요.');
-}
-function youtube(){
-  O('📺 터신전 유튜브\n\n터신전 유튜브 ');
-  S('📺 터신전 유튜브 ');
-  window.open('https://youtu.be/tSB9tmxs86s','_blank');
+  const todayEl = document.getElementById('today-result');
+  if(todayEl) todayEl.innerHTML=loadingHTML();
+  const homeMsg = document.getElementById('home-fortune-msg');
+  if(homeMsg) homeMsg.innerHTML='<div class="loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>';
+
+  animateBars(f.love,f.money,f.work,f.health);
+
+  try{
+    const d=new Date();
+    const dateStr=`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+    const text = await callKabbi(
+      `오늘(${dateStr}) 운세를 알려주세요. 총운 한 문장, 사랑운 한 문장, 금전운 한 문장, 오늘의 행운 숫자(1~9)를 포함해서 깨비아씨 스타일로 말해주세요.`
+    );
+    setSpeech('오늘의 운세가 나왔어요! ✨','wink');
+    if(homeMsg) homeMsg.innerHTML=`✨ ${text.split('\n')[0]||text.slice(0,50)}...`;
+
+    const content=`
+      ${starsHTML(f.stars,f.label)}
+      <div class="fortune-bars">
+        <div class="bar-row"><span class="bar-label">❤️ 사랑</span><div class="bar-track"><div class="bar-fill bar-love" style="width:${f.love}%"></div></div><span class="bar-pct">${f.love}%</span></div>
+        <div class="bar-row"><span class="bar-label">💰 금전</span><div class="bar-track"><div class="bar-fill bar-money" style="width:${f.money}%"></div></div><span class="bar-pct">${f.money}%</span></div>
+        <div class="bar-row"><span class="bar-label">💼 직장</span><div class="bar-track"><div class="bar-fill bar-work" style="width:${f.work}%"></div></div><span class="bar-pct">${f.work}%</span></div>
+        <div class="bar-row"><span class="bar-label">🌿 건강</span><div class="bar-track"><div class="bar-fill bar-health" style="width:${f.health}%"></div></div><span class="bar-pct">${f.health}%</span></div>
+      </div>
+      <div class="fortune-text">${text.replace(/\n/g,'<br>')}</div>`;
+    if(todayEl) showResultCard('today-result',{icon:'🌙',iconBg:'rgba(92,18,176,0.4)',title:'오늘의 운세',sub:dateStr,content});
+  }catch(e){
+    setSpeech('잠시 연결이 끊겼어요 😥<br>다시 시도해 주세요.','think');
+    if(todayEl) todayEl.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-muted)">운세를 불러오지 못했어요. 다시 시도해주세요 😢</div>';
+  }
 }
 
- function about(){
-  I('kkabbi-think.png');
-  S('🔮 神 타로카드');
-  O('神 타로카드는 우리 전통 신앙과 무속적 상징을 바탕으로 만든 메시지 카드입니다.\n\n운세, 조언, 마음의 방향을 살펴보는 카드로 활용할 수 있습니다.\n\n문의: 010-9420-4886');
+// ═══ 질문 상담 ═══
+async function askQuestion(){
+  const q=document.getElementById('q-input').value.trim();
+  if(!q){setSpeech('질문을 먼저 입력해주세요 😊');return;}
+
+  let mode='wink';
+  if(q.includes('연락')||q.includes('사랑')||q.includes('재회')||q.includes('그 사람')) mode='love';
+  if(q.includes('힘들')||q.includes('고민')||q.includes('불안')||q.includes('걱정')) mode='think';
+  if(q.includes('돈')||q.includes('금전')||q.includes('재물')||q.includes('취직')) mode='talisman';
+
+  setSpeech('깨비아씨가 마음을 담아 살펴보고 있어요 ✨<br><span class="typing-cursor"></span>', mode);
+
+  try{
+    const answer = await callKabbi(`사용자 질문: "${q}"\n\n이 질문에 대해 깨비아씨 스타일로 운세/조언을 해주세요.`);
+    setSpeech(answer.replace(/\n/g,'<br>'), mode);
+    document.getElementById('q-input').value='';
+  }catch(e){
+    setSpeech('잠시 연결이 끊겼어요 😥 다시 시도해주세요.','think');
+  }
 }
-today();
+
+// ═══ 재회 궁합 ═══
+async function getReunion(){
+  const me=document.getElementById('r-me').value.trim();
+  const you=document.getElementById('r-you').value.trim();
+  const meBirth=document.getElementById('r-me-birth').value;
+  const youBirth=document.getElementById('r-you-birth').value;
+  const memo=document.getElementById('r-memo').value.trim();
+
+  if(!me||!you){setSpeech('두 분의 이름을 모두 입력해 주세요 😊','think');return;}
+
+  setSpeech(`${me}님과 ${you}님의 재회운을 살펴볼게요 💗<br><span class="typing-cursor"></span>`,'love');
+  document.getElementById('reunion-result').innerHTML=loadingHTML();
+  document.getElementById('reunion-btn').disabled=true;
+
+  const matchPct = ((seed()+(me+you).split('').reduce((a,c)=>a+c.charCodeAt(0),0))%30)+60;
+
+  try{
+    const prompt=`${me}(${meBirth||'생년월일 미입력'})과 ${you}(${youBirth||'생년월일 미입력'})의 재회 궁합을 봐주세요.${memo?` 상황: ${memo}`:''}
+재회 가능성, 상대방 심리, 연락 타이밍, 깨비 조언을 포함해서 깨비아씨 스타일로 감성적이고 구체적으로 알려주세요. 재회 가능성 수치도 포함하세요.`;
+    const text = await callKabbi(prompt);
+    setSpeech(`${me}님과 ${you}님의 인연을 살펴봤어요 💗`,'love');
+
+    const content=`
+      <div class="match-circle-wrap">
+        <div class="match-circle" style="--pct:${matchPct}%">
+          <div class="match-num">${matchPct}%</div>
+          <div class="match-label">재회 가능성</div>
+        </div>
+      </div>
+      <div class="fortune-text">${text.replace(/\n/g,'<br>')}</div>`;
+    showResultCard('reunion-result',{icon:'💗',iconBg:'rgba(255,110,180,0.25)',title:`${me} ♡ ${you}`,sub:'재회 궁합 분석',content});
+  }catch(e){
+    document.getElementById('reunion-result').innerHTML='<div style="text-align:center;padding:20px;color:var(--text-muted)">오류가 발생했어요. 다시 시도해주세요 😢</div>';
+  }
+  document.getElementById('reunion-btn').disabled=false;
+}
+
+// ═══ 띠별 운세 ═══
+async function getZodiac(){
+  const z=document.getElementById('zodiac-sel').value;
+  if(!z){setSpeech('띠를 먼저 선택해 주세요 😊','think');return;}
+  setSpeech(`${z} 운세를 자세히 살펴볼게요 ✨<br><span class="typing-cursor"></span>`,'basic');
+  document.getElementById('zodiac-result').innerHTML=loadingHTML();
+  try{
+    const text=await callKabbi(`${z}인 사람의 오늘 운세를 총운, 사랑운, 금전운, 건강운, 행운 숫자를 포함해서 깨비아씨 스타일로 알려주세요.`);
+    setSpeech(`${z}의 오늘 운세예요 ✨`,'wink');
+    const zIdx=['쥐띠','소띠','호랑이띠','토끼띠','용띠','뱀띠','말띠','양띠','원숭이띠','닭띠','개띠','돼지띠'].indexOf(z);
+    const stars=((seed()+zIdx)%3)+3;
+    const content=`${starsHTML(stars)}<div class="fortune-text">${text.replace(/\n/g,'<br>')}</div>`;
+    showResultCard('zodiac-result',{icon:'🔮',iconBg:'rgba(79,216,196,0.2)',title:`${z} 오늘의 운세`,sub:new Date().toLocaleDateString('ko-KR'),content});
+  }catch(e){
+    document.getElementById('zodiac-result').innerHTML='<div style="text-align:center;padding:20px;color:var(--text-muted)">오류가 발생했어요 😢</div>';
+  }
+}
+
+async function getAllZodiac(){
+  setSpeech('12띠 전체 운세를 펼쳐볼게요 🐭<br><span class="typing-cursor"></span>','basic');
+  document.getElementById('all-zodiac-result').innerHTML=loadingHTML();
+  const zodiacs=['쥐띠','소띠','호랑이띠','토끼띠','용띠','뱀띠','말띠','양띠','원숭이띠','닭띠','개띠','돼지띠'];
+  try{
+    const text=await callKabbi(`오늘 12띠 전체 운세를 각 띠별로 한두 문장씩 깨비아씨 스타일로 알려주세요. 각 띠 이름을 볼드로 표시해주세요.`,
+      `당신은 깨비아씨입니다. 12띠 운세를 각각 개성 있게, 재치 있게, 긍정적이면서도 현실적인 조언을 담아 한국어로 알려주세요.`);
+    setSpeech('오늘 12띠 운세예요 🐭','wink');
+    const content=`<div class="fortune-text">${text.replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--gold)">$1</strong>')}</div>`;
+    showResultCard('all-zodiac-result',{icon:'🐭',iconBg:'rgba(79,216,196,0.2)',title:'12띠 오늘의 운세',sub:'전체 띠 운세 보기',content});
+  }catch(e){
+    document.getElementById('all-zodiac-result').innerHTML='<div style="text-align:center;padding:20px;color:var(--text-muted)">오류가 발생했어요 😢</div>';
+  }
+}
+
+// ═══ 커플 궁합 ═══
+async function getCouple(){
+  const me=document.getElementById('c-me').value.trim();
+  const you=document.getElementById('c-you').value.trim();
+  const meBirth=document.getElementById('c-me-birth').value;
+  const youBirth=document.getElementById('c-you-birth').value;
+  if(!me||!you){setSpeech('두 분의 이름을 입력해 주세요 😊','think');return;}
+  setSpeech(`${me}님과 ${you}님의 궁합을 분석할게요 💑<br><span class="typing-cursor"></span>`,'love');
+  document.getElementById('couple-result').innerHTML=loadingHTML();
+  document.getElementById('couple-btn').disabled=true;
+  const matchPct=((seed()+(me+you).split('').reduce((a,c)=>a+c.charCodeAt(0),0))%25)+68;
+  try{
+    const text=await callKabbi(`${me}(${meBirth||'생년 미입력'})과 ${you}(${youBirth||'생년 미입력'})의 커플 궁합을 분석해주세요. 궁합 점수, 성격 조화, 사랑 스타일, 위기 요소, 깨비 조언을 포함해서 깨비아씨 스타일로 알려주세요.`);
+    setSpeech(`${me}♡${you} 궁합 결과예요! 💑`,'love');
+    const content=`
+      <div class="match-circle-wrap">
+        <div class="match-circle" style="--pct:${matchPct}%">
+          <div class="match-num">${matchPct}%</div>
+          <div class="match-label">궁합 점수</div>
+        </div>
+      </div>
+      <div class="fortune-text">${text.replace(/\n/g,'<br>')}</div>`;
+    showResultCard('couple-result',{icon:'💑',iconBg:'rgba(255,110,180,0.25)',title:`${me} ♡ ${you}`,sub:'커플 궁합 분석',content});
+  }catch(e){
+    document.getElementById('couple-result').innerHTML='<div style="text-align:center;padding:20px;color:var(--text-muted)">오류가 발생했어요 😢</div>';
+  }
+  document.getElementById('couple-btn').disabled=false;
+}
+
+// ═══ 부적 ═══
+function showTalisman(type){
+  const config={
+    wish:{icon:'🎁',title:'소원성취 부적',bg:'rgba(79,216,196,0.2)',
+      content:`<div class="fortune-text">간절한 소원이 반드시 이루어지도록 돕는 신비의 부적입니다.\n\n<strong style="color:var(--gold)">✦ 부적의 효능</strong>\n신령님의 기운과 연결하여 막힌 길을 열고 원하는 바를 이루도록 이끌어줍니다.\n\n<strong style="color:var(--gold)">✦ 이런 분께 추천</strong>\n시험, 취업, 합격을 원하는 분\n새로운 시작을 앞둔 분\n모든 일이 잘 풀리길 바라는 분\n\n<strong style="color:var(--gold)">✦ 사용 방법</strong>\n지갑, 다이어리, 가방에 넣고 소지하거나 원하는 곳에 모셔두세요.</div>
+      <button class="submit-btn" onclick="alert('결제 기능 준비 중입니다!')" style="margin-top:14px">💳 소원성취 부적 받기</button>`},
+    exam:{icon:'🎓',title:'합격 부적 (프리미엄)',bg:'rgba(247,213,104,0.2)',
+      content:`<div class="fortune-text">공무원 시험, 취업, 자격증, 승진 시험을 준비하는 분들을 위한 프리미엄 부적입니다.\n\n🔒 부적 이미지는 결제 후 공개됩니다.</div>
+      <button class="submit-btn" onclick="alert('결제 기능 준비 중입니다!')" style="margin-top:14px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#220050">💳 합격 부적 결제하기</button>`},
+  };
+  const c=config[type]||{icon:'📜',title:'준비 중',bg:'rgba(92,18,176,0.3)',content:'<div class="fortune-text" style="text-align:center;padding:10px">곧 열릴 예정입니다 ✨</div>'};
+  setKabbi('talisman');
+  setSpeech(`${c.title}을 살펴볼게요 ✨`,'talisman');
+  showResultCard('talisman-result',{icon:c.icon,iconBg:c.bg,title:c.title,sub:'부적 안내',content:c.content});
+}
+
+// ═══ 타로 ═══
+const TAROT_CARDS = ['🌟 별','🌙 달','☀️ 태양','⚡ 탑','🎭 광대','👑 황제','💫 세계','🔮 마법사','⚖️ 정의','🌈 심판'];
+async function getTarot(){
+  const q=document.getElementById('tarot-q').value.trim();
+  setSpeech('타로카드를 뽑고 있어요 🃏<br><span class="typing-cursor"></span>','think');
+  document.getElementById('tarot-result').innerHTML=loadingHTML();
+  document.getElementById('tarot-btn').disabled=true;
+  const card=TAROT_CARDS[Math.floor(Math.random()*TAROT_CARDS.length)];
+  try{
+    const prompt=q?`질문: "${q}" 타로카드 "${card}"가 나왔습니다. 이 카드의 의미와 질문에 대한 답을 깨비아씨 스타일로 신비롭고 감성적으로 알려주세요.`
+      :`타로카드 "${card}"가 나왔습니다. 오늘 이 카드가 전하는 메시지를 깨비아씨 스타일로 신비롭고 감성적으로 알려주세요.`;
+    const text=await callKabbi(prompt);
+    setSpeech(`${card} 카드가 나왔어요 🃏`,'wink');
+    const content=`<div style="text-align:center;font-size:48px;margin:8px 0">${card.split(' ')[0]}</div>
+      <div style="text-align:center;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:14px">${card}</div>
+      <div class="fortune-text">${text.replace(/\n/g,'<br>')}</div>`;
+    showResultCard('tarot-result',{icon:'🃏',iconBg:'rgba(139,63,232,0.3)',title:'타로 카드 결과',sub:q||'오늘의 타로',content});
+  }catch(e){
+    document.getElementById('tarot-result').innerHTML='<div style="text-align:center;padding:20px;color:var(--text-muted)">오류가 발생했어요 😢</div>';
+  }
+  document.getElementById('tarot-btn').disabled=false;
+}
+
+// ═══ 초기화 ═══
+setDate();
+setDailyWord();
+animateBars(80,70,90,75);
+document.getElementById('home-fortune-msg').textContent='🌙 오늘의 운세 보기 버튼을 눌러주세요!';
 </script>
 </body>
-
-
 </html>
