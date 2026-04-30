@@ -908,7 +908,7 @@ function setDailyWord(){
 async function callKabbi(prompt, systemPrompt){
   const p = prompt || '';
   try{
-    const resp = await fetch('/api/fortune', {
+    const resp = await fetch('/API/fortune', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ prompt: p, system: systemPrompt })
