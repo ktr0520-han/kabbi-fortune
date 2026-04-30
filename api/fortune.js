@@ -1,4 +1,3 @@
-
 export default async function handler(req, res) {
   // CORS 허용
   res.setHeader('Access-Control-Allow-Origin', '*');
