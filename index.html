@@ -906,15 +906,24 @@ function setDailyWord(){
 
 // ═══ AI API 호출 ═══
 async function callKabbi(prompt, systemPrompt){
-  // 프롬프트 타입 감지
   const p = prompt || '';
-  
-  if(p.includes('오늘') && p.includes('운세')) return getTodayMsg();
-  if(p.includes('재회')) return getReunionMsg(p);
-  if(p.includes('띠')) return getZodiacMsg(p);
-  if(p.includes('궁합')) return getCoupleMsg(p);
-  if(p.includes('타로')) return getTarotMsg(p);
-  return getConsultMsg(p);
+  try{
+    const resp = await fetch('/api/fortune', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ prompt: p, system: systemPrompt })
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+    return data.result || '운세를 불러오지 못했어요 😥';
+  }catch(e){
+    if(p.includes('오늘') && p.includes('운세')) return getTodayMsg();
+    if(p.includes('재회')) return getReunionMsg(p);
+    if(p.includes('띠')) return getZodiacMsg(p);
+    if(p.includes('궁합')) return getCoupleMsg(p);
+    if(p.includes('타로')) return getTarotMsg(p);
+    return getConsultMsg(p);
+  }
 }
 
 function getRand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
