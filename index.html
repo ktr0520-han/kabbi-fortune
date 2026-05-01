@@ -154,6 +154,24 @@ display:inline-block;
   background:rgba(255,255,255,.12);
   border:1px solid rgba(255,255,255,.2);
 }
+.sintaro-question-box{width:100%;margin-bottom:16px;}
+.sintaro-q-display{
+  background:rgba(255,216,107,.12);
+  border:1px solid rgba(255,216,107,.3);
+  border-radius:12px;
+  padding:10px 14px;
+  font-size:14px;color:#ffd86b;
+  margin-bottom:14px;text-align:left;font-weight:700;
+}
+.sintaro-ai-box{
+  background:linear-gradient(135deg,rgba(26,0,48,.9),rgba(74,0,128,.7));
+  border:1.5px solid rgba(255,216,107,.4);
+  border-radius:16px;padding:16px;margin-bottom:12px;
+}
+.sintaro-ai-title{color:#ffd86b;font-size:15px;font-weight:900;margin-bottom:10px;text-shadow:0 0 8px rgba(255,216,107,.5);}
+.sintaro-ai-text{color:#fff;font-size:14px;line-height:1.8;font-weight:600;}
+.sintaro-ai-loading{color:rgba(255,216,107,.8);font-size:14px;text-align:center;padding:10px 0;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 </style>
 </head>
 <body>
@@ -368,13 +386,38 @@ const SINTARO = [
 let sintaroFlipped = false;
 let sintaroCurrent = null;
 
+let sintaroQuestion = '';
+
 function sintaroMenu() {
   I('kkabbi-think.png');
   S('🔮 神 신타로카드');
   sintaroFlipped = false;
   sintaroCurrent = null;
+  sintaroQuestion = '';
   O(`<div class="sintaro-wrap">
     <div class="sintaro-title">🔮 神 신타로카드</div>
+    <div class="sintaro-question-box">
+      <input id="sintaroQ" placeholder="질문을 입력하세요  예: 이 사업이 잘 될까요?" 
+        style="width:100%;padding:14px;border-radius:14px;border:2px solid rgba(255,216,107,.5);background:rgba(255,255,255,.1);color:#fff;font-size:15px;margin-bottom:10px;outline:none;box-sizing:border-box;">
+      <button class="sintaro-btn" onclick="sintaroAskDraw()" style="width:100%;padding:14px;font-size:16px;">🎴 질문하고 카드 뽑기</button>
+    </div>
+  </div>`);
+}
+
+function sintaroAskDraw() {
+  const q = document.getElementById('sintaroQ');
+  if(!q || !q.value.trim()) {
+    q.style.border = '2px solid #ff3ca6';
+    q.placeholder = '질문을 먼저 입력해 주세요 🙏';
+    return;
+  }
+  sintaroQuestion = q.value.trim();
+  sintaroCurrent = SINTARO[Math.floor(Math.random() * SINTARO.length)];
+  sintaroFlipped = false;
+
+  O(`<div class="sintaro-wrap">
+    <div class="sintaro-title">🔮 神 신타로카드</div>
+    <div class="sintaro-q-display">💬 "${sintaroQuestion}"</div>
     <div class="sintaro-card-area" onclick="sintaroFlip()">
       <div class="sintaro-card-inner" id="sintaroInner">
         <div class="sintaro-face sintaro-back">
@@ -385,52 +428,84 @@ function sintaroMenu() {
       </div>
     </div>
     <div class="sintaro-btn-row" id="sintaroBtnRow">
-      <button class="sintaro-btn" onclick="sintaroDraw()">🎴 카드 뽑기</button>
+      <button class="sintaro-btn secondary" onclick="sintaroFlip()">🃏 카드 열기</button>
     </div>
   </div>`);
 }
 
-function sintaroDraw() {
-  sintaroCurrent = SINTARO[Math.floor(Math.random() * SINTARO.length)];
-  sintaroFlipped = false;
-  const inner = document.getElementById('sintaroInner');
-  if(inner) inner.classList.remove('flipped');
-  setTimeout(() => sintaroFlip(), 100);
-}
-
 function sintaroFlip() {
   if(sintaroFlipped) return;
-  if(!sintaroCurrent) {
-    sintaroCurrent = SINTARO[Math.floor(Math.random() * SINTARO.length)];
-  }
+  if(!sintaroCurrent) return;
+
   const front = document.getElementById('sintaroFront');
   const inner = document.getElementById('sintaroInner');
   if(!front || !inner) return;
+
   front.innerHTML = `<img src="${sintaroCurrent.file}" alt="${sintaroCurrent.name}" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=padding:20px;color:#240840;font-size:24px>🔮</div>'">`;
   inner.classList.add('flipped');
   sintaroFlipped = true;
 
-  // 뽑기 버튼 숨기기
   const btnRow = document.getElementById('sintaroBtnRow');
   if(btnRow) btnRow.style.display = 'none';
 
-  setTimeout(() => {
+  setTimeout(async () => {
     const wrap = document.querySelector('.sintaro-wrap');
-    if(wrap) {
-      wrap.innerHTML += `
-        <div class="sintaro-name">✨ ${sintaroCurrent.name}</div>
-        <div class="sintaro-keyword">${sintaroCurrent.keyword}</div>
-        <div class="sintaro-meaning">${sintaroCurrent.meaning}</div>
-        <div class="sintaro-btn-row">
-          <button class="sintaro-btn" onclick="sintaroReset()">🔄 다시 뽑기</button>
-        </div>`;
-    }
+    if(!wrap) return;
+    wrap.innerHTML += `
+      <div class="sintaro-name">✨ ${sintaroCurrent.name}</div>
+      <div class="sintaro-keyword">${sintaroCurrent.keyword}</div>
+      <div class="sintaro-meaning">${sintaroCurrent.meaning}</div>
+      <div class="sintaro-ai-box" id="sintaroAI">
+        <div class="sintaro-ai-loading">🔮 깨비아씨가 신령님께 여쭤보는 중...</div>
+      </div>
+      <div class="sintaro-btn-row">
+        <button class="sintaro-btn" onclick="sintaroReset()">🔄 다시 뽑기</button>
+      </div>`;
+    await sintaroAIRead();
   }, 800);
+}
+
+async function sintaroAIRead() {
+  const aiBox = document.getElementById('sintaroAI');
+  if(!aiBox) return;
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: `당신은 한국 무속 신앙을 깊이 이해하는 신타로카드 점술가입니다. 냉철하고 단호하며 강한 어조로, 하지만 진심을 담아 해석해주세요.
+
+질문: "${sintaroQuestion}"
+뽑힌 카드: ${sintaroCurrent.name}
+카드 키워드: ${sintaroCurrent.keyword}
+카드 기본 의미: ${sintaroCurrent.meaning}
+
+위 질문에 대해 이 카드가 전하는 메시지를 3~4문장으로 해석해주세요.
+- "~하십시오" 같은 강하고 단호한 어투 사용
+- 질문과 카드를 연결하여 구체적으로 해석
+- 카드 이름이나 설명 없이 바로 해석 시작
+- 마지막에 한 줄 핵심 조언으로 마무리`
+        }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '신령님의 말씀을 전하기 어렵습니다. 다시 시도해주세요.';
+    aiBox.innerHTML = `
+      <div class="sintaro-ai-title">🌟 깨비아씨의 해석</div>
+      <div class="sintaro-ai-text">${text}</div>`;
+  } catch(e) {
+    aiBox.innerHTML = `<div class="sintaro-ai-text">신령님과의 연결이 잠시 끊겼습니다. 다시 시도해주세요.</div>`;
+  }
 }
 
 function sintaroReset() {
   sintaroFlipped = false;
   sintaroCurrent = null;
+  sintaroQuestion = '';
   sintaroMenu();
 }
 
