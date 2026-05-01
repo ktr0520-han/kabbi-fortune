@@ -441,7 +441,7 @@ function sintaroFlip() {
   const inner = document.getElementById('sintaroInner');
   if(!front || !inner) return;
 
-  front.innerHTML = `<img src="${sintaroCurrent.file}" alt="${sintaroCurrent.name}" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=padding:20px;color:#240840;font-size:24px>🔮</div>'">`;
+  front.innerHTML = `<img src="${encodeURIComponent(sintaroCurrent.file)}" alt="${sintaroCurrent.name}" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=padding:20px;color:#240840;font-size:24px>🔮</div>'">`;
   inner.classList.add('flipped');
   sintaroFlipped = true;
 
