@@ -384,9 +384,8 @@ function sintaroMenu() {
         <div class="sintaro-face sintaro-front" id="sintaroFront"></div>
       </div>
     </div>
-    <div class="sintaro-btn-row">
+    <div class="sintaro-btn-row" id="sintaroBtnRow">
       <button class="sintaro-btn" onclick="sintaroDraw()">🎴 카드 뽑기</button>
-      <button class="sintaro-btn secondary" onclick="sintaroReset()">🔄 다시 뽑기</button>
     </div>
   </div>`);
 }
@@ -410,6 +409,10 @@ function sintaroFlip() {
   front.innerHTML = `<img src="${sintaroCurrent.file}" alt="${sintaroCurrent.name}" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=padding:20px;color:#240840;font-size:24px>🔮</div>'">`;
   inner.classList.add('flipped');
   sintaroFlipped = true;
+
+  // 뽑기 버튼 숨기기
+  const btnRow = document.getElementById('sintaroBtnRow');
+  if(btnRow) btnRow.style.display = 'none';
 
   setTimeout(() => {
     const wrap = document.querySelector('.sintaro-wrap');
