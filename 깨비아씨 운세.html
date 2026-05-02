@@ -262,6 +262,12 @@ body{
 .ic-reunion{background:rgba(247,213,104,0.2)}
 .ic-talisman{background:rgba(255,100,60,0.2)}
 .ic-tarot{background:rgba(139,63,232,0.3)}
+.tarot-cat-btn{
+  padding:10px 6px;border-radius:12px;font-size:12px;font-weight:700;
+  background:rgba(255,255,255,.08);border:1px solid rgba(247,213,104,.3);
+  color:#fff;cursor:pointer;
+}
+.tarot-cat-btn.active{background:rgba(247,213,104,.2);border-color:var(--gold);color:var(--gold)}
 
 /* ── 결과 카드 ── */
 .result-section{padding:0 16px;margin-bottom:20px}
@@ -751,14 +757,36 @@ body{
 
   <!-- ═══ 타로 섹션 ═══ -->
   <div id="page-tarot" class="page-section" style="margin-top:20px">
-    <div class="section-label">🔮 타로 운세</div>
-    <div style="padding:0 16px;margin-bottom:14px">
-      <div class="form-field" style="margin-bottom:10px">
-        <label>오늘의 질문</label>
-        <input id="tarot-q" placeholder="예: 이 결정이 옳을까요?">
-      </div>
-      <button class="submit-btn" id="tarot-btn" onclick="getTarot()" style="background:linear-gradient(135deg,#5c12b0,#3a0080)">🃏 타로카드 뽑기</button>
+    <div class="section-label">🔮 神 타로카드</div>
+
+    <!-- 카테고리 탭 -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 16px;margin-bottom:12px">
+      <button class="tarot-cat-btn active" id="cat-전체" onclick="setTarotCat('전체')">🌟 전체</button>
+      <button class="tarot-cat-btn" id="cat-사랑" onclick="setTarotCat('사랑')">💗 사랑</button>
+      <button class="tarot-cat-btn" id="cat-금전" onclick="setTarotCat('금전')">💰 금전</button>
+      <button class="tarot-cat-btn" id="cat-건강" onclick="setTarotCat('건강')">🌿 건강</button>
+      <button class="tarot-cat-btn" id="cat-직업" onclick="setTarotCat('직업')">💼 직업</button>
+      <button class="tarot-cat-btn" id="cat-운세" onclick="setTarotCat('운세')">🎴 운세</button>
     </div>
+
+    <!-- 질문 입력 -->
+    <div style="padding:0 16px;margin-bottom:12px">
+      <div class="form-field" style="margin-bottom:10px">
+        <label>오늘의 질문 (선택)</label>
+        <input id="tarot-q" placeholder="예: 이 사람과 잘 될까요?">
+      </div>
+      <button class="submit-btn" id="tarot-btn" onclick="getTarot()" style="background:linear-gradient(135deg,#7a3cff,#ff3ca6);font-size:17px">🙏 카드 한 장 뽑기</button>
+    </div>
+
+    <!-- 뽑힌 카드 결과 -->
+    <div id="tarot-card-display" style="display:none;padding:0 16px;margin-bottom:12px;text-align:center">
+      <img id="tarot-card-img" src="" alt=""
+        style="max-width:200px;width:100%;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.5);margin-bottom:12px">
+      <div id="tarot-card-name" style="color:var(--gold);font-size:20px;font-weight:900;margin-bottom:6px"></div>
+      <div id="tarot-card-keywords" style="color:#d8c7ff;font-size:13px;margin-bottom:10px"></div>
+      <div id="tarot-card-meaning" style="background:rgba(255,255,255,.95);color:#240840;border-radius:14px;padding:12px;font-size:13px;line-height:1.8;text-align:left;white-space:pre-line;font-weight:700"></div>
+    </div>
+
     <div class="result-section" id="tarot-result"></div>
   </div>
 
@@ -1154,27 +1182,74 @@ function showTalisman(type){
   showResultCard('talisman-result',{icon:c.icon,iconBg:c.bg,title:c.title,sub:'부적 안내',content:c.content});
 }
 
-// ═══ 타로 ═══
-const TAROT_CARDS = ['🌟 별','🌙 달','☀️ 태양','⚡ 탑','🎭 광대','👑 황제','💫 세계','🔮 마법사','⚖️ 정의','🌈 심판'];
+// ═══ 神 타로카드 ═══
+const SHIN_TAROT = [
+  {name:'무소유', file:'33-1.jpg', keywords:'내려놓음 · 포기 · 공수레공수거', meaning:'① 결과가 없다\n② 내려놓음, 포기, 부질없다\n③ 공수레공수거\n④ 집착을 내려놓을 때 비로소 새로운 흐름이 시작됩니다.', cat:['운세']},
+  {name:'북두칠성', file:'34-1.jpg', keywords:'간절함 · 희생 · 뜻을 이루다', meaning:'① 칠성님께 빈다\n② 간절함, 희생, 정성\n③ 뜻을 이루다, 긍정\n④ 정성과 간절함이 하늘을 움직입니다.', cat:['운세','직업']},
+  {name:'소원성취', file:'35-1.jpg', keywords:'소원을 이룸 · 성취 · 실현', meaning:'① 소원을 이룸\n② 성취하다, 이행, 변제, 실현하다\n③ 바라던 일이 이루어집니다\n④ 간절히 원하던 것이 현실이 됩니다.', cat:['운세','사랑','직업']},
+  {name:'삼신', file:'36-1.jpg', keywords:'탄생 · 새로운 시작 · 사업확장', meaning:'① 아기, 처음으로 다시 돌아감\n② 탄생, 잉태, 새로운 시작\n③ 사업확장, 새로운 계획\n④ 새로운 계획을 시작하기 좋은 때입니다.', cat:['운세','직업','금전']},
+  {name:'수행', file:'37-1.jpg', keywords:'노력 · 고독 · 정성', meaning:'① 많은 노력이 필요\n② 소원을 빌다, 혼자 남음, 고독\n③ 정성, 번민\n④ 고독을 두려워 말고 내면을 다지세요.', cat:['운세','직업']},
+  {name:'도깨비', file:'38-1.jpg', keywords:'변화무쌍 · 변심 · 현혹', meaning:'① 변화무쌍\n② 변심, 변덕, 매혹하다\n③ 홀리다, 현혹되다\n④ 겉모습에 속지 마세요. 판단을 서두르지 마세요.', cat:['사랑','운세']},
+  {name:'감옥탈출', file:'39-1.jpg', keywords:'고난에서 탈출 · 실패 · 우울증', meaning:'① 실패, 갇힘, 이루어지지 않는다\n② 고난에서의 탈출, 벗어나다\n③ 마음이 닫힘, 고독, 우울증\n④ 마음의 문을 먼저 열어야 합니다.', cat:['운세','건강']},
+  {name:'합의부', file:'40-1.jpg', keywords:'계약 성사 · 결혼 · 인연', meaning:'① 문서, 계약의 성사(긍정)\n② 남녀간의 합의, 만남, 결혼\n③ 인연, 찰떡궁합\n④ 중요한 만남과 약속이 이루어집니다.', cat:['사랑','직업']},
+  {name:'비방', file:'41-1.jpg', keywords:'살풀이 · 액운 · 상처', meaning:'① 살풀이, 액운을 풀어내야 함\n② 적하다, 없애다\n③ 살을 맞다, 사람에게 상처받음\n④ 주변의 부정적 기운을 정화할 시기입니다.', cat:['운세','건강','사랑']},
+  {name:'절단', file:'42-1.jpg', keywords:'분리 · 배신 · 정리', meaning:'① 죽음, 절단, 분리\n② 단칼, 정리\n③ 이중적인 마음, 배신, 헤어지다, 파탄\n④ 끊어야 할 것을 끊어야 새로운 시작이 가능합니다.', cat:['사랑','직업','운세']},
+  {name:'제살부', file:'43-1.jpg', keywords:'구원 · 귀인 · 상승', meaning:'① 구원의 길, 귀인이 나타나다\n② 올라서다, 상승\n③ 살을 정리해라, 액풀이, 벗어나다\n④ 도움의 손길이 찾아옵니다.', cat:['운세','사랑','직업']},
+  {name:'질병부', file:'44-1.jpg', keywords:'질병 · 사고 · 걱정', meaning:'① 육신 또는 마음의 병이 생기다\n② 다침, 사고, 질병\n③ 걱정 근심이 생기다\n④ 몸과 마음 건강에 특별히 주의가 필요한 시기입니다.', cat:['건강']},
+  {name:'옥황상제', file:'45-1.jpg', keywords:'결정 · 지도자 · 하늘의 도움', meaning:'① 결정, 선택, 결단\n② 대장, 지도자, 지휘하다\n③ 하늘의 도움, 고집, 이기적인 성향\n④ 중요한 결정을 내릴 시기입니다.', cat:['직업','운세']},
+  {name:'분묘지지', file:'46-1.jpg', keywords:'조상정리 · 이장 · 실수', meaning:'① 조상정리, 이장, 화장, 동토\n② 정리하지만 마무리가 깔끔하지 못함\n③ 한곳에 머무름, 실수가 따른다\n④ 과거의 정리가 필요합니다.', cat:['운세','건강']},
+  {name:'관재', file:'관재.jpg', keywords:'법 · 해결책 · 고소고발', meaning:'① 관재, 법\n② 해결책, 풀어나가야 할 일이 많다\n③ 사고수, 구설로 인한 고소 고발\n④ 말과 행동을 신중히 해야 할 시기입니다.', cat:['직업','운세']},
+  {name:'구설수', file:'구설_수.jpg', keywords:'소문 · 망신 · 배신', meaning:'① 소문, 망신, 시비\n② 구설, 배신, 잔소리\n③ 주변의 말을 조심하세요\n④ 오늘은 침묵이 금입니다.', cat:['사랑','직업','운세']},
+  {name:'귀인', file:'귀인.jpg', keywords:'도움 · 등불 · 인복', meaning:'① 주변의 도움을 받는다\n② 등불, 답답함이 해결\n③ 인복\n④ 좋은 인연이 나타나 도움을 줍니다.', cat:['사랑','직업','운세']},
+  {name:'금표', file:'금표.jpg', keywords:'출입금지 · 막힘 · 속수무책', meaning:'① 출입하거나 접근하는 것을 금지하는 표지\n② 사업터전 막힘, 속수무책\n③ 통로가 막힘, 사방이 막힘\n④ 막힌 것에 억지로 맞서지 마세요.', cat:['직업','금전','운세']},
+  {name:'동자', file:'동자.jpg', keywords:'장난 · 순수 · 행복', meaning:'① 장난, 귀인\n② 천진난만, 순수, 행복\n③ 동자신의 보호\n④ 순수한 마음으로 돌아가세요.', cat:['사랑','운세']},
+  {name:'소멸', file:'벌전.jpg', keywords:'포기 · 실패 · 벌받음', meaning:'① 포기, 실패\n② 신의 벌전, 방황, 무너지다\n③ 벌받음\n④ 잘못된 방향을 고집하면 모든 것이 무너집니다.', cat:['운세','건강']},
+  {name:'상문', file:'상문.jpg', keywords:'죽음 · 질병 · 주당', meaning:'① 죽음, 질병, 아픔\n② 주당\n③ 주변의 상(喪)을 조심하세요\n④ 건강과 안전에 특히 주의하세요.', cat:['건강','운세']},
+  {name:'신장대', file:'신장대.jpg', keywords:'결심 · 중심 · 뚝심', meaning:'① 결심, 선택, 단결\n② 중심을 잡아라, 나의 제대로 된 신명\n③ 뚝심\n④ 흔들리지 말고 중심을 잡으세요.', cat:['직업','운세']},
+  {name:'역마살', file:'역마살.jpg', keywords:'자리이동 · 여행 · 타향살이', meaning:'① 자리이동\n② 이동수, 선택, 결정, 한자리에 안주하지 못함\n③ 타향살이\n④ 움직일수록 운이 열립니다.', cat:['직업','운세']},
+  {name:'탐욕', file:'탐욕.jpg', keywords:'재물이 샌다 · 사기 · 금전거래 위험', meaning:'① 재물이 샌다\n② 밑빠진 독에 물붓기, 헛수고\n③ 금전거래 안됨, 사기당함\n④ 과욕은 금물입니다. 지금의 금전 거래는 손실로 이어질 수 있습니다.', cat:['금전','운세']},
+];
+
+let _tarotCat = '전체';
+
+function setTarotCat(cat){
+  _tarotCat = cat;
+  document.querySelectorAll('.tarot-cat-btn').forEach(b=>b.classList.remove('active'));
+  const btn = document.getElementById('cat-'+cat);
+  if(btn) btn.classList.add('active');
+}
+
 async function getTarot(){
-  const q=document.getElementById('tarot-q').value.trim();
-  setSpeech('타로카드를 뽑고 있어요 🃏<br><span class="typing-cursor"></span>','think');
-  document.getElementById('tarot-result').innerHTML=loadingHTML();
-  document.getElementById('tarot-btn').disabled=true;
-  const card=TAROT_CARDS[Math.floor(Math.random()*TAROT_CARDS.length)];
+  const q = document.getElementById('tarot-q').value.trim();
+  setSpeech('신타로카드를 뽑고 있어요 🔮<br><span class="typing-cursor"></span>','think');
+  document.getElementById('tarot-result').innerHTML = loadingHTML();
+  document.getElementById('tarot-card-display').style.display = 'none';
+  document.getElementById('tarot-btn').disabled = true;
+
+  const pool = _tarotCat==='전체' ? SHIN_TAROT : SHIN_TAROT.filter(c=>c.cat.includes(_tarotCat));
+  const card = pool[Math.floor(Math.random()*pool.length)];
+
+  // 카드 이미지 + 기본 설명 표시
+  document.getElementById('tarot-card-img').src = card.file;
+  document.getElementById('tarot-card-img').alt = card.name;
+  document.getElementById('tarot-card-name').textContent = '🔮 ' + card.name;
+  document.getElementById('tarot-card-keywords').textContent = card.keywords;
+  document.getElementById('tarot-card-meaning').textContent = card.meaning;
+  document.getElementById('tarot-card-display').style.display = 'block';
+
+  // AI 해석
   try{
-    const prompt=q?`질문: "${q}" 타로카드 "${card}"가 나왔습니다. 이 카드의 의미와 질문에 대한 답을 깨비아씨 스타일로 신비롭고 감성적으로 알려주세요.`
-      :`타로카드 "${card}"가 나왔습니다. 오늘 이 카드가 전하는 메시지를 깨비아씨 스타일로 신비롭고 감성적으로 알려주세요.`;
-    const text=await callKabbi(prompt);
-    setSpeech(`${card} 카드가 나왔어요 🃏`,'wink');
-    const content=`<div style="text-align:center;font-size:48px;margin:8px 0">${card.split(' ')[0]}</div>
-      <div style="text-align:center;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:14px">${card}</div>
-      <div class="fortune-text">${text.replace(/\n/g,'<br>')}</div>`;
-    showResultCard('tarot-result',{icon:'🃏',iconBg:'rgba(139,63,232,0.3)',title:'타로 카드 결과',sub:q||'오늘의 타로',content});
+    const prompt = q
+      ? `당신은 깨비아씨입니다. 한국 전통 무속 타로 리더로 신비롭고 따뜻하게 말합니다.\n질문: "${q}"\n신타로카드 "${card.name}"(${card.keywords})가 나왔습니다.\n이 카드의 의미: ${card.meaning}\n질문에 대한 답을 깨비아씨 스타일로 200자 이내로 알려주세요.`
+      : `당신은 깨비아씨입니다. 한국 전통 무속 타로 리더로 신비롭고 따뜻하게 말합니다.\n신타로카드 "${card.name}"(${card.keywords})가 나왔습니다.\n이 카드의 의미: ${card.meaning}\n오늘 이 카드가 전하는 메시지를 깨비아씨 스타일로 200자 이내로 알려주세요.`;
+    const text = await callKabbi(prompt);
+    setSpeech(`🔮 ${card.name} 카드가 나왔어요!`, 'wink');
+    const content = `<div class="fortune-text">${text.replace(/\n/g,'<br>')}</div>`;
+    showResultCard('tarot-result',{icon:'🔮',iconBg:'rgba(139,63,232,0.3)',title:'✨ 깨비아씨의 해석',sub:q||'오늘의 신타로',content});
   }catch(e){
-    document.getElementById('tarot-result').innerHTML='<div style="text-align:center;padding:20px;color:var(--text-muted)">오류가 발생했어요 😢</div>';
+    document.getElementById('tarot-result').innerHTML='<div style="text-align:center;padding:20px;color:var(--text-muted)">오류가 발생했어요 😢<br>API 키를 확인해주세요.</div>';
   }
-  document.getElementById('tarot-btn').disabled=false;
+  document.getElementById('tarot-btn').disabled = false;
 }
 
 // ═══ 초기화 ═══
