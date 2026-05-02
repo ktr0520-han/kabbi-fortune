@@ -587,18 +587,26 @@ function allZodiac(){
   hideAllExtras();
   document.getElementById('zodiac-row').style.display='grid';
   I('kkabbi-basic.png');
-  S('내 띠를 선택하거나 12띠 운세를 펼쳐볼게요 🐭');
+  S('12띠 운세를 모두 펼쳐볼게요 🐭');
   let txt='🐭 오늘의 12띠 운세\n\n';
-  zodiacNames.forEach((z,i)=>{txt+=z+' : '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n';});
+  zodiacNames.forEach((z)=>{
+    txt += z + ' : ' + zodiacFortunes[Math.floor(Math.random()*zodiacFortunes.length)] + '\n';
+  });
   O(txt);
 }
 function myZodiac(){
   const z=document.getElementById('zodiacSelect').value;
   if(!z){O('띠를 먼저 선택해 주세요 😊');return;}
-  const i=zodiacNames.indexOf(z);
   I('kkabbi-think.png');
   S(z+' 운세를 자세히 살펴볼게요 ✨');
-  O('🔮 '+z+' 오늘의 운세\n\n총운: '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n사랑운: 좋은 인연의 말이 오갈 수 있습니다.\n금전운: 작은 복이 들어오는 흐름입니다.\n건강운: 무리하지 말고 몸을 따뜻하게 하세요.\n행운 숫자: '+(((seed()+i)%9)+1));
+  const fortune = zodiacFortunes[Math.floor(Math.random()*zodiacFortunes.length)];
+  const love = loveMsg[Math.floor(Math.random()*loveMsg.length)];
+  const money = moneyMsg[Math.floor(Math.random()*moneyMsg.length)];
+  const health = pick(["무리하지 말고 몸을 따뜻하게 하세요.","충분한 수면이 오늘의 보약입니다.","스트레스를 풀어주는 작은 휴식이 필요해요.","몸의 신호에 귀 기울이는 하루가 되세요.","가벼운 운동이 기운을 북돋아 줄 거예요.","과식과 음주는 오늘 피하는 게 좋아요."]);
+  const num = Math.floor(Math.random()*9)+1;
+  const colors = ['빨강','파랑','노랑','초록','보라','흰색','금색'];
+  const color = colors[Math.floor(Math.random()*colors.length)];
+  O('🔮 '+z+' 오늘의 운세\n\n✨ 총운\n'+fortune+'\n\n💗 사랑운\n'+love+'\n\n💰 금전운\n'+money+'\n\n🌿 건강운\n'+health+'\n\n🍀 행운 숫자: '+num+'  |  행운 색상: '+color);
 }
 function reunion(){
   hideAllExtras();
