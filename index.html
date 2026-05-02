@@ -530,9 +530,10 @@ function hideAllExtras(){
 }
 function today(){
   hideAllExtras();
+  const r=()=>Math.floor(Math.random()*daily.length);
   I('kkabbi-cute.png');
   S('오늘의 운세를 전해드릴게요 ✨');
-  O('🌙 오늘의 운세\n\n총운: '+daily[seed()%daily.length]+'\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: '+((seed()%9)+1));
+  O('🌙 오늘의 운세\n\n총운: '+daily[r()]+'\n사랑운: '+pick(["따뜻한 대화가 중요합니다.","좋은 인연의 기운이 흐릅니다.","마음을 열면 좋은 만남이 옵니다.","감정을 솔직하게 표현해보세요."])+'\n금전운: '+pick(["작은 절약이 복이 됩니다.","뜻밖의 수입이 생길 수 있어요.","무리한 지출은 피하세요.","재물운이 서서히 열립니다."])+'\n행운 숫자: '+(Math.floor(Math.random()*9)+1));
 }
 function allZodiac(){
   hideAllExtras();
