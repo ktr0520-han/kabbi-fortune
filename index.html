@@ -181,11 +181,13 @@ display:inline-block;
 <h1>깨비아씨 운세</h1>
 <img id="img" class="hero" src="kkabbi.png" alt="깨비아씨 운세">
 <div id="speech" class="card">무엇이든 물어보세요.<br>깨비아씨가 마음을 담아 알려드릴게요 ✨</div>
-<div class="row">
+<!-- 질문란: 연애운/궁합 섹션에서만 표시 -->
+<div class="row" id="ask-row" style="display:none">
 <input id="q" placeholder="예: 그 사람이 왜 연락이 없을까요?">
 <button onclick="ask()">질문</button>
 </div>
-<div class="row">
+<!-- 내띠: 띠별 운세 섹션에서만 표시 -->
+<div class="row" id="zodiac-row" style="display:none">
 <select id="zodiacSelect">
 <option value="">내 띠 선택</option>
 <option>쥐띠</option><option>소띠</option><option>호랑이띠</option><option>토끼띠</option>
@@ -522,30 +524,40 @@ function sintaroReset() {
 }
 
 function seed(){let d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
+function hideAllExtras(){
+  document.getElementById('ask-row').style.display='none';
+  document.getElementById('zodiac-row').style.display='none';
+}
 function today(){
-I('kkabbi-cute.png');
-S('오늘의 운세를 전해드릴게요 ✨');
-O('🌙 오늘의 운세\n\n총운: '+daily[seed()%daily.length]+'\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: '+((seed()%9)+1));
+  hideAllExtras();
+  I('kkabbi-cute.png');
+  S('오늘의 운세를 전해드릴게요 ✨');
+  O('🌙 오늘의 운세\n\n총운: '+daily[seed()%daily.length]+'\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: '+((seed()%9)+1));
 }
 function allZodiac(){
-I('kkabbi-basic.png');
-S('12띠 운세를 모두 펼쳐볼게요 🐭');
-let txt='🐭 오늘의 12띠 운세\n\n';
-zodiacNames.forEach((z,i)=>{txt+=z+' : '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n';});
-O(txt);
+  hideAllExtras();
+  document.getElementById('zodiac-row').style.display='grid';
+  I('kkabbi-basic.png');
+  S('내 띠를 선택하거나 12띠 운세를 펼쳐볼게요 🐭');
+  let txt='🐭 오늘의 12띠 운세\n\n';
+  zodiacNames.forEach((z,i)=>{txt+=z+' : '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n';});
+  O(txt);
 }
 function myZodiac(){
-const z=document.getElementById('zodiacSelect').value;
-if(!z){O('띠를 먼저 선택해 주세요 😊');return;}
-const i=zodiacNames.indexOf(z);
-I('kkabbi-think.png');
-S(z+' 운세를 자세히 살펴볼게요 ✨');
-O('🔮 '+z+' 오늘의 운세\n\n총운: '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n사랑운: 좋은 인연의 말이 오갈 수 있습니다.\n금전운: 작은 복이 들어오는 흐름입니다.\n건강운: 무리하지 말고 몸을 따뜻하게 하세요.\n행운 숫자: '+(((seed()+i)%9)+1));
+  const z=document.getElementById('zodiacSelect').value;
+  if(!z){O('띠를 먼저 선택해 주세요 😊');return;}
+  const i=zodiacNames.indexOf(z);
+  I('kkabbi-think.png');
+  S(z+' 운세를 자세히 살펴볼게요 ✨');
+  O('🔮 '+z+' 오늘의 운세\n\n총운: '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n사랑운: 좋은 인연의 말이 오갈 수 있습니다.\n금전운: 작은 복이 들어오는 흐름입니다.\n건강운: 무리하지 말고 몸을 따뜻하게 하세요.\n행운 숫자: '+(((seed()+i)%9)+1));
 }
 function reunion(){
-I('kkabbi-love.png');
-S('재회운을 볼게요 💗');
-O('💞 재회 궁합\n\n감정 연결도 87%\n상대 심리: 아직 미련은 있으나 자존심이 큽니다.\n연락 타이밍: 저녁 시간대 짧은 안부\n깨비 조언: 감정적인 장문 메시지는 피하세요.');
+  hideAllExtras();
+  document.getElementById('ask-row').style.display='grid';
+  document.getElementById('q').placeholder='예: 그 사람과 재회할 수 있을까요?';
+  I('kkabbi-love.png');
+  S('재회운을 볼게요 💗 질문을 입력해주세요!');
+  O('💞 재회 궁합\n\n감정 연결도 87%\n상대 심리: 아직 미련은 있으나 자존심이 큽니다.\n연락 타이밍: 저녁 시간대 짧은 안부\n깨비 조언: 감정적인 장문 메시지는 피하세요.');
 }
 function talismanMenu(){
 I('kkabbi-talisman.png');
