@@ -220,7 +220,7 @@ const daily=[
   "진심이 통하는 하루입니다. 솔직하게 표현하세요."
 ];
 
-function seed(){const d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
+function seed(){return Math.floor(Math.random()*10000);}
 
 function loadToday(){
   const s=seed();
