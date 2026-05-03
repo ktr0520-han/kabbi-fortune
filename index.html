@@ -93,6 +93,29 @@
     .bfill.health{background:linear-gradient(90deg,#70e890,#10aa40)}
     .bpct{font-size:11px;font-weight:900;color:#f0c84a;width:30px;text-align:right;flex-shrink:0}
 
+    /* 메뉴 카드 */
+    .menu-cards{display:flex;gap:10px;padding:10px 16px 0;position:relative;z-index:5;}
+    .mcard{
+      flex:1;border-radius:18px;overflow:hidden;
+      border:2px solid rgba(212,168,64,0.45);
+      cursor:pointer;transition:all .2s;
+      position:relative;
+      box-shadow:0 6px 24px rgba(0,0,0,0.5);
+    }
+    .mcard:hover{transform:translateY(-3px);border-color:rgba(212,168,64,0.8);box-shadow:0 10px 30px rgba(100,30,200,0.5);}
+    .mcard:active{transform:scale(0.97)}
+    .mcard img{width:100%;display:block;}
+    .mcard-label{
+      position:absolute;bottom:0;left:0;right:0;
+      background:linear-gradient(0deg,rgba(10,0,25,0.92) 60%,transparent);
+      padding:20px 10px 10px;
+      text-align:center;
+    }
+    .mcard-label strong{
+      display:block;font-size:14px;font-weight:900;
+      color:#f0c84a;text-shadow:0 0 10px rgba(212,168,64,0.5);
+    }
+
     /* 푸터 */
     .footer{margin:18px 16px 4px;text-align:center;color:rgba(255,255,255,0.9);font-size:13px;line-height:2.0}
 
@@ -148,20 +171,19 @@
     </div>
   </div>
 
-  <!-- 종합 운세 -->
-  <div class="fortune-panel">
-    <div class="fp-top">
-      <div>
-        <div class="fp-label">오늘의 종합 운세</div>
-        <div class="fp-stars">⭐⭐⭐⭐<span style="opacity:.3">⭐</span></div>
+  <!-- 메뉴 카드 -->
+  <div class="menu-cards">
+    <div class="mcard" onclick="go('talisman.html')">
+      <img src="kkabbi-talisman.png" alt="행운 부적">
+      <div class="mcard-label">
+        <strong>🧧 행운 부적</strong>
       </div>
-      <div class="fp-badge">좋은 기운이<br>가득한 하루!</div>
     </div>
-    <div class="bars">
-      <div class="brow"><div class="blabel">💗 사랑운</div><div class="btrack"><div class="bfill love" id="b-love" style="width:0"></div></div><div class="bpct" id="p-love">-</div></div>
-      <div class="brow"><div class="blabel">💰 금전운</div><div class="btrack"><div class="bfill money" id="b-money" style="width:0"></div></div><div class="bpct" id="p-money">-</div></div>
-      <div class="brow"><div class="blabel">💼 직장운</div><div class="btrack"><div class="bfill work" id="b-work" style="width:0"></div></div><div class="bpct" id="p-work">-</div></div>
-      <div class="brow"><div class="blabel">🍀 건강운</div><div class="btrack"><div class="bfill health" id="b-health" style="width:0"></div></div><div class="bpct" id="p-health">-</div></div>
+    <div class="mcard" onclick="go('tarot.html')">
+      <img src="kkabbi-think.png" alt="신타로카드">
+      <div class="mcard-label">
+        <strong>🔮 신타로카드</strong>
+      </div>
     </div>
   </div>
 
