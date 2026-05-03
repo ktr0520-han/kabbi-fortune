@@ -27,22 +27,12 @@
     /* 히어로 */
     .hero{position:relative;height:420px;overflow:hidden;}
 
-    /* 캐릭터 - 하단 자연스럽게 페이드 */
-    .hero-char{position:absolute;left:-35px;top:-20px;width:58%;z-index:3;}
-    .hero-char img{
-      width:100%;display:block;
-      /* 오른쪽 + 하단 동시 페이드 */
-      -webkit-mask-image:linear-gradient(to right,black 50%,transparent 92%);
-      mask-image:linear-gradient(to right,black 50%,transparent 92%);
-      filter:drop-shadow(4px 0 20px rgba(80,20,160,0.3));
-      /* 하단 페이드는 부모 overflow:hidden으로 처리 */
-      max-height:420px;
-      object-fit:cover;
-      object-position:top;
-    }
+    /* 캐릭터 - 페이드 없이 선명하게 */
+    .hero-char{position:absolute;left:-35px;top:-20px;width:55%;z-index:3;}
+    .hero-char img{width:100%;display:block;filter:drop-shadow(4px 0 20px rgba(80,20,160,0.3));max-height:420px;object-fit:cover;object-position:top;}
 
     /* 타이틀 */
-    .hero-title{position:absolute;top:6px;right:0;width:48%;z-index:5;padding:0 12px 0 0;text-align:center;}
+    .hero-title{position:absolute;top:6px;right:0;width:50%;z-index:5;padding:0 10px 0 0;text-align:center;}
     .h-small{font-size:11px;color:rgba(200,170,240,0.85);letter-spacing:.4px;margin-bottom:3px}
     .h-big{font-family:'Noto Serif KR',serif;font-size:38px;font-weight:900;background:linear-gradient(160deg,#ffe8a0 0%,#f0c84a 45%,#c89830 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;letter-spacing:-1px;filter:drop-shadow(0 2px 12px rgba(212,168,64,0.55));}
     .h-desc{font-size:11px;color:rgba(210,185,255,0.9);margin-top:6px;line-height:1.65}
@@ -120,13 +110,6 @@
 </head>
 <body>
 <div class="app">
-
-  <!-- 상단바 -->
-  <div class="topbar">
-    <div class="tbtn">☰</div>
-    <div class="topbar-center">✦</div>
-    <div class="tbtn">🔔<span class="notif-dot"></span></div>
-  </div>
 
   <!-- 히어로 -->
   <div class="hero">
