@@ -175,7 +175,10 @@
   <!-- 하단 네비 -->
   <div class="bottom-nav">
     <div class="nitem active"><span class="nicon">🏠</span><span class="nlabel">홈</span></div>
-    <div class="nitem" onclick="go('today.html')"><span class="nicon">☯</span><span class="nlabel">운세</span></div>
+    <div class="nitem" onclick="go('today.html')">
+      <span class="nicon"><img src="nav-zodiac.png" style="width:30px;height:30px;object-fit:contain;" onerror="this.outerHTML='☯'"></span>
+      <span class="nlabel">운세</span>
+    </div>
     <div class="nitem" onclick="go('reunion.html')"><span class="nicon">💗</span><span class="nlabel">궁합</span></div>
     <div class="nitem" onclick="go('talisman.html')"><span class="nicon">📜</span><span class="nlabel">카테고리</span></div>
     <div class="nitem" onclick="go('my.html')"><span class="nicon">👤</span><span class="nlabel">마이페이지</span></div>
