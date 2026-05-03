@@ -66,14 +66,14 @@
     .ilabel{font-size:11px;font-weight:700;color:rgba(195,165,235,0.9);white-space:nowrap;text-align:center}
 
     /* 오늘의 한마디 */
-    .daily-wrap{margin:14px 16px 0;background:linear-gradient(135deg,#e8d898 0%,#d4bc70 40%,#c8aa58 100%);border:2px solid rgba(155,105,20,0.65);border-radius:18px;overflow:hidden;display:flex;align-items:stretch;position:relative;z-index:5;box-shadow:0 6px 24px rgba(0,0,0,0.5);min-height:130px;}
+    .daily-wrap{margin:12px 16px 0;background:linear-gradient(135deg,#e8d898 0%,#d4bc70 40%,#c8aa58 100%);border:2px solid rgba(155,105,20,0.65);border-radius:16px;overflow:hidden;display:flex;align-items:stretch;position:relative;z-index:5;box-shadow:0 4px 18px rgba(0,0,0,0.5);min-height:95px;max-height:110px;}
     .daily-wrap::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 22px,rgba(155,105,20,0.06) 22px,rgba(155,105,20,0.06) 23px);}
-    .daily-left{flex:1;padding:16px 0 16px 15px;display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
-    .daily-badge{background:linear-gradient(160deg,#3a1e08,#1e0e02);border:2px solid rgba(155,100,15,0.8);border-radius:50%;width:58px;height:58px;text-align:center;font-size:11px;font-weight:900;flex-shrink:0;color:#f0c84a;box-shadow:0 2px 8px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;line-height:1.4;}
-    .daily-content strong{display:block;font-size:16px;font-weight:900;color:#1e0c00;line-height:1.45;margin-bottom:4px}
-    .daily-content span{font-size:11.5px;color:#4a2c08;opacity:.85}
-    .daily-char{width:140px;flex-shrink:0;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
-    .daily-char img{width:140px;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 25%);mask-image:linear-gradient(90deg,transparent 0%,black 25%);}
+    .daily-left{flex:1;padding:12px 0 12px 13px;display:flex;align-items:center;gap:10px;position:relative;z-index:1;}
+    .daily-badge{background:linear-gradient(160deg,#3a1e08,#1e0e02);border:2px solid rgba(155,100,15,0.8);border-radius:50%;width:50px;height:50px;text-align:center;font-size:10px;font-weight:900;flex-shrink:0;color:#f0c84a;box-shadow:0 2px 8px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;line-height:1.4;}
+    .daily-content strong{display:block;font-size:13.5px;font-weight:900;color:#1e0c00;line-height:1.4;margin-bottom:3px}
+    .daily-content span{font-size:10.5px;color:#4a2c08;opacity:.85}
+    .daily-char{width:110px;flex-shrink:0;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
+    .daily-char img{width:130px;height:110px;object-fit:contain;object-position:bottom center;}
 
     /* 종합 운세 */
     .fortune-panel{margin:14px 16px 0;background:rgba(12,3,28,0.95);border:1.5px solid rgba(212,168,64,0.38);border-radius:18px;padding:16px;position:relative;overflow:hidden;z-index:5;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
@@ -144,7 +144,7 @@
       </div>
     </div>
     <div class="daily-char">
-      <img src="kkabbi-daily.png" alt="" onerror="this.style.display='none'">
+      <img src="kkabbi-daily.png" alt="" style="mix-blend-mode:multiply;" onerror="this.style.display='none'">
     </div>
   </div>
 
