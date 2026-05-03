@@ -65,16 +65,6 @@
     .iitem:active .ibox{transform:scale(0.95)}
     .ilabel{font-size:11px;font-weight:700;color:rgba(195,165,235,0.9);white-space:nowrap;text-align:center}
 
-    /* 오늘의 한마디 */
-    .daily-wrap{margin:12px 16px 0;border:2px solid rgba(212,168,64,0.45);border-radius:16px;overflow:hidden;display:flex;align-items:stretch;position:relative;z-index:5;box-shadow:0 4px 18px rgba(0,0,0,0.5);height:110px;}
-    .daily-wrap::before{content:'';display:none;}
-    .daily-left{flex:1;padding:12px 12px;display:flex;flex-direction:column;justify-content:center;gap:6px;position:relative;z-index:1;background:linear-gradient(135deg,#e8d898 0%,#d4bc70 40%,#c8aa58 100%);}
-    .daily-badge{background:linear-gradient(160deg,#3a1e08,#1e0e02);border:2px solid rgba(155,100,15,0.8);border-radius:50%;width:42px;height:42px;text-align:center;font-size:9px;font-weight:900;flex-shrink:0;color:#f0c84a;box-shadow:0 2px 8px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;line-height:1.4;margin-bottom:4px;}
-    .daily-content strong{display:block;font-size:12px;font-weight:900;color:#1e0c00;line-height:1.4;margin-bottom:2px}
-    .daily-content span{font-size:10px;color:#4a2c08;opacity:.85}
-    .daily-char{width:45%;flex-shrink:0;position:relative;z-index:1;overflow:hidden;}
-    .daily-char img{width:100%;height:100%;object-fit:cover;object-position:top center;}
-
     /* 종합 운세 */
     .fortune-panel{margin:6px 16px 0;background:rgba(12,3,28,0.95);border:1.5px solid rgba(212,168,64,0.38);border-radius:12px;padding:7px 11px;position:relative;overflow:hidden;z-index:5;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
     .fortune-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
@@ -157,17 +147,20 @@
     <span class="bf">❀</span>깨비아씨와 함께 좋은 기운만 가득한 하루 보내세요!<span class="bf">❀</span>
   </div>
 
-  <!-- 오늘의 한마디 -->
-  <div class="daily-wrap">
-    <div class="daily-left">
-      <div class="daily-badge">오늘의<br>한마디</div>
-      <div class="daily-content">
-        <strong id="daily-msg">지금의 작은 노력이<br>큰 행운으로 돌아올 거예요.</strong>
-        <span id="daily-sub">포기하지 말고, 끝까지 가보세요!</span>
+  <!-- 종합 운세 -->
+  <div class="fortune-panel">
+    <div class="fp-top">
+      <div>
+        <div class="fp-label">오늘의 종합 운세</div>
+        <div class="fp-stars">⭐⭐⭐⭐<span style="opacity:.3">⭐</span></div>
       </div>
+      <div class="fp-badge">좋은 기운이<br>가득한 하루!</div>
     </div>
-    <div class="daily-char">
-      <img src="kkabbi-cute.png" alt="" onerror="this.style.display='none'">
+    <div class="bars">
+      <div class="brow"><div class="blabel">💗 사랑운</div><div class="btrack"><div class="bfill love" id="b-love" style="width:0"></div></div><div class="bpct" id="p-love">-</div></div>
+      <div class="brow"><div class="blabel">💰 금전운</div><div class="btrack"><div class="bfill money" id="b-money" style="width:0"></div></div><div class="bpct" id="p-money">-</div></div>
+      <div class="brow"><div class="blabel">💼 직장운</div><div class="btrack"><div class="bfill work" id="b-work" style="width:0"></div></div><div class="bpct" id="p-work">-</div></div>
+      <div class="brow"><div class="blabel">🍀 건강운</div><div class="btrack"><div class="bfill health" id="b-health" style="width:0"></div></div><div class="bpct" id="p-health">-</div></div>
     </div>
   </div>
 
@@ -209,13 +202,11 @@
 </div>
 <script>
 function go(page){window.location.href=page}
-const dailyMsg=["지금의 작은 노력이\n큰 행운으로 돌아올 거예요.","막혔던 길이 오늘 드디어 열립니다.","좋은 인연이 가까이 있어요.","포기하지 않은 당신, 오늘 빛납니다.","작은 친절이 큰 복을 부릅니다."];
-const dailySub=["포기하지 말고, 끝까지 가보세요!","지금 이 순간이 가장 중요해요.","마음을 열면 기회가 보입니다.","오늘 하루도 응원할게요 ✨","당신의 진심은 반드시 닿아요."];
+
+
 function seed(){const d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
 window.addEventListener('load',()=>{
   const s=seed();
-  document.getElementById('daily-msg').innerHTML=dailyMsg[s%dailyMsg.length].replace('\n','<br>');
-  document.getElementById('daily-sub').textContent=dailySub[s%dailySub.length];
   setTimeout(()=>{
     const v={love:70+(s%25),money:60+((s*3)%30),work:75+((s*7)%20),health:65+((s*5)%25)};
     ['love','money','work','health'].forEach(k=>{
