@@ -134,7 +134,7 @@
 </div>
 <script>
 function go(page){window.location.href=page;}
-function seed(){const d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
+function seed(){return Math.floor(Math.random()*10000);}
 
 const zodiacs=[
   {name:'쥐띠',emoji:'🐭',years:'1948,1960,1972,1984,1996,2008,2020'},
