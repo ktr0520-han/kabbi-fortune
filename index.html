@@ -66,26 +66,26 @@
     .ilabel{font-size:11px;font-weight:700;color:rgba(195,165,235,0.9);white-space:nowrap;text-align:center}
 
     /* 오늘의 한마디 */
-    .daily-wrap{margin:12px 16px 0;background:linear-gradient(135deg,#e8d898 0%,#d4bc70 40%,#c8aa58 100%);border:2px solid rgba(155,105,20,0.65);border-radius:16px;overflow:hidden;display:flex;align-items:stretch;position:relative;z-index:5;box-shadow:0 4px 18px rgba(0,0,0,0.5);min-height:95px;max-height:110px;}
+    .daily-wrap{margin:12px 16px 0;background:linear-gradient(135deg,#e8d898 0%,#d4bc70 40%,#c8aa58 100%);border:2px solid rgba(155,105,20,0.65);border-radius:16px;overflow:hidden;display:flex;align-items:stretch;position:relative;z-index:5;box-shadow:0 4px 18px rgba(0,0,0,0.5);height:90px;}
     .daily-wrap::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 22px,rgba(155,105,20,0.06) 22px,rgba(155,105,20,0.06) 23px);}
-    .daily-left{flex:1;padding:12px 0 12px 13px;display:flex;align-items:center;gap:10px;position:relative;z-index:1;}
-    .daily-badge{background:linear-gradient(160deg,#3a1e08,#1e0e02);border:2px solid rgba(155,100,15,0.8);border-radius:50%;width:50px;height:50px;text-align:center;font-size:10px;font-weight:900;flex-shrink:0;color:#f0c84a;box-shadow:0 2px 8px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;line-height:1.4;}
-    .daily-content strong{display:block;font-size:13.5px;font-weight:900;color:#1e0c00;line-height:1.4;margin-bottom:3px}
-    .daily-content span{font-size:10.5px;color:#4a2c08;opacity:.85}
-    .daily-char{width:110px;flex-shrink:0;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
-    .daily-char img{width:130px;height:110px;object-fit:contain;object-position:bottom center;}
+    .daily-left{flex:1;padding:10px 0 10px 12px;display:flex;align-items:center;gap:9px;position:relative;z-index:1;}
+    .daily-badge{background:linear-gradient(160deg,#3a1e08,#1e0e02);border:2px solid rgba(155,100,15,0.8);border-radius:50%;width:46px;height:46px;text-align:center;font-size:9.5px;font-weight:900;flex-shrink:0;color:#f0c84a;box-shadow:0 2px 8px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;line-height:1.4;}
+    .daily-content strong{display:block;font-size:12.5px;font-weight:900;color:#1e0c00;line-height:1.4;margin-bottom:2px}
+    .daily-content span{font-size:10px;color:#4a2c08;opacity:.85}
+    .daily-char{width:120px;flex-shrink:0;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:center;overflow:visible;}
+    .daily-char img{width:150px;height:120px;object-fit:contain;object-position:bottom center;margin-bottom:-10px;mix-blend-mode:multiply;}
 
     /* 종합 운세 */
-    .fortune-panel{margin:14px 16px 0;background:rgba(12,3,28,0.95);border:1.5px solid rgba(212,168,64,0.38);border-radius:18px;padding:16px;position:relative;overflow:hidden;z-index:5;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
+    .fortune-panel{margin:10px 16px 0;background:rgba(12,3,28,0.95);border:1.5px solid rgba(212,168,64,0.38);border-radius:14px;padding:11px 13px;position:relative;overflow:hidden;z-index:5;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
     .fortune-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
-    .fp-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
-    .fp-label{font-size:12.5px;color:rgba(195,165,235,0.9);font-weight:700;margin-bottom:5px}
-    .fp-stars{font-size:22px;letter-spacing:2px}
-    .fp-badge{background:linear-gradient(135deg,#6030c0,#c03080);border-radius:12px;padding:8px 12px;font-size:11px;font-weight:900;text-align:center;line-height:1.5;box-shadow:0 4px 14px rgba(100,30,200,0.45);}
-    .bars{display:flex;flex-direction:column;gap:10px}
-    .brow{display:flex;align-items:center;gap:10px}
-    .blabel{font-size:12.5px;font-weight:700;width:54px;flex-shrink:0;white-space:nowrap}
-    .btrack{flex:1;height:9px;background:rgba(255,255,255,0.09);border-radius:5px;overflow:hidden}
+    .fp-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px}
+    .fp-label{font-size:11px;color:rgba(195,165,235,0.9);font-weight:700;margin-bottom:3px}
+    .fp-stars{font-size:18px;letter-spacing:2px}
+    .fp-badge{background:linear-gradient(135deg,#6030c0,#c03080);border-radius:10px;padding:6px 10px;font-size:10px;font-weight:900;text-align:center;line-height:1.4;box-shadow:0 4px 14px rgba(100,30,200,0.45);}
+    .bars{display:flex;flex-direction:column;gap:7px}
+    .brow{display:flex;align-items:center;gap:8px}
+    .blabel{font-size:11.5px;font-weight:700;width:50px;flex-shrink:0;white-space:nowrap}
+    .btrack{flex:1;height:7px;background:rgba(255,255,255,0.09);border-radius:4px;overflow:hidden}
     .bfill{height:100%;border-radius:5px;transition:width 1.4s cubic-bezier(.22,1,.36,1)}
     .bfill.love{background:linear-gradient(90deg,#ff9dbd,#ff3ca6)}
     .bfill.money{background:linear-gradient(90deg,#f5d060,#e8a800)}
@@ -97,10 +97,10 @@
     .footer{margin:18px 16px 4px;text-align:center;color:rgba(180,150,220,0.38);font-size:11px;line-height:1.9}
 
     /* 하단 네비 */
-    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;background:rgba(6,0,16,0.97);border-top:1px solid rgba(212,168,64,0.22);display:flex;justify-content:space-around;align-items:center;padding:10px 0 18px;backdrop-filter:blur(20px);}
-    .nitem{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex:1;padding:2px 0;transition:all .2s}
-    .nicon{font-size:22px;display:block}
-    .nlabel{font-size:10.5px;font-weight:700;color:rgba(195,165,235,0.8)}
+    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;background:rgba(6,0,16,0.97);border-top:1.5px solid rgba(212,168,64,0.35);display:flex;justify-content:space-around;align-items:center;padding:12px 0 20px;backdrop-filter:blur(20px);}
+    .nitem{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:2px 0;transition:all .2s}
+    .nicon{font-size:27px;display:block}
+    .nlabel{font-size:12px;font-weight:700;color:rgba(195,165,235,0.8)}
     .nitem.active .nlabel{color:#f0c84a}
     .nitem.active .nicon{filter:drop-shadow(0 0 6px rgba(240,200,74,0.8))}
   </style>
