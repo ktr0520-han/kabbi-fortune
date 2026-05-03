@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-    body{font-family:'Noto Sans KR',sans-serif;color:#fff5e0;min-height:100vh;overflow-x:hidden;background:linear-gradient(180deg,#2a0050 0%,#1a0038 20%,#0e0025 45%,#060015 70%,#030008 100%);}
+    body{font-family:'Noto Sans KR',sans-serif;color:#fff5e0;min-height:100vh;overflow-x:hidden;background:radial-gradient(ellipse 120% 50% at 50% 0%,rgba(100,30,200,0.9) 0%,transparent 55%),radial-gradient(ellipse 80% 40% at 20% 30%,rgba(80,10,160,0.5) 0%,transparent 50%),radial-gradient(ellipse 60% 40% at 85% 20%,rgba(120,20,180,0.4) 0%,transparent 50%),linear-gradient(180deg,#1e0040 0%,#140030 20%,#0c001e 45%,#060012 70%,#02000a 100%);}
     .app{max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:80px;position:relative;overflow:hidden}
 
     /* 상단바 */
@@ -66,14 +66,14 @@
     .ilabel{font-size:11px;font-weight:700;color:rgba(195,165,235,0.9);white-space:nowrap;text-align:center}
 
     /* 오늘의 한마디 */
-    .daily-wrap{margin:0px 16px 0;background:linear-gradient(135deg,#ecdfa0 0%,#d8c478 45%,#cbb460 100%);border:2px solid rgba(155,105,20,0.65);border-radius:14px;overflow:hidden;display:flex;align-items:stretch;position:relative;z-index:5;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-height:80px;}
-    .daily-wrap::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 22px,rgba(155,105,20,0.07) 22px,rgba(155,105,20,0.07) 23px);}
-    .daily-left{flex:1;padding:10px 0 10px 12px;display:flex;align-items:center;gap:9px;position:relative;z-index:1;}
-    .daily-badge{background:linear-gradient(160deg,#4a2808,#2a1404);border:1.5px solid rgba(155,100,15,0.8);border-radius:10px;padding:6px 7px;text-align:center;font-size:10px;font-weight:900;min-width:42px;line-height:1.5;flex-shrink:0;color:#f0c84a;box-shadow:0 2px 8px rgba(0,0,0,0.35);}
-    .daily-content strong{display:block;font-size:12.5px;font-weight:900;color:#1e0c00;line-height:1.45;margin-bottom:2px}
-    .daily-content span{font-size:10px;color:#4a2c08;opacity:.85}
-    .daily-char{width:100px;flex-shrink:0;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
-    .daily-char img{width:100px;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 20%);mask-image:linear-gradient(90deg,transparent 0%,black 20%);}
+    .daily-wrap{margin:14px 16px 0;background:linear-gradient(135deg,#e8d898 0%,#d4bc70 40%,#c8aa58 100%);border:2px solid rgba(155,105,20,0.65);border-radius:18px;overflow:hidden;display:flex;align-items:stretch;position:relative;z-index:5;box-shadow:0 6px 24px rgba(0,0,0,0.5);min-height:130px;}
+    .daily-wrap::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 22px,rgba(155,105,20,0.06) 22px,rgba(155,105,20,0.06) 23px);}
+    .daily-left{flex:1;padding:16px 0 16px 15px;display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
+    .daily-badge{background:linear-gradient(160deg,#3a1e08,#1e0e02);border:2px solid rgba(155,100,15,0.8);border-radius:50%;width:58px;height:58px;text-align:center;font-size:11px;font-weight:900;flex-shrink:0;color:#f0c84a;box-shadow:0 2px 8px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;line-height:1.4;}
+    .daily-content strong{display:block;font-size:16px;font-weight:900;color:#1e0c00;line-height:1.45;margin-bottom:4px}
+    .daily-content span{font-size:11.5px;color:#4a2c08;opacity:.85}
+    .daily-char{width:140px;flex-shrink:0;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
+    .daily-char img{width:140px;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 25%);mask-image:linear-gradient(90deg,transparent 0%,black 25%);}
 
     /* 종합 운세 */
     .fortune-panel{margin:14px 16px 0;background:rgba(12,3,28,0.95);border:1.5px solid rgba(212,168,64,0.38);border-radius:18px;padding:16px;position:relative;overflow:hidden;z-index:5;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
