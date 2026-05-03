@@ -25,7 +25,7 @@
     .notif-dot{position:absolute;top:5px;right:5px;width:9px;height:9px;background:#e0308a;border-radius:50%;border:2px solid #15002e}
 
     /* 히어로 */
-    .hero{position:relative;height:440px;overflow:hidden;margin-top:14px;}
+    .hero{position:relative;height:380px;overflow:hidden;margin-top:14px;}
 
     /* 캐릭터 - 페이드 없이 선명하게 */
     .hero-char{position:absolute;left:-35px;top:-20px;width:55%;z-index:3;}
@@ -38,13 +38,13 @@
     .hero-title{position:absolute;top:6px;right:0;width:50%;z-index:5;padding:0 10px 0 0;text-align:center;}
     .h-small{font-size:11px;color:rgba(200,170,240,0.85);letter-spacing:.4px;margin-bottom:3px}
     .h-big{font-family:'Noto Serif KR',serif;font-size:38px;font-weight:900;background:linear-gradient(160deg,#ffe8a0 0%,#f0c84a 45%,#c89830 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;letter-spacing:-1px;filter:drop-shadow(0 2px 12px rgba(212,168,64,0.55));}
-    .h-desc{font-size:11px;color:rgba(210,185,255,0.9);margin-top:6px;line-height:1.65}
+    .h-desc{display:none}
     .gold-sep{display:flex;align-items:center;justify-content:center;gap:5px;margin:8px 0;}
     .gold-sep::before,.gold-sep::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,64,0.55),transparent)}
     .gold-sep span{color:rgba(212,168,64,0.75);font-size:12px}
 
     /* 퀵카드 */
-    .quick-cards{position:absolute;top:200px;right:0;width:50%;z-index:5;padding:0 10px 0 0;display:flex;flex-direction:column;gap:7px;}
+    .quick-cards{position:absolute;top:140px;right:0;width:50%;z-index:5;padding:0 10px 0 0;display:flex;flex-direction:column;gap:7px;}
     .qcard{background:rgba(28,12,60,0.88);border:1.5px solid rgba(212,168,64,0.38);border-radius:11px;padding:6px 7px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:all .2s;backdrop-filter:blur(16px);box-shadow:0 4px 16px rgba(0,0,0,0.45);}
     .qcard:hover{border-color:rgba(212,168,64,0.7);transform:translateX(-2px)}
     .qcard:active{transform:scale(0.97)}
