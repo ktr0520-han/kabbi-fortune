@@ -1,39 +1,212 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>오늘의 12띠 운세</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>띠별 운세 - 깨비아씨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    body{
+      font-family:'Noto Sans KR',sans-serif;color:#fff5e0;min-height:100vh;
+      background:radial-gradient(ellipse 120% 50% at 50% 0%,rgba(100,30,200,0.9) 0%,transparent 55%),
+        radial-gradient(ellipse 80% 40% at 20% 30%,rgba(80,10,160,0.5) 0%,transparent 50%),
+        linear-gradient(180deg,#1e0040 0%,#140030 20%,#0c001e 45%,#060012 70%,#02000a 100%);
+    }
+    .app{max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:90px;}
+
+    /* 헤더 */
+    .header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(212,168,64,0.2);}
+    .back-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(212,168,64,0.4);background:rgba(20,0,45,0.6);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;}
+    .header-title{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;background:linear-gradient(160deg,#ffe8a0,#f0c84a,#c89830);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    /* 띠 선택 그리드 */
+    .section-title{padding:16px 18px 10px;font-size:13px;color:rgba(195,165,235,0.85);font-weight:700;}
+
+    .zodiac-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:10px;padding:0 16px;
+    }
+    .zitem{
+      background:rgba(14,3,32,0.9);
+      border:1.5px solid rgba(212,168,64,0.3);
+      border-radius:14px;padding:12px 6px;
+      text-align:center;cursor:pointer;
+      transition:all .2s;
+    }
+    .zitem:hover,.zitem.active{
+      border-color:#f0c84a;
+      background:rgba(80,20,160,0.5);
+      transform:translateY(-2px);
+    }
+    .zitem.active{box-shadow:0 0 14px rgba(212,168,64,0.4);}
+    .zitem-emoji{font-size:26px;display:block;margin-bottom:4px;}
+    .zitem-name{font-size:11px;font-weight:700;color:rgba(195,165,235,0.9);}
+    .zitem-year{font-size:9.5px;color:rgba(195,165,235,0.55);margin-top:2px;}
+
+    /* 결과 카드 */
+    .result-wrap{margin:16px 16px 0;}
+    .result-card{
+      background:rgba(14,3,32,0.92);
+      border:1.5px solid rgba(212,168,64,0.4);
+      border-radius:18px;padding:18px;
+      position:relative;overflow:hidden;
+      display:none;
+    }
+    .result-card.show{display:block;animation:fadeUp .35s ease;}
+    .result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
+    .result-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+    .result-emoji{font-size:32px;}
+    .result-name{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#f0c84a;}
+    .result-content{font-size:13.5px;line-height:1.9;color:#fff5e0;}
+
+    /* 운세 바 */
+    .bars{display:flex;flex-direction:column;gap:9px;margin-top:14px;}
+    .brow{display:flex;align-items:center;gap:10px;}
+    .blabel{font-size:12px;font-weight:700;width:52px;flex-shrink:0;white-space:nowrap;}
+    .btrack{flex:1;height:8px;background:rgba(255,255,255,0.09);border-radius:4px;overflow:hidden;}
+    .bfill{height:100%;border-radius:4px;transition:width 1.4s cubic-bezier(.22,1,.36,1);}
+    .bfill.love{background:linear-gradient(90deg,#ff9dbd,#ff3ca6)}
+    .bfill.money{background:linear-gradient(90deg,#f5d060,#e8a800)}
+    .bfill.work{background:linear-gradient(90deg,#80b8ff,#2060ff)}
+    .bfill.health{background:linear-gradient(90deg,#70e890,#10aa40)}
+    .bpct{font-size:12px;font-weight:900;color:#f0c84a;width:32px;text-align:right;flex-shrink:0;}
+
+    /* 안내 */
+    .guide{margin:16px 16px 0;text-align:center;color:rgba(195,165,235,0.55);font-size:12px;padding:20px;}
+
+    /* 하단 네비 */
+    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;background:rgba(6,0,16,0.97);border-top:1.5px solid rgba(212,168,64,0.35);display:flex;justify-content:space-around;align-items:center;padding:14px 0 24px;backdrop-filter:blur(20px);}
+    .nitem{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:2px 0;transition:all .2s;}
+    .nicon{font-size:30px;display:block;}
+    .nlabel{font-size:13px;font-weight:700;color:rgba(195,165,235,0.8);}
+    .nitem.active .nlabel{color:#f0c84a;}
+    .nitem.active .nicon{filter:drop-shadow(0 0 6px rgba(240,200,74,0.8));}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  </style>
 </head>
 <body>
-  <main class="app">
-    <div class="top-link">
-      <a href="index.html">← 메인으로 돌아가기</a>
+<div class="app">
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="back-btn" onclick="go('index.html')">←</div>
+    <div class="header-title">🧧 띠별 운세</div>
+  </div>
+
+  <!-- 띠 선택 -->
+  <div class="section-title">✨ 내 띠를 선택하세요</div>
+  <div class="zodiac-grid" id="zodiacGrid"></div>
+
+  <!-- 안내 -->
+  <div class="guide" id="guide">위에서 띠를 선택하면 오늘의 운세를 알려드려요!</div>
+
+  <!-- 결과 -->
+  <div class="result-wrap">
+    <div class="result-card" id="resultCard">
+      <div class="result-header">
+        <span class="result-emoji" id="resEmoji"></span>
+        <span class="result-name" id="resName"></span>
+      </div>
+      <div class="result-content" id="resContent"></div>
+      <div class="bars">
+        <div class="brow"><div class="blabel">💗 사랑운</div><div class="btrack"><div class="bfill love" id="b-love" style="width:0"></div></div><div class="bpct" id="p-love">-</div></div>
+        <div class="brow"><div class="blabel">💰 금전운</div><div class="btrack"><div class="bfill money" id="b-money" style="width:0"></div></div><div class="bpct" id="p-money">-</div></div>
+        <div class="brow"><div class="blabel">💼 직장운</div><div class="btrack"><div class="bfill work" id="b-work" style="width:0"></div></div><div class="bpct" id="p-work">-</div></div>
+        <div class="brow"><div class="blabel">🍀 건강운</div><div class="btrack"><div class="bfill health" id="b-health" style="width:0"></div></div><div class="bpct" id="p-health">-</div></div>
+      </div>
     </div>
+  </div>
 
-    <section class="hero">
-      <div>
-        <p class="today" id="todayText">오늘의 운세</p>
-        <h1>오늘의 12띠 운세</h1>
-        <p class="subtitle">
-          내 띠를 선택하면 총운, 애정운, 금전운, 일·사업운, 조심할 점을 한눈에 볼 수 있습니다.
-        </p>
-      </div>
-    </section>
+  <!-- 하단 네비 -->
+  <div class="bottom-nav">
+    <div class="nitem" onclick="go('index.html')"><span class="nicon">🏠</span><span class="nlabel">홈</span></div>
+    <div class="nitem active">
+      <span class="nicon"><img src="nav-zodiac.png" style="width:30px;height:30px;object-fit:contain;" onerror="this.outerHTML='🔮'"></span>
+      <span class="nlabel">운세</span>
+    </div>
+    <div class="nitem" onclick="go('reunion.html')"><span class="nicon">💗</span><span class="nlabel">궁합</span></div>
+    <div class="nitem" onclick="go('talisman.html')"><span class="nicon">📜</span><span class="nlabel">카테고리</span></div>
+    <div class="nitem" onclick="go('my.html')"><span class="nicon">👤</span><span class="nlabel">마이페이지</span></div>
+  </div>
 
-    <section class="zodiac-grid" id="zodiacGrid"></section>
-    <section class="selected-card" id="selectedCard"></section>
+</div>
+<script>
+function go(page){window.location.href=page;}
+function seed(){const d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
 
-    <section class="all-section">
-      <div class="section-title">
-        <h2>12띠 전체 운세</h2>
-        <p>다른 띠 운세도 함께 확인해보세요.</p>
-      </div>
-      <div class="all-grid" id="allGrid"></div>
-    </section>
-  </main>
+const zodiacs=[
+  {name:'쥐띠',emoji:'🐭',years:'1948,1960,1972,1984,1996,2008,2020'},
+  {name:'소띠',emoji:'🐮',years:'1949,1961,1973,1985,1997,2009,2021'},
+  {name:'호랑이띠',emoji:'🐯',years:'1950,1962,1974,1986,1998,2010,2022'},
+  {name:'토끼띠',emoji:'🐰',years:'1951,1963,1975,1987,1999,2011,2023'},
+  {name:'용띠',emoji:'🐲',years:'1952,1964,1976,1988,2000,2012,2024'},
+  {name:'뱀띠',emoji:'🐍',years:'1953,1965,1977,1989,2001,2013,2025'},
+  {name:'말띠',emoji:'🐴',years:'1954,1966,1978,1990,2002,2014,2026'},
+  {name:'양띠',emoji:'🐑',years:'1955,1967,1979,1991,2003,2015'},
+  {name:'원숭이띠',emoji:'🐵',years:'1956,1968,1980,1992,2004,2016'},
+  {name:'닭띠',emoji:'🐔',years:'1957,1969,1981,1993,2005,2017'},
+  {name:'개띠',emoji:'🐶',years:'1958,1970,1982,1994,2006,2018'},
+  {name:'돼지띠',emoji:'🐷',years:'1959,1971,1983,1995,2007,2019'},
+];
 
-  <script src="script.js"></script>
+const fortunes=[
+  "작은 기회가 큰 흐름으로 이어집니다. 서두르지 말고 차분하게 나아가세요.\n\n사랑운: 좋은 인연의 말이 오갈 수 있습니다.\n금전운: 작은 복이 들어오는 흐름입니다.\n직장운: 꾸준함이 인정받는 하루입니다.\n건강운: 무리하지 말고 몸을 따뜻하게 하세요.",
+  "꾸준함이 복이 되는 날입니다. 지금 하고 있는 일을 믿고 계속하세요.\n\n사랑운: 먼저 마음을 열어보세요.\n금전운: 지출을 줄이면 복이 쌓입니다.\n직장운: 성실함이 빛나는 하루입니다.\n건강운: 규칙적인 식사가 행운을 부릅니다.",
+  "추진력이 강해지는 하루입니다. 오래 미뤄왔던 일을 시작하기 좋습니다.\n\n사랑운: 솔직함이 통하는 날입니다.\n금전운: 예상 수입의 흐름이 보입니다.\n직장운: 새로운 아이디어가 빛납니다.\n건강운: 스트레칭으로 몸을 풀어주세요.",
+  "관계운이 부드럽게 열립니다. 먼저 다가가면 좋은 반응이 옵니다.\n\n사랑운: 기다림이 아름다운 결실을 맺습니다.\n금전운: 안정적인 선택이 최선입니다.\n직장운: 협력이 성과를 만듭니다.\n건강운: 충분한 수분 섭취가 필요합니다.",
+  "큰 흐름이 당신 쪽으로 움직입니다. 준비된 사람에게 기회가 찾아옵니다.\n\n사랑운: 좋은 만남의 기운이 있습니다.\n금전운: 뜻밖의 수입 흐름이 보입니다.\n직장운: 리더십을 발휘하기 좋은 날입니다.\n건강운: 오늘은 충분한 휴식이 필요합니다.",
+  "지혜로운 선택이 필요한 날입니다. 직관보다 근거를 믿으세요.\n\n사랑운: 대화로 오해를 풀어보세요.\n금전운: 충동구매는 자제하는 게 좋습니다.\n직장운: 신중한 판단이 빛을 발합니다.\n건강운: 과식을 피하고 가볍게 드세요.",
+  "움직일수록 좋은 기회가 생깁니다. 집에만 있지 말고 밖으로 나가보세요.\n\n사랑운: 우연한 만남이 인연이 될 수 있어요.\n금전운: 작은 투자로 큰 결실이 올 수 있습니다.\n직장운: 적극적인 자세가 인정받습니다.\n건강운: 가벼운 산책이 도움이 됩니다.",
+  "마음의 평온이 운을 살립니다. 과하게 욕심내면 오히려 막힙니다.\n\n사랑운: 상대의 마음을 먼저 이해해주세요.\n금전운: 현재에 만족하면 복이 옵니다.\n직장운: 차분한 마음이 최고의 무기입니다.\n건강운: 명상이나 요가로 마음을 다스리세요.",
+  "재치와 센스가 빛나는 날입니다. 평소보다 말이 잘 통하는 하루입니다.\n\n사랑운: 유머로 분위기를 환기시켜보세요.\n금전운: 새로운 수익 아이디어가 떠오릅니다.\n직장운: 발표나 회의에서 빛을 발합니다.\n건강운: 스트레스 해소에 집중하세요.",
+  "성실함이 좋은 평가로 돌아옵니다. 묵묵히 해온 일이 인정받을 순간입니다.\n\n사랑운: 진심이 전달되는 하루입니다.\n금전운: 꾸준한 저축이 결실을 맺습니다.\n직장운: 노력이 드디어 인정받습니다.\n건강운: 규칙적인 생활이 건강을 지킵니다.",
+  "믿음과 진심이 통하는 날입니다. 오래된 인연에서 복이 들어옵니다.\n\n사랑운: 오래된 인연을 소중히 하세요.\n금전운: 신뢰할 수 있는 거래가 성사됩니다.\n직장운: 팀워크가 빛나는 하루입니다.\n건강운: 가까운 사람과 함께하는 시간이 보약입니다.",
+  "재물운과 즐거운 소식이 따릅니다. 작은 행운이 연달아 찾아올 수 있어요.\n\n사랑운: 설레는 소식이 들려올 수 있습니다.\n금전운: 예상치 못한 수입이 생길 수 있습니다.\n직장운: 좋은 제안이 들어올 수 있습니다.\n건강운: 활력이 넘치는 하루입니다.",
+];
+
+// 그리드 생성
+const grid=document.getElementById('zodiacGrid');
+zodiacs.forEach((z,i)=>{
+  const el=document.createElement('div');
+  el.className='zitem';
+  el.innerHTML=`<span class="zitem-emoji">${z.emoji}</span><div class="zitem-name">${z.name}</div><div class="zitem-year">${z.years.split(',')[0]}년~</div>`;
+  el.onclick=()=>selectZodiac(i,el);
+  grid.appendChild(el);
+});
+
+function selectZodiac(i, el){
+  document.querySelectorAll('.zitem').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('guide').style.display='none';
+
+  const s=seed()+i;
+  const z=zodiacs[i];
+  const f=fortunes[(s)%fortunes.length];
+
+  document.getElementById('resEmoji').textContent=z.emoji;
+  document.getElementById('resName').textContent=z.name+' 오늘의 운세';
+  document.getElementById('resContent').textContent=f;
+
+  const card=document.getElementById('resultCard');
+  card.classList.remove('show');
+  void card.offsetWidth;
+  card.classList.add('show');
+
+  // 바 초기화 후 애니메이션
+  ['love','money','work','health'].forEach(k=>{
+    document.getElementById('b-'+k).style.width='0';
+    document.getElementById('p-'+k).textContent='-';
+  });
+  setTimeout(()=>{
+    const v={love:65+(s%30),money:60+((s*3)%30),work:70+((s*7)%25),health:65+((s*5)%30)};
+    ['love','money','work','health'].forEach(k=>{
+      document.getElementById('b-'+k).style.width=v[k]+'%';
+      document.getElementById('p-'+k).textContent=v[k]+'%';
+    });
+  },100);
+}
+</script>
 </body>
 </html>
