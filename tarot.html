@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>신타로카드 - 깨비아씨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    body{
+      font-family:'Noto Sans KR',sans-serif;color:#fff5e0;min-height:100vh;
+      background:radial-gradient(ellipse 120% 50% at 50% 0%,rgba(100,30,200,0.9) 0%,transparent 55%),
+        radial-gradient(ellipse 80% 40% at 20% 30%,rgba(80,10,160,0.5) 0%,transparent 50%),
+        linear-gradient(180deg,#1e0040 0%,#140030 20%,#0c001e 45%,#060012 70%,#02000a 100%);
+    }
+    .app{max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:110px;}
+
+    /* 헤더 */
+    .header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(212,168,64,0.2);}
+    .back-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(212,168,64,0.4);background:rgba(20,0,45,0.6);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;}
+    .header-title{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;background:linear-gradient(160deg,#ffe8a0,#f0c84a,#c89830);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    /* 캐릭터 배너 */
+    .char-banner{display:flex;align-items:center;gap:14px;padding:16px 18px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(212,168,64,0.15);}
+    .char-banner img{width:70px;height:70px;object-fit:cover;border-radius:12px;border:1.5px solid rgba(212,168,64,0.4);}
+    .char-banner-text strong{display:block;font-size:15px;font-weight:900;color:#f0c84a;margin-bottom:4px;}
+    .char-banner-text span{font-size:12px;color:rgba(195,165,235,0.85);line-height:1.5;}
+
+    /* 카드 선택 안내 */
+    .guide{text-align:center;padding:20px 18px 10px;}
+    .guide-title{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#f0c84a;margin-bottom:8px;text-shadow:0 0 14px rgba(212,168,64,0.5);}
+    .guide-sub{font-size:12.5px;color:rgba(195,165,235,0.8);line-height:1.6;}
+
+    /* 카드 그리드 */
+    .card-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:10px;padding:14px 16px;
+    }
+    .card-item{
+      aspect-ratio:2/3;
+      border-radius:12px;
+      cursor:pointer;
+      position:relative;
+      transition:transform .2s;
+      transform-style:preserve-3d;
+    }
+    .card-item:hover{transform:translateY(-6px) scale(1.04);}
+    .card-item.picked{transform:translateY(-10px) scale(1.06);pointer-events:none;}
+
+    /* 카드 앞면/뒷면 */
+    .card-front,.card-back{
+      position:absolute;inset:0;
+      border-radius:12px;
+      backface-visibility:hidden;
+    }
+    .card-back{
+      background:linear-gradient(145deg,#2a0058,#1a0040);
+      border:1.5px solid rgba(212,168,64,0.5);
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+    }
+    .card-back::before{
+      content:'神';
+      font-family:'Noto Serif KR',serif;
+      font-size:28px;font-weight:900;
+      color:rgba(212,168,64,0.6);
+      text-shadow:0 0 14px rgba(212,168,64,0.4);
+    }
+    .card-back-pattern{
+      position:absolute;inset:0;
+      background:
+        repeating-linear-gradient(45deg,rgba(212,168,64,0.05) 0,rgba(212,168,64,0.05) 1px,transparent 0,transparent 50%);
+      background-size:8px 8px;
+    }
+    .card-number{
+      position:absolute;bottom:5px;right:7px;
+      font-size:9px;color:rgba(212,168,64,0.4);font-weight:700;
+    }
+
+    /* 결과 섹션 */
+    .result-section{display:none;padding:0 16px;}
+    .result-section.show{display:block;animation:fadeUp .5s ease;}
+
+    .result-card-display{
+      background:linear-gradient(145deg,#2a0058,#1a0040);
+      border:2px solid rgba(212,168,64,0.55);
+      border-radius:18px;padding:20px;
+      text-align:center;
+      position:relative;overflow:hidden;
+      margin-bottom:14px;
+    }
+    .result-card-display::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
+
+    .result-card-img{
+      width:100px;height:150px;
+      margin:0 auto 14px;
+      border-radius:12px;
+      background:linear-gradient(145deg,#3a0078,#200050);
+      border:2px solid rgba(212,168,64,0.6);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Noto Serif KR',serif;
+      font-size:48px;color:rgba(212,168,64,0.9);
+      text-shadow:0 0 20px rgba(212,168,64,0.6);
+      box-shadow:0 8px 30px rgba(100,20,200,0.5);
+    }
+    .result-card-name{
+      font-family:'Noto Serif KR',serif;
+      font-size:20px;font-weight:900;color:#f0c84a;
+      margin-bottom:6px;
+      text-shadow:0 0 12px rgba(212,168,64,0.5);
+    }
+    .result-card-keyword{
+      font-size:12px;color:rgba(195,165,235,0.85);
+      margin-bottom:14px;letter-spacing:1px;
+    }
+    .result-card-msg{
+      font-size:13.5px;line-height:1.85;color:#fff5e0;
+      text-align:left;white-space:pre-line;
+      background:rgba(255,255,255,0.04);
+      border-radius:12px;padding:14px;
+    }
+
+    /* 다시뽑기 버튼 */
+    .redraw-btn{
+      width:100%;padding:13px;border-radius:14px;
+      font-size:14px;font-weight:900;
+      border:1.5px solid rgba(212,168,64,0.4);
+      background:rgba(14,3,32,0.9);
+      color:#f0c84a;cursor:pointer;
+      margin-bottom:14px;
+      transition:all .2s;
+    }
+    .redraw-btn:hover{background:rgba(80,20,160,0.5);border-color:#f0c84a;}
+
+    /* 질문 입력 */
+    .ask-section{margin-bottom:14px;}
+    .ask-label{font-size:12.5px;color:rgba(195,165,235,0.85);font-weight:700;margin-bottom:8px;}
+    .ask-row{display:grid;grid-template-columns:1fr auto;gap:8px;}
+    .inp{padding:13px 14px;border-radius:14px;font-size:14px;border:1.5px solid rgba(212,168,64,0.3);background:rgba(18,3,38,0.85);color:#fff5e0;outline:none;font-family:'Noto Sans KR',sans-serif;transition:border-color .2s;}
+    .inp::placeholder{color:rgba(180,150,220,0.5)}
+    .inp:focus{border-color:#f0c84a;}
+    .ask-btn{padding:13px 16px;border-radius:14px;font-size:14px;font-weight:900;border:none;cursor:pointer;background:linear-gradient(135deg,#6030c0,#c03080);color:#fff;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;box-shadow:0 4px 14px rgba(100,20,180,0.5);transition:all .2s;}
+    .ask-btn:hover{opacity:.88;transform:translateY(-1px)}
+    .ask-btn:active{transform:scale(0.96)}
+
+    /* 질문 결과 */
+    .ask-result{
+      background:rgba(14,3,32,0.92);
+      border:1.5px solid rgba(212,168,64,0.35);
+      border-radius:14px;padding:14px;
+      font-size:13.5px;line-height:1.85;color:#fff5e0;
+      white-space:pre-line;display:none;
+      position:relative;
+    }
+    .ask-result::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
+    .ask-result.show{display:block;animation:fadeUp .35s ease;}
+
+    /* 하단 네비 */
+    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;background:rgba(6,0,16,0.97);border-top:1.5px solid rgba(212,168,64,0.35);display:flex;justify-content:space-around;align-items:center;padding:14px 0 24px;backdrop-filter:blur(20px);}
+    .nitem{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:2px 0;transition:all .2s;}
+    .nicon{font-size:30px;display:block;}
+    .nlabel{font-size:13px;font-weight:700;color:rgba(195,165,235,0.8);}
+    .nitem.active .nlabel{color:#f0c84a;}
+    .nitem.active .nicon{filter:drop-shadow(0 0 6px rgba(240,200,74,0.8));}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes glow{0%,100%{box-shadow:0 0 10px rgba(212,168,64,0.3)}50%{box-shadow:0 0 24px rgba(212,168,64,0.7)}}
+    .card-item.picked .card-back{animation:glow 1s ease;}
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="back-btn" onclick="go('index.html')">←</div>
+    <div class="header-title">🔮 신타로카드</div>
+  </div>
+
+  <!-- 캐릭터 배너 -->
+  <div class="char-banner">
+    <img src="kkabbi-think.png" alt="깨비아씨">
+    <div class="char-banner-text">
+      <strong>진지한 깨비아씨의 신타로</strong>
+      <span>마음을 고요히 하고<br>끌리는 카드를 하나 선택하세요!</span>
+    </div>
+  </div>
+
+  <!-- 카드 선택 안내 -->
+  <div class="guide" id="guide">
+    <div class="guide-title">✨ 카드를 뽑아보세요</div>
+    <div class="guide-sub">마음을 비우고 끌리는 카드를 하나 선택하세요.<br>깨비아씨가 당신의 운명을 읽어드립니다.</div>
+  </div>
+
+  <!-- 카드 그리드 -->
+  <div class="card-grid" id="cardGrid"></div>
+
+  <!-- 결과 섹션 -->
+  <div class="result-section" id="resultSection">
+    <div class="result-card-display">
+      <div class="result-card-img" id="cardEmoji">神</div>
+      <div class="result-card-name" id="cardName"></div>
+      <div class="result-card-keyword" id="cardKeyword"></div>
+      <div class="result-card-msg" id="cardMsg"></div>
+    </div>
+
+    <button class="redraw-btn" onclick="reset()">🔮 다시 카드 뽑기</button>
+
+    <div class="ask-section">
+      <div class="ask-label">💬 카드에 대해 질문하기</div>
+      <div class="ask-row">
+        <input id="q" class="inp" placeholder="예: 이 카드가 사랑에 대해 뭘 말하나요?">
+        <button class="ask-btn" onclick="ask()">질문</button>
+      </div>
+    </div>
+    <div class="ask-result" id="askResult"></div>
+  </div>
+
+  <!-- 하단 네비 -->
+  <div class="bottom-nav">
+    <div class="nitem" onclick="go('index.html')"><span class="nicon">🏠</span><span class="nlabel">홈</span></div>
+    <div class="nitem" onclick="go('today.html')">
+      <span class="nicon"><img src="nav-zodiac.png" style="width:30px;height:30px;object-fit:contain;" onerror="this.outerHTML='🔮'"></span>
+      <span class="nlabel">운세</span>
+    </div>
+    <div class="nitem" onclick="go('reunion.html')"><span class="nicon">💗</span><span class="nlabel">궁합</span></div>
+    <div class="nitem" onclick="go('talisman.html')"><span class="nicon">📜</span><span class="nlabel">카테고리</span></div>
+    <div class="nitem active"><span class="nicon">👤</span><span class="nlabel">마이페이지</span></div>
+  </div>
+
+</div>
+<script>
+function go(page){window.location.href=page;}
+
+const cards = [
+  {name:'태양',emoji:'☀️',keyword:'빛 · 성공 · 활력',msg:'밝은 에너지가 당신을 감싸고 있어요.\n\n막혔던 일이 환하게 열리는 시기입니다. 자신감을 갖고 앞으로 나아가세요. 지금이 가장 좋은 때입니다.\n\n💫 깨비 메시지: 당신의 빛이 주변을 밝히고 있어요.'},
+  {name:'달',emoji:'🌙',keyword:'직관 · 감성 · 신비',msg:'내면의 목소리에 귀 기울여야 할 때입니다.\n\n보이지 않는 것들이 중요한 의미를 담고 있어요. 감정을 솔직하게 표현하면 길이 열립니다.\n\n💫 깨비 메시지: 당신의 직관이 가장 정확한 나침반이에요.'},
+  {name:'별',emoji:'⭐',keyword:'희망 · 치유 · 인도',msg:'어둠 속에서도 별은 빛납니다.\n\n힘든 시간이 지나고 새로운 희망이 찾아오고 있어요. 포기하지 말고 끝까지 나아가세요.\n\n💫 깨비 메시지: 반드시 좋은 날이 옵니다.'},
+  {name:'번개',emoji:'⚡',keyword:'변화 · 각성 · 돌파',msg:'갑작스러운 변화가 찾아올 수 있어요.\n\n두렵더라도 이 변화는 당신에게 필요한 것입니다. 낡은 것을 버리고 새로운 것을 받아들이세요.\n\n💫 깨비 메시지: 변화는 항상 더 나은 미래를 위한 것이에요.'},
+  {name:'꽃',emoji:'🌸',keyword:'사랑 · 아름다움 · 성장',msg:'사랑과 아름다움의 에너지가 가득합니다.\n\n인간관계에서 따뜻한 일들이 생겨나고 있어요. 마음을 열면 더 많은 사랑이 들어옵니다.\n\n💫 깨비 메시지: 당신은 사랑받을 자격이 충분해요.'},
+  {name:'불꽃',emoji:'🔥',keyword:'열정 · 용기 · 도전',msg:'뜨거운 열정이 당신 안에 살아있어요.\n\n지금이 도전할 때입니다. 두려움을 뒤로하고 앞으로 나아가면 반드시 결실을 맺게 됩니다.\n\n💫 깨비 메시지: 당신의 열정이 기적을 만들어냅니다.'},
+  {name:'물결',emoji:'🌊',keyword:'흐름 · 유연함 · 정화',msg:'흐르는 물처럼 유연하게 상황에 적응하세요.\n\n억지로 바꾸려 하지 말고 자연스러운 흐름을 따르면 원하는 곳에 도달할 수 있어요.\n\n💫 깨비 메시지: 물은 막히면 돌아가지만 결국 바다에 닿아요.'},
+  {name:'나무',emoji:'🌳',keyword:'안정 · 성장 · 뿌리',msg:'든든한 뿌리가 당신을 지탱하고 있어요.\n\n천천히 하지만 확실하게 성장하고 있습니다. 조급해하지 말고 차근차근 나아가세요.\n\n💫 깨비 메시지: 깊은 뿌리는 강한 바람도 이겨냅니다.'},
+  {name:'나비',emoji:'🦋',keyword:'변신 · 자유 · 새출발',msg:'아름다운 변신의 시간이 다가오고 있어요.\n\n과거의 모습에서 벗어나 새로운 자신을 만날 준비를 하세요. 변화를 두려워하지 마세요.\n\n💫 깨비 메시지: 당신도 나비처럼 아름답게 날아오를 수 있어요.'},
+  {name:'열쇠',emoji:'🗝️',keyword:'기회 · 해답 · 열림',msg:'오랫동안 찾던 답이 가까이 있어요.\n\n새로운 기회의 문이 열리고 있습니다. 용기를 내어 그 문을 열어보세요.\n\n💫 깨비 메시지: 당신에게 맞는 열쇠는 이미 손안에 있어요.'},
+  {name:'보석',emoji:'💎',keyword:'가치 · 귀함 · 완성',msg:'당신은 그 자체로 귀한 존재입니다.\n\n스스로를 과소평가하지 마세요. 당신의 가치를 알아보는 사람들이 반드시 나타납니다.\n\n💫 깨비 메시지: 다이아몬드는 압력 속에서 만들어집니다.'},
+  {name:'무지개',emoji:'🌈',keyword:'희망 · 화해 · 축복',msg:'비 온 뒤 무지개처럼 좋은 일이 기다리고 있어요.\n\n힘든 시간이 끝나고 밝은 날들이 다가오고 있습니다. 조금만 더 힘내세요.\n\n💫 깨비 메시지: 무지개는 반드시 비가 온 뒤에 뜹니다.'},
+];
+
+// 카드 그리드 생성
+const grid = document.getElementById('cardGrid');
+const shuffled = [...Array(cards.length).keys()].sort(()=>Math.random()-0.5);
+
+shuffled.forEach((idx, pos) => {
+  const el = document.createElement('div');
+  el.className = 'card-item';
+  el.innerHTML = `
+    <div class="card-back">
+      <img src="card-back.jpg" alt="">
+    </div>
+  `;
+  el.onclick = () => selectCard(idx, el);
+  grid.appendChild(el);
+});
+
+function selectCard(idx, el) {
+  // 다른 카드 흐리게
+  document.querySelectorAll('.card-item').forEach(c => {
+    c.style.opacity = '0.3';
+    c.style.pointerEvents = 'none';
+  });
+  el.style.opacity = '1';
+  el.classList.add('picked');
+
+  // 잠시 후 결과 표시
+  setTimeout(() => {
+    showResult(cards[idx]);
+  }, 600);
+}
+
+function showResult(card) {
+  document.getElementById('guide').style.display = 'none';
+  document.getElementById('cardEmoji').textContent = card.emoji;
+  document.getElementById('cardName').textContent = card.name;
+  document.getElementById('cardKeyword').textContent = card.keyword;
+  document.getElementById('cardMsg').textContent = card.msg;
+
+  const section = document.getElementById('resultSection');
+  section.classList.add('show');
+  section.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function reset() {
+  location.reload();
+}
+
+const askConsult = {
+  love: ["카드가 말합니다: 지금 상대방도 당신을 생각하고 있어요. 하지만 타이밍이 중요합니다. 조금만 기다려보세요.","이 카드는 감정의 흐름을 보여줍니다. 억지로 밀어붙이기보다 자연스럽게 흘러가도록 두세요."],
+  money: ["카드가 말합니다: 금전운이 서서히 열리고 있어요. 큰 욕심보다 작은 것부터 차근차근 쌓아가세요.","이 카드는 풍요의 에너지를 담고 있어요. 지출을 줄이고 저축에 집중하면 복이 쌓입니다."],
+  general: ["카드가 말합니다: 지금 당신이 느끼는 것이 맞습니다. 직관을 믿고 앞으로 나아가세요.","이 카드는 변화의 시기를 나타내요. 두려워하지 말고 새로운 시작을 받아들이세요."]
+};
+
+function ask() {
+  const q = document.getElementById('q').value.trim();
+  if(!q) return;
+  let type = 'general';
+  if(q.includes('사랑')||q.includes('연애')||q.includes('연락')||q.includes('남자')||q.includes('여자'))type='love';
+  if(q.includes('돈')||q.includes('금전')||q.includes('재물')||q.includes('투자'))type='money';
+  const arr = askConsult[type];
+  const ans = arr[Math.floor(Math.random()*arr.length)];
+  const res = document.getElementById('askResult');
+  res.textContent = '🔮 카드의 메시지\n\n' + ans + '\n\n✨ 카드는 방향을 보여줄 뿐, 선택은 당신의 몫이에요.';
+  res.classList.add('show');
+  document.getElementById('q').value = '';
+  res.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
