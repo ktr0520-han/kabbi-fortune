@@ -2,564 +2,512 @@
 <html lang="ko">
 <head>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#1a0038">
+  <meta name="theme-color" content="#120028">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="깨비아씨">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="/icon-192.png">
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/sw.js');
-      });
-    }
-  </script>
+  <script>if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>깨비아씨 운세</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
     :root{
-      --gold:#f5c842;
-      --gold2:#ffe08a;
-      --purple:#7a3cff;
-      --pink:#ff3ca6;
-      --bg1:#0e0022;
-      --bg2:#1a0038;
-      --card:rgba(255,255,255,0.07);
-      --border:rgba(245,200,66,0.28);
+      --navy:#0e001e;
+      --purple:#6b2fc7;
+      --pink:#d63b8a;
+      --gold:#d4a840;
+      --gold2:#f0c84a;
+      --gold3:#ffe8a0;
+      --cream:#f5e6c8;
+      --cream2:#e8d4a8;
+      --bg-gold:rgba(212,168,64,0.42);
+      --bg-gold2:rgba(212,168,64,0.22);
       --text:#fff5e0;
-      --sub:#c9a8ff;
+      --sub:#c5a8e8;
     }
 
     body{
       font-family:'Noto Sans KR',sans-serif;
-      background:var(--bg1);
       color:var(--text);
       min-height:100vh;
       overflow-x:hidden;
-      background-image:
-        radial-gradient(ellipse 80% 50% at 50% -10%,rgba(122,60,255,0.45),transparent),
-        radial-gradient(ellipse 40% 30% at 85% 15%,rgba(255,60,166,0.22),transparent),
-        radial-gradient(ellipse 50% 40% at 10% 55%,rgba(122,60,255,0.12),transparent);
+      background:
+        radial-gradient(ellipse 100% 60% at 50% -5%, rgba(80,20,160,0.95) 0%, transparent 65%),
+        radial-gradient(ellipse 70% 45% at 15% 30%, rgba(55,10,110,0.6) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 40% at 88% 22%, rgba(100,25,175,0.4) 0%, transparent 50%),
+        linear-gradient(180deg,#1c0038 0%,#130028 35%,#0c0020 65%,#080018 100%);
     }
 
-    .app{max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:80px;position:relative}
+    .app{max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:76px;position:relative}
 
     /* ── 상단바 ── */
-    .topbar{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:18px 20px 8px;
-    }
-    .top-btn{
+    .topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 20px 8px;position:relative}
+    .topbar-center{position:absolute;left:50%;transform:translateX(-50%);color:var(--gold);font-size:18px;opacity:.7}
+    .tbtn{
       width:42px;height:42px;border-radius:50%;
-      background:rgba(255,255,255,0.09);
-      border:1px solid var(--border);
+      border:1.5px solid var(--bg-gold);
+      background:rgba(28,0,58,0.75);
       display:flex;align-items:center;justify-content:center;
-      font-size:18px;cursor:pointer;position:relative;
+      font-size:17px;cursor:pointer;position:relative;
+      backdrop-filter:blur(8px);
     }
-    .notif-dot{
-      position:absolute;top:7px;right:7px;
-      width:8px;height:8px;background:var(--pink);
-      border-radius:50%;border:2px solid var(--bg1);
-    }
+    .notif{position:absolute;top:6px;right:6px;width:9px;height:9px;background:#e03080;border-radius:50%;border:2px solid #0e001e}
 
-    /* ── 히어로 타이틀 ── */
-    .hero-title-area{text-align:center;padding:0 20px 4px}
-    .hero-sub{font-size:12.5px;color:var(--sub);letter-spacing:.4px;margin-bottom:2px}
-    .hero-main{
+    /* ── 타이틀 ── */
+    .hero-title{text-align:center;padding:0 20px 8px}
+    .h-small{font-size:12px;color:var(--sub);letter-spacing:.5px;margin-bottom:3px}
+    .h-big{
       font-family:'Noto Serif KR',serif;
       font-size:50px;font-weight:900;
-      color:var(--gold);
-      text-shadow:0 0 28px rgba(245,200,66,.55),0 0 60px rgba(245,200,66,.25);
+      background:linear-gradient(170deg,var(--gold3) 0%,var(--gold2) 45%,var(--gold) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
       line-height:1.05;letter-spacing:-1px;
-      display:flex;align-items:center;justify-content:center;gap:8px;
+      filter:drop-shadow(0 2px 16px rgba(212,168,64,0.55));
     }
-    .kanji{
-      font-size:13px;background:var(--gold);color:#1a0038;
-      font-weight:900;padding:2px 5px;border-radius:4px;
-      font-family:'Noto Sans KR',sans-serif;align-self:flex-start;margin-top:10px;
-    }
-    .hero-desc{font-size:13px;color:#d0b8ff;margin-top:6px;line-height:1.6}
+    .h-desc{font-size:13px;color:#d0b8f0;margin-top:7px;line-height:1.7}
+    .gold-sep{display:flex;align-items:center;justify-content:center;gap:8px;margin:9px 0 0}
+    .gold-sep::before,.gold-sep::after{content:'';flex:1;max-width:55px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+    .gold-sep span{color:var(--gold);font-size:13px}
 
-    /* ── 캐릭터 + 카드 레이아웃 ── */
-    .hero-layout{display:flex;align-items:flex-end;padding:6px 14px 0;gap:4px}
-    .char-wrap{
-      width:180px;flex-shrink:0;position:relative;z-index:2;
-    }
-    .char-wrap img{
-      width:100%;
-      filter:drop-shadow(0 8px 28px rgba(122,60,255,.55));
-      animation:float 3.8s ease-in-out infinite;
-    }
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    /* ── 캐릭터 + 퀵카드 ── */
+    .hero-section{display:flex;align-items:flex-end;padding:10px 14px 0;gap:10px}
 
-    .hero-cards{flex:1;display:flex;flex-direction:column;gap:10px;padding-bottom:12px}
+    .char-card{
+      width:156px;flex-shrink:0;border-radius:18px;overflow:hidden;
+      border:2px solid var(--bg-gold);position:relative;cursor:pointer;
+      box-shadow:0 8px 36px rgba(90,20,180,0.5),inset 0 0 0 1px rgba(255,255,255,0.06);
+      transition:transform .2s;
+    }
+    .char-card:hover{transform:scale(1.02)}
+    .char-card img{width:100%;display:block}
+    .char-caption{
+      position:absolute;bottom:0;left:0;right:0;
+      background:linear-gradient(0deg,rgba(8,0,20,0.94) 55%,transparent);
+      padding:22px 10px 10px;text-align:center;
+    }
+    .char-caption strong{font-size:13.5px;font-weight:900;color:var(--gold2);display:block;text-shadow:0 0 8px rgba(212,168,64,0.5)}
+    .char-caption span{font-size:10.5px;color:var(--sub)}
 
-    .hcard{
-      background:rgba(255,255,255,0.08);
-      border:1px solid var(--border);
-      border-radius:16px;padding:11px 12px;
+    .quick-cards{flex:1;display:flex;flex-direction:column;gap:10px;padding-bottom:4px}
+    .qcard{
+      background:rgba(28,5,52,0.78);
+      border:1.5px solid var(--bg-gold);
+      border-radius:16px;padding:12px;
       display:flex;align-items:center;gap:10px;
       cursor:pointer;transition:all .2s;
-      backdrop-filter:blur(10px);
+      backdrop-filter:blur(12px);
+      position:relative;overflow:hidden;
     }
-    .hcard:hover{background:rgba(255,255,255,.14);border-color:var(--gold);transform:translateX(2px)}
-    .hcard-icon{
-      width:40px;height:40px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+    .qcard::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(212,168,64,0.06),transparent 60%);pointer-events:none}
+    .qcard:hover{border-color:var(--gold2);transform:translateX(3px);background:rgba(45,10,78,0.85)}
+    .qcard:active{transform:scale(0.97)}
+    .qcard-ic{
+      width:44px;height:44px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;font-size:21px;
+      flex-shrink:0;border:1.5px solid var(--bg-gold2);
     }
-    .hcard-icon.moon{background:rgba(122,60,255,.4)}
-    .hcard-icon.heart{background:rgba(255,60,166,.38)}
-    .hcard-text{flex:1}
-    .hcard-text strong{font-size:13.5px;font-weight:700;display:block;margin-bottom:2px}
-    .hcard-text span{font-size:11px;color:var(--sub);line-height:1.4}
-    .hcard-arr{
-      width:24px;height:24px;border-radius:50%;flex-shrink:0;
+    .qcard-ic.moon{background:radial-gradient(circle,#3a1878,#180040)}
+    .qcard-ic.heart{background:radial-gradient(circle,#6a1848,#280020)}
+    .qcard-text{flex:1;min-width:0}
+    .qcard-text strong{font-size:14px;font-weight:900;display:block;margin-bottom:3px}
+    .qcard-text span{font-size:11px;color:var(--sub);line-height:1.5}
+    .qcard-arr{
+      width:25px;height:25px;border-radius:50%;flex-shrink:0;
       background:linear-gradient(135deg,var(--purple),var(--pink));
-      display:flex;align-items:center;justify-content:center;font-size:11px;
+      display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;
+      box-shadow:0 2px 8px rgba(100,20,180,0.5);
     }
 
     /* ── 배너 ── */
     .banner{
-      margin:10px 16px 0;
-      background:linear-gradient(90deg,rgba(122,60,255,.22),rgba(255,60,166,.18));
-      border:1px solid var(--border);border-radius:12px;
-      padding:9px 16px;text-align:center;
-      font-size:12.5px;font-weight:700;color:var(--gold2);letter-spacing:.3px;
-    }
-    .banner-flowers{color:var(--gold);margin:0 6px}
-
-    /* ── 아이콘 메뉴 ── */
-    .icon-row{
-      display:flex;gap:4px;padding:14px 14px 0;
-      overflow-x:auto;scrollbar-width:none;
-    }
-    .icon-row::-webkit-scrollbar{display:none}
-    .iitem{
-      flex:0 0 calc(20% - 4px);
-      display:flex;flex-direction:column;align-items:center;gap:5px;
-      cursor:pointer;
-    }
-    .ibox{
-      width:56px;height:56px;border-radius:15px;
-      background:rgba(255,255,255,0.06);
-      border:1px solid var(--border);
-      display:flex;align-items:center;justify-content:center;font-size:24px;
-      transition:all .2s;position:relative;overflow:hidden;
-    }
-    .iitem:hover .ibox{
-      border-color:var(--gold);transform:translateY(-3px);
-      box-shadow:0 8px 20px rgba(122,60,255,.38);
-    }
-    .ilabel{font-size:11px;font-weight:700;color:var(--sub);text-align:center;white-space:nowrap}
-
-    /* ── 오늘의 한마디 ── */
-    .daily-word{
-      margin:14px 16px 0;
-      background:linear-gradient(135deg,rgba(26,0,56,.92),rgba(13,0,32,.92));
-      border:1px solid var(--border);border-radius:18px;
-      padding:15px 16px;display:flex;gap:13px;align-items:center;
+      margin:12px 16px 0;
+      background:linear-gradient(90deg,rgba(28,5,52,0.82),rgba(45,10,78,0.82));
+      border:1.5px solid var(--bg-gold);border-radius:14px;
+      padding:10px 16px;text-align:center;
+      font-size:13px;font-weight:700;color:var(--gold2);letter-spacing:.3px;
       backdrop-filter:blur(10px);
     }
+    .bf{color:var(--gold);margin:0 8px;font-size:14px}
+
+    /* ── 아이콘 메뉴 ── */
+    .icon-row{display:flex;gap:5px;padding:14px 14px 0;overflow-x:auto;scrollbar-width:none}
+    .icon-row::-webkit-scrollbar{display:none}
+    .iitem{flex:0 0 calc(20% - 4px);display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+    .ibox{
+      width:58px;height:58px;border-radius:16px;
+      background:rgba(22,5,45,0.85);
+      border:1.5px solid var(--bg-gold);
+      display:flex;align-items:center;justify-content:center;font-size:26px;
+      transition:all .2s;
+      box-shadow:inset 0 0 10px rgba(100,30,200,0.18);
+    }
+    .iitem:hover .ibox,.iitem:active .ibox{
+      border-color:var(--gold2);transform:translateY(-4px);
+      box-shadow:0 10px 24px rgba(100,30,200,0.48),inset 0 0 10px rgba(212,168,64,0.12);
+    }
+    .ilabel{font-size:11px;font-weight:700;color:var(--sub);white-space:nowrap}
+
+    /* ── 오늘의 한마디 (두루마리/한지 느낌) ── */
+    .daily-wrap{
+      margin:14px 16px 0;
+      background:linear-gradient(160deg,#2c1a06 0%,#1e1004 60%,#150c02 100%);
+      border:1.5px solid rgba(180,130,40,0.55);
+      border-radius:18px;padding:15px 16px;
+      display:flex;gap:13px;align-items:center;
+      position:relative;overflow:hidden;
+    }
+    .daily-wrap::after{
+      content:'';position:absolute;inset:0;pointer-events:none;
+      background:repeating-linear-gradient(0deg,transparent,transparent 18px,rgba(180,130,40,0.04) 18px,rgba(180,130,40,0.04) 19px);
+    }
     .daily-badge{
-      background:linear-gradient(135deg,var(--purple),var(--pink));
+      background:linear-gradient(160deg,#3c2210,#1e0e04);
+      border:1.5px solid rgba(180,130,40,0.65);
       border-radius:12px;padding:8px 9px;
       text-align:center;font-size:11px;font-weight:900;
-      min-width:48px;line-height:1.45;flex-shrink:0;
-      box-shadow:0 4px 14px rgba(122,60,255,.4);
+      min-width:50px;line-height:1.5;flex-shrink:0;color:var(--gold2);position:relative;z-index:1;
     }
-    .daily-content strong{
-      display:block;font-size:14.5px;font-weight:900;
-      color:var(--gold2);line-height:1.45;margin-bottom:3px;
-    }
-    .daily-content span{font-size:11.5px;color:var(--sub)}
+    .daily-content{position:relative;z-index:1}
+    .daily-content strong{display:block;font-size:15px;font-weight:900;color:var(--cream);line-height:1.5;margin-bottom:3px}
+    .daily-content span{font-size:11.5px;color:var(--cream2);opacity:.8}
 
-    /* ── 종합 운세 패널 ── */
+    /* ── 종합 운세 ── */
     .fortune-panel{
       margin:13px 16px 0;
-      background:linear-gradient(135deg,rgba(26,0,56,.95),rgba(13,0,32,.95));
-      border:1px solid var(--border);border-radius:18px;
-      padding:15px 16px;backdrop-filter:blur(10px);
+      background:rgba(14,3,30,0.92);
+      border:1.5px solid var(--bg-gold);border-radius:18px;
+      padding:15px 16px;backdrop-filter:blur(12px);position:relative;overflow:hidden;
     }
-    .panel-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:13px}
-    .panel-left{}
-    .panel-label{font-size:12px;color:var(--sub);font-weight:700;margin-bottom:4px}
-    .stars{color:var(--gold);font-size:20px;letter-spacing:2px}
-    .panel-badge{
+    .fortune-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+    .fp-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+    .fp-label{font-size:12.5px;color:var(--sub);font-weight:700;margin-bottom:5px}
+    .fp-stars{font-size:22px;letter-spacing:2px}
+    .fp-badge{
       background:linear-gradient(135deg,var(--purple),var(--pink));
-      border-radius:10px;padding:7px 11px;
-      font-size:10.5px;font-weight:900;text-align:center;line-height:1.45;
-      box-shadow:0 4px 14px rgba(122,60,255,.4);
+      border-radius:12px;padding:8px 12px;
+      font-size:11px;font-weight:900;text-align:center;line-height:1.5;
+      box-shadow:0 4px 14px rgba(100,30,200,0.45);
     }
-    .bars{display:flex;flex-direction:column;gap:9px}
+    .bars{display:flex;flex-direction:column;gap:10px}
     .brow{display:flex;align-items:center;gap:10px}
-    .blabel{font-size:12px;font-weight:700;width:50px;flex-shrink:0;display:flex;align-items:center;gap:3px}
-    .btrack{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
-    .bfill{height:100%;border-radius:4px;transition:width 1.2s ease}
-    .bfill.love{background:linear-gradient(90deg,#ff8fb0,#ff3ca6)}
-    .bfill.money{background:linear-gradient(90deg,#f5c842,#ffaa00)}
-    .bfill.work{background:linear-gradient(90deg,#7eb4ff,#3c6fff)}
-    .bfill.health{background:linear-gradient(90deg,#65e896,#22bb55)}
-    .bpct{font-size:12px;font-weight:700;color:var(--gold);width:32px;text-align:right;flex-shrink:0}
+    .blabel{font-size:12.5px;font-weight:700;width:54px;flex-shrink:0;white-space:nowrap}
+    .btrack{flex:1;height:9px;background:rgba(255,255,255,0.08);border-radius:5px;overflow:hidden}
+    .bfill{height:100%;border-radius:5px;transition:width 1.3s cubic-bezier(.22,1,.36,1)}
+    .bfill.love{background:linear-gradient(90deg,#ff9dbd,#ff3ca6)}
+    .bfill.money{background:linear-gradient(90deg,#f5d060,#e8a800)}
+    .bfill.work{background:linear-gradient(90deg,#80b8ff,#2060ff)}
+    .bfill.health{background:linear-gradient(90deg,#70e890,#10aa40)}
+    .bpct{font-size:12.5px;font-weight:900;color:var(--gold2);width:34px;text-align:right;flex-shrink:0}
 
-    /* ── 출력 카드 (운세 결과) ── */
-    .output-wrap{padding:13px 16px 0}
-    .out-card{
-      background:var(--card);border:1px solid var(--border);
-      border-radius:18px;padding:17px;
-      font-size:13.5px;line-height:1.8;color:var(--text);
-      white-space:pre-line;
-    }
-
-    /* ── 질문 입력 ── */
-    .input-wrap{
-      display:grid;grid-template-columns:1fr auto;gap:8px;
-      padding:10px 16px 0;
-    }
-    .q-input{
-      padding:12px 16px;border-radius:14px;font-size:14px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.07);color:var(--text);
+    /* ── 입력 영역 ── */
+    .input-group{padding:12px 16px 0;display:flex;flex-direction:column;gap:8px}
+    .input-row{display:grid;grid-template-columns:1fr auto;gap:8px}
+    .inp{
+      padding:13px 16px;border-radius:14px;font-size:14px;
+      border:1.5px solid var(--bg-gold2);
+      background:rgba(18,3,38,0.85);color:var(--text);
       outline:none;font-family:'Noto Sans KR',sans-serif;
+      backdrop-filter:blur(8px);transition:border-color .2s;
     }
-    .q-input::placeholder{color:var(--sub)}
-    .q-input:focus{border-color:var(--gold)}
-    .q-btn{
-      padding:12px 18px;border-radius:14px;font-size:14px;font-weight:900;
-      border:none;cursor:pointer;
-      background:linear-gradient(90deg,var(--purple),var(--pink));
+    .inp::placeholder{color:rgba(180,150,220,0.5)}
+    .inp:focus{border-color:var(--gold)}
+    select.inp{appearance:none;cursor:pointer}
+    .gbtn{
+      padding:13px 18px;border-radius:14px;font-size:14px;font-weight:900;
+      border:none;cursor:pointer;white-space:nowrap;
+      background:linear-gradient(135deg,var(--purple),var(--pink));
       color:#fff;font-family:'Noto Sans KR',sans-serif;
-      transition:opacity .2s;
+      box-shadow:0 4px 16px rgba(100,20,180,0.5);transition:all .2s;
     }
-    .q-btn:hover{opacity:.85}
+    .gbtn:hover{opacity:.87;transform:translateY(-1px)}
+    .gbtn:active{transform:scale(0.96)}
 
-    /* ── 띠 선택 ── */
-    .zodiac-wrap{
-      display:grid;grid-template-columns:1fr auto;gap:8px;
-      padding:8px 16px 0;
+    /* ── 출력 카드 ── */
+    .out-wrap{padding:12px 16px 0}
+    #out{
+      background:rgba(14,3,30,0.9);
+      border:1.5px solid var(--bg-gold);border-radius:18px;
+      padding:18px;font-size:14px;line-height:1.85;color:var(--text);
+      white-space:pre-line;backdrop-filter:blur(12px);position:relative;
     }
-    .z-select{
-      padding:12px 14px;border-radius:14px;font-size:14px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.07);color:var(--text);
-      outline:none;font-family:'Noto Sans KR',sans-serif;
-      appearance:none;cursor:pointer;
-    }
+    #out::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+    /* ── 푸터 ── */
+    .footer{margin:18px 16px 4px;text-align:center;color:rgba(180,150,220,0.4);font-size:11.5px;line-height:1.9}
 
     /* ── 하단 네비 ── */
     .bottom-nav{
       position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-      width:100%;max-width:430px;
-      background:rgba(13,0,32,.97);
-      border-top:1px solid var(--border);
+      width:100%;max-width:430px;z-index:100;
+      background:rgba(8,0,18,0.97);
+      border-top:1px solid var(--bg-gold2);
       display:flex;justify-content:space-around;align-items:center;
-      padding:10px 0 16px;
-      backdrop-filter:blur(16px);
-      z-index:100;
+      padding:10px 0 18px;backdrop-filter:blur(20px);
     }
-    .nav-item{
-      display:flex;flex-direction:column;align-items:center;gap:3px;
-      cursor:pointer;flex:1;
-      transition:all .2s;
-    }
-    .nav-icon{font-size:22px}
-    .nav-label{font-size:10.5px;font-weight:700;color:var(--sub)}
-    .nav-item.active .nav-label{color:var(--gold)}
-    .nav-item.active .nav-icon{filter:drop-shadow(0 0 6px var(--gold))}
+    .nitem{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex:1;padding:2px 0;transition:all .2s}
+    .nicon{font-size:22px;display:block}
+    .nlabel{font-size:10.5px;font-weight:700;color:var(--sub)}
+    .nitem.active .nlabel{color:var(--gold2)}
+    .nitem.active .nicon{filter:drop-shadow(0 0 5px rgba(212,168,64,0.8))}
 
-    /* ── 공통 섹션 타이틀 ── */
-    .sec-title{
-      font-family:'Noto Serif KR',serif;
-      font-size:18px;font-weight:900;color:var(--gold);
-      text-align:center;margin-bottom:12px;
-      text-shadow:0 0 12px rgba(245,200,66,.4);
-    }
-
-    /* 별 애니 */
-    .star-half{color:#555}
-
-    /* 금 구분선 */
-    .divider{
-      width:60px;height:1px;
-      background:linear-gradient(90deg,transparent,var(--gold),transparent);
-      margin:10px auto 0;
-    }
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .fadein{animation:fadeUp .3s ease forwards}
   </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- 상단 바 -->
+  <!-- 상단바 -->
   <div class="topbar">
-    <div class="top-btn" onclick="toggleMenu()">☰</div>
-    <div class="top-btn">
-      🔔
-      <span class="notif-dot"></span>
-    </div>
+    <div class="tbtn" onclick="alert('메뉴 준비 중 ✨')">☰</div>
+    <div class="topbar-center">✦</div>
+    <div class="tbtn">🔔<span class="notif"></span></div>
   </div>
 
-  <!-- 히어로 타이틀 -->
-  <div class="hero-title-area">
-    <div class="hero-sub">깨비아씨가 전해주는 오늘의 운세</div>
-    <div class="hero-main">
-      깨비아씨 운세
-    </div>
-    <div class="hero-desc">
-      오늘의 운세가 궁금하신가요?<br>깨비아씨가 당신의 하루를 밝혀드릴게요!
-    </div>
-    <div class="divider"></div>
+  <!-- 타이틀 -->
+  <div class="hero-title">
+    <div class="h-small">깨비아씨가 전해주는 오늘의 운세</div>
+    <div class="h-big">깨비아씨 운세</div>
+    <div class="h-desc">오늘의 운세가 궁금하신가요?<br>깨비아씨가 당신의 하루를 밝혀드릴게요!</div>
+    <div class="gold-sep"><span>❖</span></div>
   </div>
 
-  <!-- 캐릭터 + 퀵 카드 -->
-  <div class="hero-layout">
-    <div class="char-wrap">
+  <!-- 캐릭터 + 퀵카드 -->
+  <div class="hero-section">
+    <div class="char-card" onclick="showToday()">
       <img id="img" src="kkabbi.png" alt="깨비아씨">
+      <div class="char-caption">
+        <strong>턱 괸 깨비아씨</strong>
+        <span>(궁금한 이야기)</span>
+      </div>
     </div>
-    <div class="hero-cards">
-      <div class="hcard" onclick="today()">
-        <div class="hcard-icon moon">🌙</div>
-        <div class="hcard-text">
+    <div class="quick-cards">
+      <div class="qcard" onclick="showToday()">
+        <div class="qcard-ic moon">🌙</div>
+        <div class="qcard-text">
           <strong>오늘의 운세</strong>
           <span>하루의 흐름을 미리 확인하고<br>행운을 준비하세요!</span>
         </div>
-        <div class="hcard-arr">›</div>
+        <div class="qcard-arr">›</div>
       </div>
-      <div class="hcard" onclick="reunion()">
-        <div class="hcard-icon heart">💗</div>
-        <div class="hcard-text">
+      <div class="qcard" onclick="showReunion()">
+        <div class="qcard-ic heart">💗</div>
+        <div class="qcard-text">
           <strong>재회 궁합</strong>
           <span>두 사람의 인연,<br>다시 이어질 수 있을까요?</span>
         </div>
-        <div class="hcard-arr">›</div>
+        <div class="qcard-arr">›</div>
       </div>
     </div>
   </div>
 
   <!-- 배너 -->
   <div class="banner">
-    <span class="banner-flowers">✿</span>
-    깨비아씨와 함께 좋은 기운만 가득한 하루 보내세요!
-    <span class="banner-flowers">✿</span>
+    <span class="bf">❀</span>깨비아씨와 함께 좋은 기운만 가득한 하루 보내세요!<span class="bf">❀</span>
   </div>
 
-  <!-- 아이콘 메뉴 5종 -->
+  <!-- 아이콘 메뉴 -->
   <div class="icon-row">
-    <div class="iitem" onclick="allZodiac()">
-      <div class="ibox">🎒</div>
-      <div class="ilabel">띠별 운세</div>
-    </div>
-    <div class="iitem" onclick="talismanMenu()">
-      <div class="ibox">📜</div>
-      <div class="ilabel">행운 부적</div>
-    </div>
-    <div class="iitem" onclick="about()">
-      <div class="ibox">🔮</div>
-      <div class="ilabel">타로 운세</div>
-    </div>
-    <div class="iitem" onclick="today()">
-      <div class="ibox">📋</div>
-      <div class="ilabel">운세 기록</div>
-    </div>
-    <div class="iitem" onclick="youtube()">
-      <div class="ibox">⭐</div>
-      <div class="ilabel">즐겨찾기</div>
-    </div>
+    <div class="iitem" onclick="showAllZodiac()"><div class="ibox">🎒</div><div class="ilabel">띠별 운세</div></div>
+    <div class="iitem" onclick="showTalisman()"><div class="ibox">📜</div><div class="ilabel">행운 부적</div></div>
+    <div class="iitem" onclick="showTarot()"><div class="ibox">🔮</div><div class="ilabel">타로 운세</div></div>
+    <div class="iitem" onclick="showRecord()"><div class="ibox">📋</div><div class="ilabel">운세 기록</div></div>
+    <div class="iitem" onclick="showFav()"><div class="ibox">⭐</div><div class="ilabel">즐겨찾기</div></div>
   </div>
 
   <!-- 오늘의 한마디 -->
-  <div class="daily-word">
+  <div class="daily-wrap">
     <div class="daily-badge">오늘의<br>한마디</div>
     <div class="daily-content">
       <strong id="daily-msg">지금의 작은 노력이<br>큰 행운으로 돌아올 거예요.</strong>
-      <span>포기하지 말고, 끝까지 가보세요!</span>
+      <span id="daily-sub">포기하지 말고, 끝까지 가보세요!</span>
     </div>
   </div>
 
-  <!-- 종합 운세 패널 -->
+  <!-- 종합 운세 -->
   <div class="fortune-panel">
-    <div class="panel-top">
-      <div class="panel-left">
-        <div class="panel-label">오늘의 종합 운세</div>
-        <div class="stars">★★★★<span class="star-half">★</span></div>
+    <div class="fp-top">
+      <div>
+        <div class="fp-label">오늘의 종합 운세</div>
+        <div class="fp-stars">⭐⭐⭐⭐<span style="opacity:.3">⭐</span></div>
       </div>
-      <div class="panel-badge">좋은 기운이<br>가득한 하루!</div>
+      <div class="fp-badge">좋은 기운이<br>가득한 하루!</div>
     </div>
     <div class="bars">
-      <div class="brow">
-        <div class="blabel">💗 사랑운</div>
-        <div class="btrack"><div class="bfill love" id="bar-love" style="width:0%"></div></div>
-        <div class="bpct">80%</div>
-      </div>
-      <div class="brow">
-        <div class="blabel">💰 금전운</div>
-        <div class="btrack"><div class="bfill money" id="bar-money" style="width:0%"></div></div>
-        <div class="bpct">70%</div>
-      </div>
-      <div class="brow">
-        <div class="blabel">💼 직장운</div>
-        <div class="btrack"><div class="bfill work" id="bar-work" style="width:0%"></div></div>
-        <div class="bpct">90%</div>
-      </div>
-      <div class="brow">
-        <div class="blabel">🍀 건강운</div>
-        <div class="btrack"><div class="bfill health" id="bar-health" style="width:0%"></div></div>
-        <div class="bpct">75%</div>
-      </div>
+      <div class="brow"><div class="blabel">💗 사랑운</div><div class="btrack"><div class="bfill love" id="b-love" style="width:0"></div></div><div class="bpct" id="p-love">-</div></div>
+      <div class="brow"><div class="blabel">💰 금전운</div><div class="btrack"><div class="bfill money" id="b-money" style="width:0"></div></div><div class="bpct" id="p-money">-</div></div>
+      <div class="brow"><div class="blabel">💼 직장운</div><div class="btrack"><div class="bfill work" id="b-work" style="width:0"></div></div><div class="bpct" id="p-work">-</div></div>
+      <div class="brow"><div class="blabel">🍀 건강운</div><div class="btrack"><div class="bfill health" id="b-health" style="width:0"></div></div><div class="bpct" id="p-health">-</div></div>
     </div>
   </div>
 
-  <!-- 질문 입력 -->
-  <div class="input-wrap">
-    <input id="q" class="q-input" placeholder="예: 그 사람이 왜 연락이 없을까요?">
-    <button class="q-btn" onclick="ask()">질문</button>
+  <!-- 입력 -->
+  <div class="input-group">
+    <div class="input-row">
+      <input id="q" class="inp" placeholder="예: 그 사람이 왜 연락이 없을까요?">
+      <button class="gbtn" onclick="ask()">질문</button>
+    </div>
+    <div class="input-row">
+      <select id="zodiacSel" class="inp">
+        <option value="">내 띠 선택</option>
+        <option>쥐띠</option><option>소띠</option><option>호랑이띠</option>
+        <option>토끼띠</option><option>용띠</option><option>뱀띠</option>
+        <option>말띠</option><option>양띠</option><option>원숭이띠</option>
+        <option>닭띠</option><option>개띠</option><option>돼지띠</option>
+      </select>
+      <button class="gbtn" onclick="myZodiac()">내 띠 운세</button>
+    </div>
   </div>
 
-  <!-- 띠 선택 -->
-  <div class="zodiac-wrap">
-    <select id="zodiacSelect" class="z-select">
-      <option value="">내 띠 선택</option>
-      <option>쥐띠</option><option>소띠</option><option>호랑이띠</option><option>토끼띠</option>
-      <option>용띠</option><option>뱀띠</option><option>말띠</option><option>양띠</option>
-      <option>원숭이띠</option><option>닭띠</option><option>개띠</option><option>돼지띠</option>
-    </select>
-    <button class="q-btn" onclick="myZodiac()">내 띠 운세</button>
+  <!-- 출력 -->
+  <div class="out-wrap">
+    <div id="out">🌙 오늘의 운세를 불러오는 중 ✨</div>
   </div>
 
-  <!-- 운세 출력 카드 -->
-  <div class="output-wrap">
-    <div id="out" class="out-card">오늘의 운세를 불러오는 중 ✨</div>
+  <!-- 푸터 -->
+  <div class="footer">
+    법인: 터엔터테이먼트 &nbsp;|&nbsp; 브랜드: 터신전<br>
+    문의: 010-9420-4886<br>
+    © 2026 터엔터테이먼트 / 터신전. All rights reserved.
   </div>
 
-  <!-- 하단 네비게이션 -->
+  <!-- 하단 네비 -->
   <div class="bottom-nav">
-    <div class="nav-item active" onclick="today()">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">홈</span>
-    </div>
-    <div class="nav-item" onclick="allZodiac()">
-      <span class="nav-icon">☯</span>
-      <span class="nav-label">운세</span>
-    </div>
-    <div class="nav-item" onclick="reunion()">
-      <span class="nav-icon">💗</span>
-      <span class="nav-label">궁합</span>
-    </div>
-    <div class="nav-item" onclick="talismanMenu()">
-      <span class="nav-icon">📜</span>
-      <span class="nav-label">카테고리</span>
-    </div>
-    <div class="nav-item" onclick="youtube()">
-      <span class="nav-icon">👤</span>
-      <span class="nav-label">마이페이지</span>
-    </div>
+    <div class="nitem active" id="nav-home" onclick="navGo('home')"><span class="nicon">🏠</span><span class="nlabel">홈</span></div>
+    <div class="nitem" id="nav-zodiac" onclick="navGo('zodiac')"><span class="nicon">☯</span><span class="nlabel">운세</span></div>
+    <div class="nitem" id="nav-love" onclick="navGo('love')"><span class="nicon">💗</span><span class="nlabel">궁합</span></div>
+    <div class="nitem" id="nav-talisman" onclick="navGo('talisman')"><span class="nicon">📜</span><span class="nlabel">카테고리</span></div>
+    <div class="nitem" id="nav-my" onclick="navGo('my')"><span class="nicon">👤</span><span class="nlabel">마이페이지</span></div>
   </div>
-
 </div>
 
 <script>
-const O=t=>document.getElementById('out').innerHTML=t;
-const I=s=>document.getElementById('img').src=s;
-
-const daily=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다."];
+const daily=["새로운 기회가 열립니다.","막힌 일이 풀립니다.","좋은 소식이 다가옵니다.","사람 속에서 복이 들어옵니다.","기다리던 일이 움직이기 시작합니다.","진심이 통하는 하루입니다."];
+const dailyMsg=["지금의 작은 노력이\n큰 행운으로 돌아올 거예요.","막혔던 길이 오늘 드디어 열립니다.","좋은 인연이 가까이 있어요.","포기하지 않은 당신, 오늘 빛납니다.","작은 친절이 큰 복을 부릅니다."];
+const dailySub=["포기하지 말고, 끝까지 가보세요!","지금 이 순간이 가장 중요해요.","마음을 열면 기회가 보입니다.","오늘 하루도 응원할게요 ✨","당신의 진심은 반드시 닿아요."];
 const zodiacNames=["쥐띠","소띠","호랑이띠","토끼띠","용띠","뱀띠","말띠","양띠","원숭이띠","닭띠","개띠","돼지띠"];
 const zodiacFortunes=[
-  "작은 기회가 큰 흐름으로 이어집니다.","꾸준함이 복이 되는 날입니다.",
-  "추진력이 강해지는 하루입니다.","관계운이 부드럽게 열립니다.",
-  "큰 흐름이 당신 쪽으로 움직입니다.","지혜로운 선택이 필요한 날입니다.",
-  "움직일수록 좋은 기회가 생깁니다.","마음의 평온이 운을 살립니다.",
-  "재치와 센스가 빛나는 날입니다.","성실함이 좋은 평가로 돌아옵니다.",
-  "믿음과 진심이 통하는 날입니다.","재물운과 즐거운 소식이 따릅니다.",
-  "가까운 사람의 말이 유난히 날카롭게 들립니다. 감정으로 받지 말고 의도를 읽으세요.",
-  "기회는 눈앞에 왔지만 망설임이 길을 막습니다. 완벽을 기다리다 타이밍을 놓치지 마세요.",
-  "돈은 들어와도 오래 머물지 않습니다. 오늘의 소비는 만족보다 허전함을 남길 수 있습니다.",
-  "혼자 버틴 시간이 헛되지 않았습니다. 이제는 결과로 드러날 차례입니다."
+  "작은 기회가 큰 흐름으로 이어집니다. 서두르지 말고 차분하게 나아가세요.",
+  "꾸준함이 복이 되는 날입니다. 지금 하고 있는 일을 믿고 계속하세요.",
+  "추진력이 강해지는 하루입니다. 오래 미뤄왔던 일을 시작하기 좋습니다.",
+  "관계운이 부드럽게 열립니다. 먼저 다가가면 좋은 반응이 옵니다.",
+  "큰 흐름이 당신 쪽으로 움직입니다. 준비된 사람에게 기회가 찾아옵니다.",
+  "지혜로운 선택이 필요한 날입니다. 직관보다 근거를 믿으세요.",
+  "움직일수록 좋은 기회가 생깁니다. 집에만 있지 말고 밖으로 나가보세요.",
+  "마음의 평온이 운을 살립니다. 과하게 욕심내면 오히려 막힙니다.",
+  "재치와 센스가 빛나는 날입니다. 평소보다 말이 잘 통하는 하루입니다.",
+  "성실함이 좋은 평가로 돌아옵니다. 묵묵히 해온 일이 인정받을 순간입니다.",
+  "믿음과 진심이 통하는 날입니다. 오래된 인연에서 복이 들어옵니다.",
+  "재물운과 즐거운 소식이 따릅니다. 작은 행운이 연달아 찾아올 수 있어요."
 ];
-
 const consult={
-  love:["상대가 완전히 멀어진 것보다 먼저 다가가는 부담을 느끼는 흐름이 보여요. 답을 재촉하기보다 가벼운 안부가 더 좋은 반응을 만듭니다.","연락의 문제보다 타이밍의 문제에 가깝습니다. 조급함을 내려놓으면 흐름이 다시 움직일 수 있어요."],
-  money:["큰돈보다 작은 흐름이 먼저 열립니다. 지출을 정리하면 들어오는 복이 커집니다.","금전운은 서서히 회복 중입니다. 급한 투자보다 안정적인 선택이 유리합니다."],
-  mind:["많이 지쳐 있었네요. 지금 필요한 것은 더 버티는 힘이 아니라 잠시 숨을 고를 여유입니다.","마음이 흔들리는 건 약해서가 아니라 오래 애써왔기 때문입니다. 오늘은 스스로를 다정하게 대해주세요."],
-  general:["지금은 속도보다 방향이 중요합니다. 조용히 정리하면 길이 열립니다.","작은 신호를 놓치지 마세요. 변화는 늘 조용히 먼저 옵니다."]
+  love:["상대가 멀어진 것이 아니라 다가갈 부담을 느끼는 흐름이 보여요. 답을 재촉하기보다 가벼운 안부가 더 좋은 반응을 만듭니다.","연락의 문제보다 타이밍의 문제에 가깝습니다. 조급함을 내려놓으면 흐름이 다시 움직일 수 있어요.","감정은 아직 살아있어요. 하지만 지금은 기다림이 가장 강한 표현입니다.","상대방도 당신 생각을 하고 있어요. 단, 먼저 연락하는 쪽이 용기 있는 사람이 됩니다."],
+  money:["큰돈보다 작은 흐름이 먼저 열립니다. 지출을 정리하면 들어오는 복이 커집니다.","금전운은 서서히 회복 중입니다. 급한 투자보다 안정적인 선택이 유리합니다.","지금은 모으는 시기입니다. 나가는 돈을 막으면 자연스럽게 복이 쌓입니다.","예상치 못한 수입의 흐름이 보입니다. 단, 과욕은 금물이에요."],
+  mind:["많이 지쳐 있었네요. 지금 필요한 것은 더 버티는 힘이 아니라 잠시 숨을 고를 여유입니다.","마음이 흔들리는 건 약해서가 아니라 오래 애써왔기 때문입니다. 오늘은 스스로를 다정하게 대해주세요.","주변의 소음을 잠시 꺼두세요. 내면의 목소리가 가장 정확한 나침반입니다.","지금 느끼는 불안은 변화의 신호입니다. 두려움과 설렘은 같은 감각에서 옵니다."],
+  general:["지금은 속도보다 방향이 중요합니다. 조용히 정리하면 길이 열립니다.","작은 신호를 놓치지 마세요. 변화는 늘 조용히 먼저 옵니다.","오늘 결정한 작은 선택이 앞으로 큰 차이를 만들 수 있어요. 신중하되 두려워하지 마세요.","주변에 당신을 응원하는 사람이 있어요. 혼자가 아니라는 것을 잊지 마세요."]
 };
 
-function seed(){let d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
+const O=t=>{const el=document.getElementById('out');el.innerHTML=t;el.classList.remove('fadein');void el.offsetWidth;el.classList.add('fadein');setTimeout(()=>el.classList.remove('fadein'),400)};
+const I=s=>document.getElementById('img').src=s;
 const pick=a=>a[Math.floor(Math.random()*a.length)];
+function seed(){const d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();}
 
-function setNav(el){
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  if(el) el.classList.add('active');
+function navGo(tab){
+  document.querySelectorAll('.nitem').forEach(n=>n.classList.remove('active'));
+  document.getElementById('nav-'+tab)?.classList.add('active');
+  if(tab==='home')showToday();
+  else if(tab==='zodiac')showAllZodiac();
+  else if(tab==='love')showReunion();
+  else if(tab==='talisman')showTalisman();
+  else if(tab==='my')showMy();
 }
 
-function today(){
-  setNav(document.querySelector('.nav-item'));
+function showToday(){
   I('kkabbi-cute.png');
-  O('🌙 오늘의 운세\n\n총운: '+daily[seed()%daily.length]+'\n사랑운: 따뜻한 대화가 중요합니다.\n금전운: 작은 절약이 복이 됩니다.\n행운 숫자: '+((seed()%9)+1));
+  const s=seed();
+  O('🌙 오늘의 운세\n\n총운: '+daily[s%daily.length]+'\n사랑운: 따뜻한 한마디가 관계를 바꿉니다.\n금전운: 작은 절약이 큰 복이 됩니다.\n건강운: 충분한 수면이 오늘의 행운입니다.\n행운 숫자: '+((s%9)+1)+'\n행운 색상: '+['보라색','금색','붉은색','초록색','파란색'][s%5]);
 }
 
-function allZodiac(){
+function showAllZodiac(){
   I('kkabbi-basic.png');
   let txt='🐭 오늘의 12띠 운세\n\n';
-  zodiacNames.forEach((z,i)=>{txt+=z+' : '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n';});
+  zodiacNames.forEach((z,i)=>{txt+=z+' : '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n\n';});
   O(txt);
 }
 
 function myZodiac(){
-  const z=document.getElementById('zodiacSelect').value;
+  const z=document.getElementById('zodiacSel').value;
   if(!z){O('띠를 먼저 선택해 주세요 😊');return;}
   const i=zodiacNames.indexOf(z);
+  const s=seed()+i;
   I('kkabbi-think.png');
-  O('🔮 '+z+' 오늘의 운세\n\n총운: '+zodiacFortunes[(seed()+i)%zodiacFortunes.length]+'\n사랑운: 좋은 인연의 말이 오갈 수 있습니다.\n금전운: 작은 복이 들어오는 흐름입니다.\n건강운: 무리하지 말고 몸을 따뜻하게 하세요.\n행운 숫자: '+(((seed()+i)%9)+1));
+  O('🔮 '+z+' 오늘의 운세\n\n총운: '+zodiacFortunes[s%zodiacFortunes.length]+'\n사랑운: '+['좋은 인연의 말이 오갈 수 있습니다.','먼저 마음을 열어보세요.','오늘은 솔직함이 통하는 날입니다.','기다림이 아름다운 결실을 맺습니다.'][s%4]+'\n금전운: '+['작은 복이 들어오는 흐름입니다.','지출을 줄이면 복이 쌓입니다.','예상 수입의 흐름이 보입니다.','안정적인 선택이 최선입니다.'][s%4]+'\n건강운: '+['무리하지 말고 몸을 따뜻하게 하세요.','스트레칭과 충분한 수분이 도움됩니다.','오늘은 휴식이 최고의 보약입니다.','규칙적인 식사가 행운을 부릅니다.'][(s+1)%4]+'\n행운 숫자: '+((s%9)+1));
 }
 
-function reunion(){
+function showReunion(){
   I('kkabbi-love.png');
-  O('💞 재회 궁합\n\n감정 연결도 87%\n상대 심리: 아직 미련은 있으나 자존심이 큽니다.\n연락 타이밍: 저녁 시간대 짧은 안부\n깨비 조언: 감정적인 장문 메시지는 피하세요.');
+  O('💞 재회 궁합\n\n감정 연결도: 87%\n\n상대 심리: 아직 미련은 있으나 자존심이 앞섭니다.\n연락 타이밍: 저녁 7~9시 사이 짧은 안부\n추천 방식: 공통 화제로 가볍게 시작하기\n\n깨비 조언: 감정적인 장문 메시지는 피하세요.\n가볍고 따뜻하게, 부담 없이 다가가는 것이 핵심입니다.');
 }
 
-function talismanMenu(){
+function showTalisman(){
   I('kkabbi-talisman.png');
-  O('📜 부적 메뉴\n\n부적 페이지로 이동합니다.\n(부적 기능은 준비 중입니다 ✨)');
+  O('📜 행운 부적\n\n부적 페이지는 현재 준비 중이에요 ✨\n\n곧 소원성취, 합격, 귀인, 금전재물, 인연, 취직\n6가지 부적이 오픈될 예정입니다!\n\n기대해주세요 🙏');
+}
+
+function showTarot(){
+  I('kkabbi-think.png');
+  O('🔮 神 타로카드\n\n우리 전통 신앙과 무속적 상징을 담은 메시지 카드입니다.\n\n운세, 조언, 마음의 방향을 살펴볼 수 있어요.\n\n🌟 서비스 준비 중입니다.\n문의: 010-9420-4886');
+}
+
+function showRecord(){
+  I('kkabbi-basic.png');
+  O('📋 운세 기록\n\n나의 운세 기록을 한눈에!\n\n🌟 서비스 준비 중입니다.\n오늘의 운세를 매일 확인하고\n기록을 쌓아보세요 ✨');
+}
+
+function showFav(){
+  I('kkabbi-wink.png');
+  O('⭐ 즐겨찾기\n\n자주 보는 운세와 콘텐츠를\n한곳에 모아보세요!\n\n🌟 서비스 준비 중입니다.');
+}
+
+function showMy(){
+  I('kkabbi-basic.png');
+  O('👤 마이페이지\n\n회원 서비스 준비 중입니다.\n\n법인: 터엔터테이먼트\n브랜드: 터신전\n문의: 010-9420-4886');
 }
 
 function ask(){
   const q=document.getElementById('q').value.trim();
   if(!q){O('질문을 입력해 주세요 😊');return;}
   let type='general';
-  if(q.includes('연락')||q.includes('사랑')||q.includes('재회')) type='love';
-  if(q.includes('돈')||q.includes('금전')||q.includes('재물')) type='money';
-  if(q.includes('힘들')||q.includes('고민')||q.includes('불안')) type='mind';
-  const img={love:'kkabbi-love.png',money:'kkabbi-talisman.png',mind:'kkabbi-cute.png',general:'kkabbi-wink.png'}[type];
-  const title={love:'💗 사랑 상담',money:'💰 금전 상담',mind:'🌙 마음 상담',general:'🔮 깨비아씨 상담'}[type];
-  I(img);
-  O(title+'\n\n'+pick(consult[type])+'\n\n🍀 깨비 한마디: 급할수록 말은 짧고 마음은 따뜻하게 전해보세요.');
+  if(q.includes('연락')||q.includes('사랑')||q.includes('재회')||q.includes('남자')||q.includes('여자')||q.includes('좋아'))type='love';
+  if(q.includes('돈')||q.includes('금전')||q.includes('재물')||q.includes('월급')||q.includes('투자'))type='money';
+  if(q.includes('힘들')||q.includes('고민')||q.includes('불안')||q.includes('걱정')||q.includes('우울'))type='mind';
+  const imgs={love:'kkabbi-love.png',money:'kkabbi-talisman.png',mind:'kkabbi-cute.png',general:'kkabbi-wink.png'};
+  const titles={love:'💗 사랑 상담',money:'💰 금전 상담',mind:'🌙 마음 상담',general:'🔮 깨비아씨 상담'};
+  I(imgs[type]);
+  O(titles[type]+'\n\n'+pick(consult[type])+'\n\n🍀 깨비 한마디: 급할수록 말은 짧고 마음은 따뜻하게 전해보세요.');
+  document.getElementById('q').value='';
 }
 
-function youtube(){
-  window.open('https://youtu.be/tSB9tmxs86s','_blank');
-}
-
-function about(){
-  I('kkabbi-think.png');
-  O('🔮 神 타로카드\n\n우리 전통 신앙과 무속적 상징을 바탕으로 만든 메시지 카드입니다.\n\n운세, 조언, 마음의 방향을 살펴보는 카드로 활용할 수 있습니다.\n\n문의: 010-9420-4886');
-}
-
-function toggleMenu(){
-  alert('메뉴 준비 중입니다 ✨');
-}
-
-// 바 애니메이션 (로드 후)
 window.addEventListener('load',()=>{
+  const s=seed();
+  // 바 애니메이션
   setTimeout(()=>{
-    document.getElementById('bar-love').style.width='80%';
-    document.getElementById('bar-money').style.width='70%';
-    document.getElementById('bar-work').style.width='90%';
-    document.getElementById('bar-health').style.width='75%';
-  },300);
-  today();
+    const v={love:70+(s%25),money:60+((s*3)%30),work:75+((s*7)%20),health:65+((s*5)%25)};
+    ['love','money','work','health'].forEach(k=>{
+      document.getElementById('b-'+k).style.width=v[k]+'%';
+      document.getElementById('p-'+k).textContent=v[k]+'%';
+    });
+  },400);
+  // 오늘의 한마디 랜덤
+  document.getElementById('daily-msg').innerHTML=dailyMsg[s%dailyMsg.length].replace('\n','<br>');
+  document.getElementById('daily-sub').textContent=dailySub[s%dailySub.length];
+  // 초기 운세
+  showToday();
 });
 </script>
 </body>
