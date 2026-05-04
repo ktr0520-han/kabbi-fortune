@@ -7,184 +7,58 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-    body{
-      font-family:'Noto Sans KR',sans-serif;color:#fff5e0;min-height:100vh;
-      background:radial-gradient(ellipse 120% 50% at 50% 0%,rgba(100,30,200,0.9) 0%,transparent 55%),
-        radial-gradient(ellipse 80% 40% at 20% 30%,rgba(80,10,160,0.5) 0%,transparent 50%),
-        linear-gradient(180deg,#1e0040 0%,#140030 20%,#0c001e 45%,#060012 70%,#02000a 100%);
-    }
+    body{font-family:'Noto Sans KR',sans-serif;color:#fff5e0;min-height:100vh;background:radial-gradient(ellipse 120% 50% at 50% 0%,rgba(100,30,200,0.9) 0%,transparent 55%),linear-gradient(180deg,#1e0040 0%,#140030 20%,#0c001e 45%,#060012 70%,#02000a 100%);}
     .app{max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:110px;}
-
-    /* 헤더 */
     .header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(212,168,64,0.2);}
     .back-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(212,168,64,0.4);background:rgba(20,0,45,0.6);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;}
     .header-title{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;background:linear-gradient(160deg,#ffe8a0,#f0c84a,#c89830);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-
-    /* 캐릭터 배너 */
     .char-banner{display:flex;align-items:center;gap:14px;padding:16px 18px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(212,168,64,0.15);}
     .char-banner img{width:70px;height:70px;object-fit:cover;border-radius:12px;border:1.5px solid rgba(212,168,64,0.4);}
     .char-banner-text strong{display:block;font-size:15px;font-weight:900;color:#f0c84a;margin-bottom:4px;}
     .char-banner-text span{font-size:12px;color:rgba(195,165,235,0.85);line-height:1.5;}
-
-    /* 카드 선택 안내 */
     .guide{text-align:center;padding:20px 18px 10px;}
-    .guide-title{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#f0c84a;margin-bottom:8px;text-shadow:0 0 14px rgba(212,168,64,0.5);}
+    .guide-title{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#f0c84a;margin-bottom:8px;}
     .guide-sub{font-size:12.5px;color:rgba(195,165,235,0.8);line-height:1.6;}
-
-    /* 카드 그리드 */
-    .card-grid{
-      display:grid;grid-template-columns:repeat(4,1fr);
-      gap:7px;padding:10px 14px;
-    }
-    .card-item{
-      aspect-ratio:2/3;
-      border-radius:10px;
-      cursor:pointer;
-      position:relative;
-      transition:transform .2s;
-      transform-style:preserve-3d;
-      max-height:120px;
-    }
-    .card-item:hover{transform:translateY(-6px) scale(1.04);}
-    .card-item.picked{transform:translateY(-10px) scale(1.06);pointer-events:none;}
-
-    /* 카드 앞면/뒷면 */
-    .card-front,.card-back{
-      position:absolute;inset:0;
-      border-radius:10px;
-      backface-visibility:hidden;
-    }
-    .card-back{
-      position:absolute;inset:0;
-      border-radius:10px;
-      backface-visibility:hidden;
-      overflow:hidden;
-      border:1.5px solid rgba(212,168,64,0.5);
-      background:linear-gradient(145deg,#ff1493,#ff69b4);
-      display:flex;align-items:center;justify-content:center;
-    }
-    .card-back img{
-      width:100%;height:100%;
-      object-fit:contain;
-      object-position:center;
-      display:block;
-    }
-    .card-back::after{
-      content:'神';
-      position:absolute;
-      font-family:'Noto Serif KR',serif;
-      font-size:22px;font-weight:900;
-      color:rgba(255,215,0,0.8);
-      text-shadow:0 0 10px rgba(255,215,0,0.5);
-      pointer-events:none;
-    }
-    .card-number{
-      position:absolute;bottom:5px;right:7px;
-      font-size:9px;color:rgba(212,168,64,0.4);font-weight:700;
-    }
-
-    /* 결과 섹션 */
+    .card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:10px 14px;}
+    .card-item{aspect-ratio:2/3;max-height:120px;border-radius:10px;cursor:pointer;position:relative;transition:transform .2s;}
+    .card-item:hover{transform:translateY(-4px);}
+    .card-item.picked{transform:translateY(-8px);pointer-events:none;}
+    .card-back{position:absolute;inset:0;border-radius:10px;overflow:hidden;border:1.5px solid rgba(212,168,64,0.5);background:linear-gradient(145deg,#cc1077,#ff69b4);display:flex;align-items:center;justify-content:center;}
+    .card-back img{width:100%;height:100%;object-fit:contain;display:block;}
     .result-section{display:none;padding:0 16px;}
     .result-section.show{display:block;animation:fadeUp .5s ease;}
-
-    .result-card-display{
-      background:linear-gradient(145deg,#2a0058,#1a0040);
-      border:2px solid rgba(212,168,64,0.55);
-      border-radius:18px;padding:20px;
-      text-align:center;
-      position:relative;overflow:hidden;
-      margin-bottom:14px;
-    }
+    .result-card-display{background:linear-gradient(145deg,#2a0058,#1a0040);border:2px solid rgba(212,168,64,0.55);border-radius:18px;padding:20px;text-align:center;position:relative;overflow:hidden;margin-bottom:14px;}
     .result-card-display::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
-
-    .result-card-img{
-      width:120px;height:180px;
-      margin:0 auto 14px;
-      border-radius:12px;
-      border:2px solid rgba(212,168,64,0.6);
-      box-shadow:0 8px 30px rgba(100,20,200,0.5);
-      overflow:hidden;
-    }
-    .result-card-img img{
-      width:100%;height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .result-card-name{
-      font-family:'Noto Serif KR',serif;
-      font-size:20px;font-weight:900;color:#f0c84a;
-      margin-bottom:6px;
-      text-shadow:0 0 12px rgba(212,168,64,0.5);
-    }
-    .result-card-keyword{
-      font-size:12px;color:rgba(195,165,235,0.85);
-      margin-bottom:14px;letter-spacing:1px;
-    }
-    .result-card-msg{
-      font-size:13.5px;line-height:1.85;color:#fff5e0;
-      text-align:left;white-space:pre-line;
-      background:rgba(255,255,255,0.04);
-      border-radius:12px;padding:14px;
-    }
-
-    /* 다시뽑기 버튼 */
-    .redraw-btn{
-      width:100%;padding:13px;border-radius:14px;
-      font-size:14px;font-weight:900;
-      border:1.5px solid rgba(212,168,64,0.4);
-      background:rgba(14,3,32,0.9);
-      color:#f0c84a;cursor:pointer;
-      margin-bottom:14px;
-      transition:all .2s;
-    }
+    .result-card-img{width:120px;height:180px;margin:0 auto 14px;border-radius:12px;border:2px solid rgba(212,168,64,0.6);box-shadow:0 8px 30px rgba(100,20,200,0.5);overflow:hidden;}
+    .result-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+    .result-card-name{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;color:#f0c84a;margin-bottom:6px;}
+    .result-card-keyword{font-size:12px;color:rgba(195,165,235,0.85);margin-bottom:14px;letter-spacing:1px;}
+    .result-card-msg{font-size:13.5px;line-height:1.85;color:#fff5e0;text-align:left;background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;}
+    .redraw-btn{width:100%;padding:13px;border-radius:14px;font-size:14px;font-weight:900;border:1.5px solid rgba(212,168,64,0.4);background:rgba(14,3,32,0.9);color:#f0c84a;cursor:pointer;margin-bottom:14px;transition:all .2s;}
     .redraw-btn:hover{background:rgba(80,20,160,0.5);border-color:#f0c84a;}
-
-    /* 질문 입력 */
     .ask-section{margin-bottom:14px;}
     .ask-label{font-size:12.5px;color:rgba(195,165,235,0.85);font-weight:700;margin-bottom:8px;}
     .ask-row{display:grid;grid-template-columns:1fr auto;gap:8px;}
-    .inp{padding:13px 14px;border-radius:14px;font-size:14px;border:1.5px solid rgba(212,168,64,0.3);background:rgba(18,3,38,0.85);color:#fff5e0;outline:none;font-family:'Noto Sans KR',sans-serif;transition:border-color .2s;}
+    .inp{padding:13px 14px;border-radius:14px;font-size:14px;border:1.5px solid rgba(212,168,64,0.3);background:rgba(18,3,38,0.85);color:#fff5e0;outline:none;font-family:'Noto Sans KR',sans-serif;}
     .inp::placeholder{color:rgba(180,150,220,0.5)}
     .inp:focus{border-color:#f0c84a;}
-    .ask-btn{padding:13px 16px;border-radius:14px;font-size:14px;font-weight:900;border:none;cursor:pointer;background:linear-gradient(135deg,#6030c0,#c03080);color:#fff;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;box-shadow:0 4px 14px rgba(100,20,180,0.5);transition:all .2s;}
-    .ask-btn:hover{opacity:.88;transform:translateY(-1px)}
-    .ask-btn:active{transform:scale(0.96)}
-
-    /* 질문 결과 */
-    .ask-result{
-      background:rgba(14,3,32,0.92);
-      border:1.5px solid rgba(212,168,64,0.35);
-      border-radius:14px;padding:14px;
-      font-size:13.5px;line-height:1.85;color:#fff5e0;
-      white-space:pre-line;display:none;
-      position:relative;
-    }
-    .ask-result::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
+    .ask-btn{padding:13px 16px;border-radius:14px;font-size:14px;font-weight:900;border:none;cursor:pointer;background:linear-gradient(135deg,#6030c0,#c03080);color:#fff;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
+    .ask-result{background:rgba(14,3,32,0.92);border:1.5px solid rgba(212,168,64,0.35);border-radius:14px;padding:14px;font-size:13.5px;line-height:1.85;color:#fff5e0;display:none;}
     .ask-result.show{display:block;animation:fadeUp .35s ease;}
-
-    /* 하단 네비 */
     .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;background:rgba(6,0,16,0.97);border-top:1.5px solid rgba(212,168,64,0.35);display:flex;justify-content:space-around;align-items:center;padding:14px 0 24px;backdrop-filter:blur(20px);}
-    .nitem{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:2px 0;transition:all .2s;}
+    .nitem{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:2px 0;}
     .nicon{font-size:30px;display:block;}
     .nlabel{font-size:13px;font-weight:700;color:rgba(195,165,235,0.8);}
     .nitem.active .nlabel{color:#f0c84a;}
-    .nitem.active .nicon{filter:drop-shadow(0 0 6px rgba(240,200,74,0.8));}
-
     @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes glow{0%,100%{box-shadow:0 0 10px rgba(212,168,64,0.3)}50%{box-shadow:0 0 24px rgba(212,168,64,0.7)}}
-    .card-item.picked .card-back{animation:glow 1s ease;}
   </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- 헤더 -->
   <div class="header">
     <div class="back-btn" onclick="go('index.html')">←</div>
     <div class="header-title">🔮 신타로카드</div>
   </div>
-
-  <!-- 캐릭터 배너 -->
   <div class="char-banner">
     <img src="kkabbi-think.png" alt="깨비아씨">
     <div class="char-banner-text">
@@ -192,27 +66,19 @@
       <span>마음을 고요히 하고<br>끌리는 카드를 하나 선택하세요!</span>
     </div>
   </div>
-
-  <!-- 카드 선택 안내 -->
   <div class="guide" id="guide">
     <div class="guide-title">✨ 카드를 뽑아보세요</div>
     <div class="guide-sub">마음을 비우고 끌리는 카드를 하나 선택하세요.<br>깨비아씨가 당신의 운명을 읽어드립니다.</div>
   </div>
-
-  <!-- 카드 그리드 -->
   <div class="card-grid" id="cardGrid"></div>
-
-  <!-- 결과 섹션 -->
   <div class="result-section" id="resultSection">
     <div class="result-card-display">
-      <div class="result-card-img" id="cardEmoji"></div>
+      <div class="result-card-img" id="cardImg"></div>
       <div class="result-card-name" id="cardName"></div>
       <div class="result-card-keyword" id="cardKeyword"></div>
       <div class="result-card-msg" id="cardMsg"></div>
     </div>
-
-    <button class="redraw-btn" onclick="reset()">🔮 다시 카드 뽑기</button>
-
+    <button class="redraw-btn" onclick="location.reload()">🔮 다시 카드 뽑기</button>
     <div class="ask-section">
       <div class="ask-label">💬 카드에 대해 질문하기</div>
       <div class="ask-row">
@@ -222,134 +88,121 @@
     </div>
     <div class="ask-result" id="askResult"></div>
   </div>
-
-  <!-- 하단 네비 -->
   <div class="bottom-nav">
     <div class="nitem" onclick="go('index.html')"><span class="nicon">🏠</span><span class="nlabel">홈</span></div>
-    <div class="nitem" onclick="go('today.html')">
-      <span class="nicon"><img src="nav-zodiac.png" style="width:30px;height:30px;object-fit:contain;" onerror="this.outerHTML='🔮'"></span>
-      <span class="nlabel">운세</span>
-    </div>
+    <div class="nitem" onclick="go('today.html')"><span class="nicon"><img src="nav-zodiac.png" style="width:30px;height:30px;object-fit:contain;" onerror="this.outerHTML='🔮'"></span><span class="nlabel">운세</span></div>
     <div class="nitem" onclick="go('reunion.html')"><span class="nicon">💗</span><span class="nlabel">궁합</span></div>
     <div class="nitem" onclick="go('talisman.html')"><span class="nicon">📜</span><span class="nlabel">카테고리</span></div>
     <div class="nitem active"><span class="nicon">👤</span><span class="nlabel">마이페이지</span></div>
   </div>
-
 </div>
 <script>
-function go(page){window.location.href=page;}
+function go(p){window.location.href=p;}
 
-const cards = [
-  {name:'귀인',img:'귀인.jpg',keyword:'도움 · 인연 · 축복',msg:'귀인이 나타나 당신을 도와줄 것입니다. 주변의 좋은 인연을 소중히 하세요. 💫 깨비 메시지: 좋은 사람을 알아보는 눈이 복을 부릅니다.'},
-  {name:'금표',img:'금표.jpg',keyword:'재물 · 성공 · 풍요',msg:'재물운이 밝게 열리고 있습니다. 노력한 만큼 결실이 찾아오는 시기예요. 💫 깨비 메시지: 작은 씨앗이 큰 나무가 됩니다.'},
-  {name:'관재',img:'관재.jpg',keyword:'주의 · 법 · 분쟁',msg:'법적이거나 공식적인 문제에 주의가 필요합니다. 서류나 계약을 꼼꼼하게 확인하세요. 💫 깨비 메시지: 신중함이 당신을 지킵니다.'},
-  {name:'구설수',img:'구설 수.jpg',keyword:'말조심 · 소문 · 주의',msg:'말과 행동에 각별히 주의해야 할 때입니다. 침묵이 금이 될 수 있습니다. 💫 깨비 메시지: 말 한마디가 천냥 빚을 갚기도 합니다.'},
-  {name:'대감',img:'대감.jpg',keyword:'권위 · 보호 · 안정',msg:'든든한 보호막이 당신을 감싸고 있어요. 겸손한 자세가 복을 부릅니다. 💫 깨비 메시지: 올바른 길을 걸으면 하늘이 돕습니다.'},
-  {name:'대신',img:'대신.jpg',keyword:'신성 · 영험 · 수호',msg:'강한 신의 기운이 당신과 함께합니다. 마음을 맑게 하고 기도하세요. 💫 깨비 메시지: 진심은 반드시 하늘에 닿습니다.'},
-  {name:'도사',img:'도사.jpg',keyword:'지혜 · 통찰 · 수련',msg:'깊은 지혜와 통찰력이 필요한 시기입니다. 내면의 소리에 귀 기울이세요. 💫 깨비 메시지: 아는 것보다 모르는 것을 아는 것이 더 큰 힘입니다.'},
-  {name:'동자',img:'동자.jpg',keyword:'순수 · 시작 · 새출발',msg:'순수한 마음으로 새로운 시작을 준비하세요. 어린아이 같은 호기심으로 도전하면 좋은 결과가 찾아옵니다. 💫 깨비 메시지: 처음의 마음을 잃지 마세요.'},
-  {name:'떠나가는배',img:'떠나가는배.jpg',keyword:'이별 · 변화 · 새여정',msg:'떠나보내야 할 것은 과감히 놓아주세요. 새로운 항해가 더 좋은 목적지로 안내할 것입니다. 💫 깨비 메시지: 끝이 있어야 새로운 시작이 있습니다.'},
-  {name:'매일',img:'매일.jpg',keyword:'일상 · 꾸준함 · 성실',msg:'매일의 작은 노력이 쌓여 큰 결실이 됩니다. 오늘 할 일을 오늘 하세요. 💫 깨비 메시지: 매일이 쌓여 인생이 됩니다.'},
-  {name:'명부',img:'명부.jpg',keyword:'운명 · 인과 · 업보',msg:'선한 마음으로 행동하면 반드시 좋은 결과가 돌아옵니다. 원망보다 감사를 선택하세요. 💫 깨비 메시지: 뿌린 대로 거둡니다.'},
-  {name:'물병',img:'물병.jpg',keyword:'정화 · 흐름 · 치유',msg:'집착을 내려놓으면 새로운 복이 들어옵니다. 마음을 비우고 흘러가게 두세요. 💫 깨비 메시지: 비워야 채울 수 있습니다.'},
-  {name:'벌전',img:'벌전.jpg',keyword:'경고 · 주의 · 반성',msg:'지금 하고 있는 일을 다시 한번 돌아보세요. 솔직한 반성이 앞길을 열어줍니다. 💫 깨비 메시지: 돌아볼 수 있을 때 돌아보세요.'},
-  {name:'북망산천',img:'북망산천.jpg',keyword:'조상 · 근원 · 뿌리',msg:'조상의 기운이 당신을 감싸고 있어요. 뿌리를 돌아보고 감사하는 마음을 가지세요. 💫 깨비 메시지: 뿌리 깊은 나무는 바람에 흔들리지 않습니다.'},
-  {name:'불사',img:'불사.jpg',keyword:'영생 · 불굴 · 강인함',msg:'포기하지 않는 불굴의 정신이 당신의 가장 큰 무기입니다. 어떤 어려움도 이겨낼 수 있어요. 💫 깨비 메시지: 불꽃은 꺼지지 않습니다.'},
-  {name:'산신',img:'산신.jpg',keyword:'자연 · 보호 · 기도',msg:'산신의 강한 보호기운이 함께합니다. 기도와 정성이 큰 복을 부릅니다. 💫 깨비 메시지: 자연은 언제나 당신 편입니다.'},
-  {name:'삼사자',img:'삼사자.jpg',keyword:'심판 · 정의 · 균형',msg:'정직하고 올바르게 행동하면 반드시 좋은 결과가 옵니다. 💫 깨비 메시지: 진실은 반드시 밝혀집니다.'},
-  {name:'상문',img:'상문.jpg',keyword:'슬픔 · 이별 · 위로',msg:'충분히 슬퍼하고 위로받으세요. 이 시간도 지나가면 더 강해진 당신이 될 것입니다. 💫 깨비 메시지: 비가 온 뒤 땅이 굳어집니다.'},
-  {name:'선녀',img:'선녀.jpg',keyword:'아름다움 · 은혜 · 축복',msg:'하늘의 은혜와 축복이 내려오고 있어요. 기쁨을 주변과 나누면 더 큰 복이 됩니다. 💫 깨비 메시지: 감사하는 마음이 기적을 만듭니다.'},
-  {name:'성취',img:'성취.jpg',keyword:'달성 · 완성 · 성공',msg:'오랫동안 바라던 일이 이루어질 때가 왔어요! 자신을 믿고 마지막까지 최선을 다하세요. 💫 깨비 메시지: 당신의 꿈은 반드시 이루어집니다.'},
-  {name:'성황당',img:'성황당.jpg',keyword:'마을 · 공동체 · 수호',msg:'나눔과 배려가 복을 부릅니다. 함께할 때 더 큰 힘이 생깁니다. 💫 깨비 메시지: 함께하면 더 멀리 갈 수 있습니다.'},
-  {name:'신장',img:'신장.jpg',keyword:'수호 · 힘 · 결단',msg:'강한 의지와 행동이 길을 만들어냅니다. 두려움 없이 결단을 내려야 할 때입니다. 💫 깨비 메시지: 용기 있는 자에게 길이 열립니다.'},
-  {name:'신장대',img:'신장대.jpg',keyword:'권능 · 위엄 · 강함',msg:'강력한 신의 권능이 함께합니다. 자신감을 가지고 나아가세요. 💫 깨비 메시지: 하늘이 돕는 자는 막을 수 없습니다.'},
-  {name:'업대감',img:'업대감.jpg',keyword:'업 · 카르마 · 인과',msg:'선한 행동이 쌓이면 반드시 좋은 결과로 돌아옵니다. 현재에 충실하세요. 💫 깨비 메시지: 좋은 업을 쌓으면 좋은 복이 옵니다.'},
-  {name:'역마살',img:'역마살.jpg',keyword:'이동 · 변화 · 여행',msg:'여행이나 이사 직업 변화가 좋은 결과를 가져올 수 있어요. 두려워 말고 움직이세요. 💫 깨비 메시지: 새로운 곳에서 새로운 복이 기다립니다.'},
-  {name:'오방기(검정)',img:'오방기_검정.jpg',keyword:'북방 · 수기 · 지혜',msg:'지혜롭게 상황을 파악하고 때를 기다리세요. 💫 깨비 메시지: 때를 아는 것이 지혜입니다.'},
-  {name:'오방기(남색)',img:'오방기_남색.jpg',keyword:'동방 · 목기 · 성장',msg:'새로운 시작과 성장의 에너지가 가득합니다. 💫 깨비 메시지: 새 생명처럼 싱그럽게 시작하세요.'},
-  {name:'오방기(노랑)',img:'오방기_노랑.jpg',keyword:'중앙 · 토기 · 균형',msg:'중심을 잡고 흔들리지 마세요. 💫 깨비 메시지: 중심이 잡혀야 모든 것이 안정됩니다.'},
-  {name:'오방기(빨강)',img:'오방기_빨강.jpg',keyword:'남방 · 화기 · 열정',msg:'강한 추진력으로 목표를 향해 나아가세요. 💫 깨비 메시지: 불꽃처럼 타오르는 열정이 세상을 바꿉니다.'},
-  {name:'오방기(초록)',img:'오방기_초록.jpg',keyword:'생명 · 치유 · 회복',msg:'치유와 회복의 시간이 찾아오고 있어요. 💫 깨비 메시지: 자연은 스스로 치유합니다.'},
-  {name:'오방기(흰)',img:'오방기_흰.jpg',keyword:'서방 · 금기 · 결실',msg:'노력이 결실을 맺는 수확의 시기가 왔어요. 💫 깨비 메시지: 가을은 반드시 옵니다.'},
-  {name:'용왕',img:'용왕.jpg',keyword:'물 · 풍요 · 권능',msg:'용왕의 강한 기운이 풍요를 가져다줍니다. 💫 깨비 메시지: 깊은 바다처럼 풍요로운 삶이 펼쳐집니다.'},
-  {name:'일월성신',img:'일월성신.jpg',keyword:'하늘 · 빛 · 신성',msg:'해와 달과 별의 신성한 빛이 당신을 비춥니다. 💫 깨비 메시지: 하늘은 스스로 돕는 자를 돕습니다.'},
-  {name:'작두',img:'작두.jpg',keyword:'용기 · 시련 · 극복',msg:'믿음으로 나아가면 반드시 극복할 수 있어요. 💫 깨비 메시지: 시련은 더 강해지라는 하늘의 뜻입니다.'},
-  {name:'장군',img:'장군.jpg',keyword:'리더십 · 용기 · 승리',msg:'용기 있게 결단하고 행동하면 승리가 찾아옵니다. 💫 깨비 메시지: 진정한 리더는 두려워하지 않습니다.'},
-  {name:'천지신명',img:'천지신명.jpg',keyword:'천지 · 신명 · 축복',msg:'하늘과 땅의 모든 신이 당신을 축복합니다. 💫 깨비 메시지: 천지신명이 함께하니 두려울 것이 없습니다.'},
-  {name:'천칭',img:'천칭.jpg',keyword:'균형 · 공정 · 판단',msg:'감정보다 이성으로 균형 잡힌 시각을 유지하세요. 💫 깨비 메시지: 균형이 모든 것의 시작입니다.'},
-  {name:'칠성',img:'칠성.jpg',keyword:'수명 · 복 · 행운',msg:'칠성의 기운이 당신에게 복과 행운을 내려줍니다. 💫 깨비 메시지: 별이 당신의 길을 밝혀줍니다.'},
-  {name:'탐욕',img:'탐욕.jpg',keyword:'경고 · 절제 · 반성',msg:'지나친 욕심이 화를 부를 수 있어요. 과욕을 자제하세요. 💫 깨비 메시지: 만족을 알면 항상 부유합니다.'},
-  {name:'하늘의문',img:'하늘의문.jpg',keyword:'열림 · 기회 · 축복',msg:'하늘의 문이 당신을 위해 열리고 있어요. 새로운 기회와 축복이 쏟아져 들어올 것입니다. 💫 깨비 메시지: 준비된 자에게 하늘의 문이 열립니다.'},
-  {name:'흑룡',img:'흑룡.jpg',keyword:'강인함 · 신비 · 변화',msg:'흑룡의 강력한 기운이 당신과 함께합니다. 큰 변화와 강한 에너지가 찾아오는 시기예요. 💫 깨비 메시지: 용은 승천할 때를 기다릴 줄 압니다.'},
+var cards=[
+  {name:"귀인",img:"귀인.jpg",keyword:"도움 · 인연 · 축복",msg:"귀인이 나타나 당신을 도와줄 것입니다. 주변의 좋은 인연을 소중히 하세요. 💫 깨비 메시지: 좋은 사람을 알아보는 눈이 복을 부릅니다."},
+  {name:"금표",img:"금표.jpg",keyword:"재물 · 성공 · 풍요",msg:"재물운이 밝게 열리고 있습니다. 노력한 만큼 결실이 찾아오는 시기예요. 💫 깨비 메시지: 작은 씨앗이 큰 나무가 됩니다."},
+  {name:"관재",img:"관재.jpg",keyword:"주의 · 법 · 분쟁",msg:"법적이거나 공식적인 문제에 주의가 필요합니다. 서류나 계약을 꼼꼼하게 확인하세요. 💫 깨비 메시지: 신중함이 당신을 지킵니다."},
+  {name:"구설수",img:"구설 수.jpg",keyword:"말조심 · 소문 · 주의",msg:"말과 행동에 각별히 주의해야 할 때입니다. 침묵이 금이 될 수 있습니다. 💫 깨비 메시지: 말 한마디가 천냥 빚을 갚기도 합니다."},
+  {name:"대감",img:"대감.jpg",keyword:"권위 · 보호 · 안정",msg:"든든한 보호막이 당신을 감싸고 있어요. 겸손한 자세가 복을 부릅니다. 💫 깨비 메시지: 올바른 길을 걸으면 하늘이 돕습니다."},
+  {name:"대신",img:"대신.jpg",keyword:"신성 · 영험 · 수호",msg:"강한 신의 기운이 당신과 함께합니다. 마음을 맑게 하고 기도하세요. 💫 깨비 메시지: 진심은 반드시 하늘에 닿습니다."},
+  {name:"도사",img:"도사.jpg",keyword:"지혜 · 통찰 · 수련",msg:"깊은 지혜와 통찰력이 필요한 시기입니다. 내면의 소리에 귀 기울이세요. 💫 깨비 메시지: 모르는 것을 아는 것이 더 큰 힘입니다."},
+  {name:"동자",img:"동자.jpg",keyword:"순수 · 시작 · 새출발",msg:"순수한 마음으로 새로운 시작을 준비하세요. 어린아이 같은 호기심으로 도전하면 좋은 결과가 찾아옵니다. 💫 깨비 메시지: 처음의 마음을 잃지 마세요."},
+  {name:"떠나가는배",img:"떠나가는배.jpg",keyword:"이별 · 변화 · 새여정",msg:"떠나보내야 할 것은 과감히 놓아주세요. 새로운 항해가 더 좋은 목적지로 안내할 것입니다. 💫 깨비 메시지: 끝이 있어야 새로운 시작이 있습니다."},
+  {name:"매일",img:"매일.jpg",keyword:"일상 · 꾸준함 · 성실",msg:"매일의 작은 노력이 쌓여 큰 결실이 됩니다. 오늘 할 일을 오늘 하세요. 💫 깨비 메시지: 매일이 쌓여 인생이 됩니다."},
+  {name:"명부",img:"명부.jpg",keyword:"운명 · 인과 · 업보",msg:"선한 마음으로 행동하면 반드시 좋은 결과가 돌아옵니다. 원망보다 감사를 선택하세요. 💫 깨비 메시지: 뿌린 대로 거둡니다."},
+  {name:"물병",img:"물병.jpg",keyword:"정화 · 흐름 · 치유",msg:"집착을 내려놓으면 새로운 복이 들어옵니다. 마음을 비우고 흘러가게 두세요. 💫 깨비 메시지: 비워야 채울 수 있습니다."},
+  {name:"벌전",img:"벌전.jpg",keyword:"경고 · 주의 · 반성",msg:"지금 하고 있는 일을 다시 한번 돌아보세요. 솔직한 반성이 앞길을 열어줍니다. 💫 깨비 메시지: 돌아볼 수 있을 때 돌아보세요."},
+  {name:"북망산천",img:"북망산천.jpg",keyword:"조상 · 근원 · 뿌리",msg:"조상의 기운이 당신을 감싸고 있어요. 뿌리를 돌아보고 감사하는 마음을 가지세요. 💫 깨비 메시지: 뿌리 깊은 나무는 바람에 흔들리지 않습니다."},
+  {name:"불사",img:"불사.jpg",keyword:"영생 · 불굴 · 강인함",msg:"포기하지 않는 불굴의 정신이 당신의 가장 큰 무기입니다. 어떤 어려움도 이겨낼 수 있어요. 💫 깨비 메시지: 불꽃은 꺼지지 않습니다."},
+  {name:"산신",img:"산신.jpg",keyword:"자연 · 보호 · 기도",msg:"산신의 강한 보호기운이 함께합니다. 기도와 정성이 큰 복을 부릅니다. 💫 깨비 메시지: 자연은 언제나 당신 편입니다."},
+  {name:"삼사자",img:"삼사자.jpg",keyword:"심판 · 정의 · 균형",msg:"정직하고 올바르게 행동하면 반드시 좋은 결과가 옵니다. 💫 깨비 메시지: 진실은 반드시 밝혀집니다."},
+  {name:"상문",img:"상문.jpg",keyword:"슬픔 · 이별 · 위로",msg:"충분히 슬퍼하고 위로받으세요. 이 시간도 지나가면 더 강해진 당신이 될 것입니다. 💫 깨비 메시지: 비가 온 뒤 땅이 굳어집니다."},
+  {name:"선녀",img:"선녀.jpg",keyword:"아름다움 · 은혜 · 축복",msg:"하늘의 은혜와 축복이 내려오고 있어요. 기쁨을 주변과 나누면 더 큰 복이 됩니다. 💫 깨비 메시지: 감사하는 마음이 기적을 만듭니다."},
+  {name:"성취",img:"성취.jpg",keyword:"달성 · 완성 · 성공",msg:"오랫동안 바라던 일이 이루어질 때가 왔어요! 자신을 믿고 마지막까지 최선을 다하세요. 💫 깨비 메시지: 당신의 꿈은 반드시 이루어집니다."},
+  {name:"성황당",img:"성황당.jpg",keyword:"마을 · 공동체 · 수호",msg:"나눔과 배려가 복을 부릅니다. 함께할 때 더 큰 힘이 생깁니다. 💫 깨비 메시지: 함께하면 더 멀리 갈 수 있습니다."},
+  {name:"신장",img:"신장.jpg",keyword:"수호 · 힘 · 결단",msg:"강한 의지와 행동이 길을 만들어냅니다. 두려움 없이 결단을 내려야 할 때입니다. 💫 깨비 메시지: 용기 있는 자에게 길이 열립니다."},
+  {name:"신장대",img:"신장대.jpg",keyword:"권능 · 위엄 · 강함",msg:"강력한 신의 권능이 함께합니다. 자신감을 가지고 나아가세요. 💫 깨비 메시지: 하늘이 돕는 자는 막을 수 없습니다."},
+  {name:"업대감",img:"업대감.jpg",keyword:"업 · 카르마 · 인과",msg:"선한 행동이 쌓이면 반드시 좋은 결과로 돌아옵니다. 현재에 충실하세요. 💫 깨비 메시지: 좋은 업을 쌓으면 좋은 복이 옵니다."},
+  {name:"역마살",img:"역마살.jpg",keyword:"이동 · 변화 · 여행",msg:"여행이나 이사 직업 변화가 좋은 결과를 가져올 수 있어요. 두려워 말고 움직이세요. 💫 깨비 메시지: 새로운 곳에서 새로운 복이 기다립니다."},
+  {name:"오방기(검정)",img:"오방기_검정.jpg",keyword:"북방 · 수기 · 지혜",msg:"지혜롭게 상황을 파악하고 때를 기다리세요. 💫 깨비 메시지: 때를 아는 것이 지혜입니다."},
+  {name:"오방기(남색)",img:"오방기_남색.jpg",keyword:"동방 · 목기 · 성장",msg:"새로운 시작과 성장의 에너지가 가득합니다. 💫 깨비 메시지: 새 생명처럼 싱그럽게 시작하세요."},
+  {name:"오방기(노랑)",img:"오방기_노랑.jpg",keyword:"중앙 · 토기 · 균형",msg:"중심을 잡고 흔들리지 마세요. 💫 깨비 메시지: 중심이 잡혀야 모든 것이 안정됩니다."},
+  {name:"오방기(빨강)",img:"오방기_빨강.jpg",keyword:"남방 · 화기 · 열정",msg:"강한 추진력으로 목표를 향해 나아가세요. 💫 깨비 메시지: 불꽃처럼 타오르는 열정이 세상을 바꿉니다."},
+  {name:"오방기(초록)",img:"오방기_초록.jpg",keyword:"생명 · 치유 · 회복",msg:"치유와 회복의 시간이 찾아오고 있어요. 💫 깨비 메시지: 자연은 스스로 치유합니다."},
+  {name:"오방기(흰)",img:"오방기_흰.jpg",keyword:"서방 · 금기 · 결실",msg:"노력이 결실을 맺는 수확의 시기가 왔어요. 💫 깨비 메시지: 가을은 반드시 옵니다."},
+  {name:"용왕",img:"용왕.jpg",keyword:"물 · 풍요 · 권능",msg:"용왕의 강한 기운이 풍요를 가져다줍니다. 💫 깨비 메시지: 깊은 바다처럼 풍요로운 삶이 펼쳐집니다."},
+  {name:"일월성신",img:"일월성신.jpg",keyword:"하늘 · 빛 · 신성",msg:"해와 달과 별의 신성한 빛이 당신을 비춥니다. 💫 깨비 메시지: 하늘은 스스로 돕는 자를 돕습니다."},
+  {name:"작두",img:"작두.jpg",keyword:"용기 · 시련 · 극복",msg:"믿음으로 나아가면 반드시 극복할 수 있어요. 💫 깨비 메시지: 시련은 더 강해지라는 하늘의 뜻입니다."},
+  {name:"장군",img:"장군.jpg",keyword:"리더십 · 용기 · 승리",msg:"용기 있게 결단하고 행동하면 승리가 찾아옵니다. 💫 깨비 메시지: 진정한 리더는 두려워하지 않습니다."},
+  {name:"천지신명",img:"천지신명.jpg",keyword:"천지 · 신명 · 축복",msg:"하늘과 땅의 모든 신이 당신을 축복합니다. 💫 깨비 메시지: 천지신명이 함께하니 두려울 것이 없습니다."},
+  {name:"천칭",img:"천칭.jpg",keyword:"균형 · 공정 · 판단",msg:"감정보다 이성으로 균형 잡힌 시각을 유지하세요. 💫 깨비 메시지: 균형이 모든 것의 시작입니다."},
+  {name:"칠성",img:"칠성.jpg",keyword:"수명 · 복 · 행운",msg:"칠성의 기운이 당신에게 복과 행운을 내려줍니다. 💫 깨비 메시지: 별이 당신의 길을 밝혀줍니다."},
+  {name:"탐욕",img:"탐욕.jpg",keyword:"경고 · 절제 · 반성",msg:"지나친 욕심이 화를 부를 수 있어요. 과욕을 자제하세요. 💫 깨비 메시지: 만족을 알면 항상 부유합니다."},
+  {name:"하늘의문",img:"하늘의문.jpg",keyword:"열림 · 기회 · 축복",msg:"하늘의 문이 당신을 위해 열리고 있어요. 새로운 기회와 축복이 쏟아져 들어올 것입니다. 💫 깨비 메시지: 준비된 자에게 하늘의 문이 열립니다."},
+  {name:"흑룡",img:"흑룡.jpg",keyword:"강인함 · 신비 · 변화",msg:"흑룡의 강력한 기운이 당신과 함께합니다. 큰 변화와 강한 에너지가 찾아오는 시기예요. 💫 깨비 메시지: 용은 승천할 때를 기다릴 줄 압니다."}
 ];
 
-// 카드 그리드 생성
-const grid = document.getElementById('cardGrid');
-const shuffled = [...Array(cards.length).keys()].sort(()=>Math.random()-0.5);
+var grid=document.getElementById("cardGrid");
+var indices=[];
+for(var i=0;i<cards.length;i++)indices.push(i);
+indices.sort(function(){return Math.random()-0.5;});
 
-shuffled.forEach((idx, pos) => {
-  const el = document.createElement('div');
-  el.className = 'card-item';
-  el.innerHTML = `
-    <div class="card-back">
-      <img src="card-back.jpg" alt="">
-    </div>
-  `;
-  el.onclick = () => selectCard(idx, el);
-  grid.appendChild(el);
-});
-
-function selectCard(idx, el) {
-  // 다른 카드 흐리게
-  document.querySelectorAll('.card-item').forEach(c => {
-    c.style.opacity = '0.3';
-    c.style.pointerEvents = 'none';
-  });
-  el.style.opacity = '1';
-  el.classList.add('picked');
-
-  // 잠시 후 결과 표시
-  setTimeout(() => {
-    showResult(cards[idx]);
-  }, 600);
+for(var p=0;p<indices.length;p++){
+  (function(idx,pos){
+    var el=document.createElement("div");
+    el.className="card-item";
+    var inner=document.createElement("div");
+    inner.className="card-back";
+    var img=document.createElement("img");
+    img.src="card-back.jpg";
+    img.alt="";
+    inner.appendChild(img);
+    el.appendChild(inner);
+    el.onclick=function(){selectCard(idx,el);}
+    grid.appendChild(el);
+  })(indices[p],p);
 }
 
-function showResult(card) {
-  document.getElementById('guide').style.display = 'none';
-  document.getElementById('cardEmoji').innerHTML = '<img src="' + card.img + '" alt="' + card.name + '" onerror="this.parentNode.innerHTML='<span style=font-size:48px>🔮</span>'">';
-  
-  document.getElementById('cardName').textContent = card.name;
-  document.getElementById('cardKeyword').textContent = card.keyword;
-  document.getElementById('cardMsg').textContent = card.msg;
-
-  const section = document.getElementById('resultSection');
-  section.classList.add('show');
-  section.scrollIntoView({behavior:'smooth', block:'start'});
+function selectCard(idx,el){
+  var all=document.querySelectorAll(".card-item");
+  for(var i=0;i<all.length;i++){
+    all[i].style.opacity="0.3";
+    all[i].style.pointerEvents="none";
+  }
+  el.style.opacity="1";
+  el.classList.add("picked");
+  setTimeout(function(){showResult(cards[idx]);},600);
 }
 
-function reset() {
-  location.reload();
+function showResult(card){
+  document.getElementById("guide").style.display="none";
+  var imgDiv=document.getElementById("cardImg");
+  imgDiv.innerHTML="<img src=\""+card.img+"\" alt=\""+card.name+"\">";
+  document.getElementById("cardName").textContent=card.name;
+  document.getElementById("cardKeyword").textContent=card.keyword;
+  document.getElementById("cardMsg").textContent=card.msg;
+  var section=document.getElementById("resultSection");
+  section.classList.add("show");
+  section.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-const askConsult = {
-  love: ["카드가 말합니다: 지금 상대방도 당신을 생각하고 있어요. 하지만 타이밍이 중요합니다. 조금만 기다려보세요.","이 카드는 감정의 흐름을 보여줍니다. 억지로 밀어붙이기보다 자연스럽게 흘러가도록 두세요."],
-  money: ["카드가 말합니다: 금전운이 서서히 열리고 있어요. 큰 욕심보다 작은 것부터 차근차근 쌓아가세요.","이 카드는 풍요의 에너지를 담고 있어요. 지출을 줄이고 저축에 집중하면 복이 쌓입니다."],
-  general: ["카드가 말합니다: 지금 당신이 느끼는 것이 맞습니다. 직관을 믿고 앞으로 나아가세요.","이 카드는 변화의 시기를 나타내요. 두려워하지 말고 새로운 시작을 받아들이세요."]
-};
-
-function ask() {
-  const q = document.getElementById('q').value.trim();
-  if(!q) return;
-  let type = 'general';
-  if(q.includes('사랑')||q.includes('연애')||q.includes('연락')||q.includes('남자')||q.includes('여자'))type='love';
-  if(q.includes('돈')||q.includes('금전')||q.includes('재물')||q.includes('투자'))type='money';
-  const arr = askConsult[type];
-  const ans = arr[Math.floor(Math.random()*arr.length)];
-  const res = document.getElementById('askResult');
-  res.textContent = '🔮 카드의 메시지\n\n' + ans + '\n\n✨ 카드는 방향을 보여줄 뿐, 선택은 당신의 몫이에요.';
-  res.classList.add('show');
-  document.getElementById('q').value = '';
-  res.scrollIntoView({behavior:'smooth'});
+function ask(){
+  var q=document.getElementById("q").value.trim();
+  if(!q)return;
+  var answers=[
+    "카드가 말합니다: 지금 상대방도 당신을 생각하고 있어요. 하지만 타이밍이 중요합니다. 조금만 기다려보세요.",
+    "이 카드는 변화의 시기를 나타내요. 두려워하지 말고 새로운 시작을 받아들이세요.",
+    "카드가 말합니다: 지금 당신이 느끼는 것이 맞습니다. 직관을 믿고 앞으로 나아가세요.",
+    "이 카드는 풍요의 에너지를 담고 있어요. 지출을 줄이고 저축에 집중하면 복이 쌓입니다.",
+    "카드가 말합니다: 급할수록 돌아가세요. 천천히 하지만 확실하게 나아가면 반드시 도달합니다."
+  ];
+  var ans=answers[Math.floor(Math.random()*answers.length)];
+  var res=document.getElementById("askResult");
+  res.textContent="🔮 카드의 메시지\n\n"+ans+"\n\n✨ 카드는 방향을 보여줄 뿐, 선택은 당신의 몫이에요.";
+  res.classList.add("show");
+  document.getElementById("q").value="";
+  res.scrollIntoView({behavior:"smooth"});
 }
 </script>
 </body>
