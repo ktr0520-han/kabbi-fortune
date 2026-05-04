@@ -177,22 +177,23 @@
     .detail-card{
       background:rgba(14,3,32,0.92);
       border:1.5px solid rgba(212,168,64,0.35);
-      border-radius:16px;padding:16px;
+      border-radius:16px;padding:14px;
       margin-bottom:14px;position:relative;overflow:hidden;
     }
     .detail-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
-    .detail-title{font-size:13px;font-weight:900;color:#f0c84a;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
-    .bars{display:flex;flex-direction:column;gap:8px;}
-    .brow{display:flex;align-items:center;gap:8px;}
-    .blabel{font-size:11.5px;font-weight:700;width:72px;flex-shrink:0;color:#fff5e0;}
-    .btrack{flex:1;height:7px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
-    .bfill{height:100%;border-radius:4px;transition:width 1.6s cubic-bezier(.22,1,.36,1);width:0;}
+    .detail-title{font-size:13px;font-weight:900;color:#f0c84a;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+    .bars{display:flex;flex-direction:column;gap:2px;}
+    .brow{display:flex;align-items:center;gap:8px;margin-top:8px;}
+    .blabel{font-size:11px;font-weight:700;width:70px;flex-shrink:0;color:#fff5e0;}
+    .btrack{flex:1;height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
+    .bfill{height:100%;border-radius:3px;transition:width 1.6s cubic-bezier(.22,1,.36,1);width:0;}
     .bfill.love{background:linear-gradient(90deg,#ff9dbd,#ff3ca6)}
     .bfill.reunion{background:linear-gradient(90deg,#c090ff,#8020e0)}
     .bfill.sync{background:linear-gradient(90deg,#f5d060,#e8a800)}
     .bfill.trust{background:linear-gradient(90deg,#80e8ff,#0090e0)}
     .bfill.future{background:linear-gradient(90deg,#80ffb0,#10b060)}
     .bpct{font-size:11px;font-weight:900;color:#f0c84a;width:30px;text-align:right;flex-shrink:0;}
+    .bdesc{font-size:11.5px;line-height:1.7;color:rgba(210,190,255,0.8);padding:4px 0 6px 78px;border-bottom:1px solid rgba(255,255,255,0.05);}
 
     /* 깨비 조언 */
     .advice-card{
@@ -340,10 +341,15 @@
       <div class="detail-title">📊 세부 궁합 분석</div>
       <div class="bars">
         <div class="brow"><div class="blabel">💗 사랑 궁합</div><div class="btrack"><div class="bfill love" id="b-love"></div></div><div class="bpct" id="p-love"></div></div>
+        <div class="bdesc" id="d-love"></div>
         <div class="brow"><div class="blabel">🌙 재회 가능성</div><div class="btrack"><div class="bfill reunion" id="b-reunion"></div></div><div class="bpct" id="p-reunion"></div></div>
+        <div class="bdesc" id="d-reunion"></div>
         <div class="brow"><div class="blabel">⚡ 감정 교감</div><div class="btrack"><div class="bfill sync" id="b-sync"></div></div><div class="bpct" id="p-sync"></div></div>
+        <div class="bdesc" id="d-sync"></div>
         <div class="brow"><div class="blabel">🤝 신뢰 지수</div><div class="btrack"><div class="bfill trust" id="b-trust"></div></div><div class="bpct" id="p-trust"></div></div>
+        <div class="bdesc" id="d-trust"></div>
         <div class="brow"><div class="blabel">✨ 미래 가능성</div><div class="btrack"><div class="bfill future" id="b-future"></div></div><div class="bpct" id="p-future"></div></div>
+        <div class="bdesc" id="d-future"></div>
       </div>
     </div>
 
@@ -503,7 +509,55 @@ const advicesLove=[
   "함께 웃을 수 있는 시간을 많이 만드세요. 웃음이 많은 커플이 더 행복합니다."
 ];
 
-function hash(str){
+// 세부 항목 설명 텍스트
+const descTexts = {
+  love:{
+    high:["두 사람의 사랑 에너지가 강하게 공명합니다. 감정의 깊이가 남다르며 서로에 대한 마음이 진심으로 통하는 관계입니다. 이 끌림은 쉽게 사라지지 않습니다.",
+          "서로에 대한 감정이 뜨겁고 진합니다. 함께할 때 자연스럽게 행복해지는 강한 사랑의 기운이 흐릅니다."],
+    mid:["두 사람 사이에 따뜻한 감정이 있습니다. 표현하고 노력하면 더 깊어질 수 있는 가능성이 충분합니다.",
+         "사랑의 불씨는 분명히 있습니다. 서로에 대한 진심 어린 관심이 관계를 더 빛나게 만들어줄 것입니다."],
+    low:["지금은 감정이 정리되지 않은 시기입니다. 서두르기보다 서로를 더 깊이 알아가는 시간이 필요합니다.",
+         "사랑의 방향이 아직 맞춰지지 않았습니다. 상대를 이해하려는 노력이 감정을 깊게 만들 수 있습니다."]
+  },
+  reunion:{
+    high:["재회의 기운이 매우 강하게 흐릅니다. 두 사람의 인연은 아직 끝나지 않았으며 다시 만날 운명의 실이 이어져 있습니다. 용기 있게 먼저 연락해보세요.",
+          "하늘이 두 사람의 재회를 준비하고 있습니다. 상대방도 분명히 당신을 떠올리고 있을 것입니다."],
+    mid:["재회 가능성이 있지만 타이밍이 중요합니다. 너무 급하게 다가가면 역효과가 날 수 있으니 자연스러운 계기를 만들어보세요.",
+         "감정의 온기가 아직 남아있습니다. 작은 안부 한마디가 재회의 문을 여는 열쇠가 될 수 있습니다."],
+    low:["지금 당장의 재회보다는 각자의 시간이 필요한 시기입니다. 충분히 준비된 후 다가가면 더 좋은 결과가 있을 것입니다.",
+         "재회의 기운이 잠시 약해져 있습니다. 스스로를 더 성장시키는 시간을 가진 후 다시 도전해보세요."]
+  },
+  sync:{
+    high:["두 사람의 감정이 놀라울 정도로 잘 통합니다. 말하지 않아도 서로의 마음을 읽는 깊은 교감이 이루어지는 사이입니다.",
+          "서로의 감정 파장이 비슷하게 흐릅니다. 함께 있을 때 편안함과 설렘을 동시에 느끼는 특별한 인연입니다."],
+    mid:["감정 교감이 조금씩 맞아가고 있습니다. 솔직한 대화를 통해 서로의 감정을 나누면 더 깊은 교감이 이루어집니다.",
+         "두 사람의 감정이 서서히 맞춰지고 있습니다. 상대방의 감정에 더 집중하고 공감하는 노력이 필요합니다."],
+    low:["감정을 표현하는 방식이 서로 다릅니다. 상대방의 감정 표현 방식을 이해하고 맞춰가는 연습이 필요한 시기입니다.",
+         "지금은 서로의 감정이 엇갈리는 시기입니다. 충분한 소통과 시간이 감정의 물꼬를 터줄 것입니다."]
+  },
+  trust:{
+    high:["두 사람 사이에 깊은 신뢰가 쌓여 있습니다. 서로를 믿고 의지하는 든든한 관계로, 어떤 어려움도 함께 이겨낼 수 있는 힘이 있습니다.",
+          "상대방에 대한 믿음이 강합니다. 이 신뢰가 관계의 가장 든든한 기반이 되어줄 것입니다."],
+    mid:["신뢰가 쌓여가는 단계입니다. 약속을 지키고 솔직하게 소통하면 더 탄탄한 믿음의 관계가 만들어집니다.",
+         "서로에 대한 믿음이 조금씩 자라고 있습니다. 작은 배려와 진심이 신뢰를 더 깊게 만들어줍니다."],
+    low:["신뢰를 쌓는 것이 지금 가장 중요한 과제입니다. 일관된 행동과 솔직한 소통으로 믿음의 토대를 만들어가세요.",
+         "과거의 상처나 오해가 신뢰에 영향을 미치고 있습니다. 진심 어린 대화로 오해를 풀어나가는 것이 먼저입니다."]
+  },
+  future:{
+    high:["두 사람의 미래가 밝게 빛납니다. 함께라면 서로에게 더 좋은 사람이 될 수 있으며, 오랫동안 행복한 관계를 이어갈 수 있는 강한 기운이 흐릅니다.",
+          "함께하는 미래에 좋은 에너지가 가득합니다. 두 사람이 함께 꿈꾸고 나아간다면 반드시 아름다운 미래가 펼쳐질 것입니다."],
+    mid:["두 사람의 미래 가능성이 충분합니다. 서로의 목표와 방향을 맞춰가다 보면 더 아름다운 미래를 그릴 수 있습니다.",
+         "함께 만들어갈 미래가 있습니다. 서로에 대한 기대와 배려를 바탕으로 한 걸음씩 나아가보세요."],
+    low:["지금은 미래보다 현재에 집중할 때입니다. 지금 이 순간 서로를 더 깊이 이해하는 것이 미래를 여는 열쇠입니다.",
+         "미래의 방향이 아직 불분명합니다. 서로의 가치관과 목표에 대해 솔직하게 이야기 나누는 시간이 필요합니다."]
+  }
+};
+
+function getDesc(key, val, seed){
+  const level = val>=75 ? 'high' : val>=50 ? 'mid' : 'low';
+  const arr = descTexts[key][level];
+  return arr[seed % arr.length];
+}
   let h=0;
   for(let i=0;i<str.length;i++) h=(h<<5)-h+str.charCodeAt(i)|0;
   return Math.abs(h);
@@ -579,11 +633,12 @@ function calc(){
       document.getElementById('gauge-pct').textContent=cur+'%';
       if(cur>=total)clearInterval(timer);
     },30);
-    // 바
+    // 바 + 설명
     const vals={love,reunion,sync,trust,future};
     Object.keys(vals).forEach(k=>{
       document.getElementById('b-'+k).style.width=vals[k]+'%';
       document.getElementById('p-'+k).textContent=vals[k]+'%';
+      document.getElementById('d-'+k).textContent=getDesc(k, vals[k], seed);
     });
   },200);
 }
