@@ -199,10 +199,6 @@ for(var p=0;p<show.length;p++){
     el.className="card-item";
     var inner=document.createElement("div");
     inner.className="card-back";
-    var img=document.createElement("img");
-    img.src="card-back.jpg";
-    img.alt="";
-    inner.appendChild(img);
     el.appendChild(inner);
     el.onclick=function(){selectCard(idx,el);}
     grid.appendChild(el);
