@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>재회궁합 - 깨비아씨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    body{
+      font-family:'Noto Sans KR',sans-serif;color:#fff5e0;min-height:100vh;
+      background:radial-gradient(ellipse 120% 50% at 50% 0%,rgba(180,30,100,0.85) 0%,transparent 55%),
+        radial-gradient(ellipse 80% 40% at 20% 30%,rgba(100,10,120,0.5) 0%,transparent 50%),
+        linear-gradient(180deg,#1e0040 0%,#140030 20%,#0c001e 45%,#060012 70%,#02000a 100%);
+    }
+    .app{max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:110px;}
+
+    /* 헤더 */
+    .header{
+      display:flex;align-items:center;gap:12px;
+      padding:16px 18px;
+      border-bottom:1px solid rgba(212,168,64,0.2);
+    }
+    .back-btn{
+      width:38px;height:38px;border-radius:50%;
+      border:1.5px solid rgba(212,168,64,0.4);
+      background:rgba(20,0,45,0.6);
+      display:flex;align-items:center;justify-content:center;
+      font-size:18px;cursor:pointer;flex-shrink:0;
+    }
+    .header-title{
+      font-family:'Noto Serif KR',serif;
+      font-size:20px;font-weight:900;
+      background:linear-gradient(160deg,#ffe8a0,#f0c84a,#c89830);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+
+    /* 캐릭터 배너 */
+    .char-banner{
+      display:flex;align-items:center;gap:14px;
+      padding:16px 18px;
+      background:rgba(255,255,255,0.04);
+      border-bottom:1px solid rgba(212,168,64,0.15);
+    }
+    .char-banner img{width:70px;height:70px;object-fit:cover;border-radius:12px;border:1.5px solid rgba(212,168,64,0.4);}
+    .char-banner-text strong{display:block;font-size:15px;font-weight:900;color:#f0c84a;margin-bottom:4px;}
+    .char-banner-text span{font-size:12px;color:rgba(195,165,235,0.85);line-height:1.5;}
+
+    /* 입력 폼 */
+    .form-wrap{
+      margin:18px 16px 0;
+      background:rgba(14,3,32,0.92);
+      border:1.5px solid rgba(212,168,64,0.4);
+      border-radius:20px;padding:20px;
+      position:relative;overflow:hidden;
+    }
+    .form-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
+
+    .form-title{
+      font-family:'Noto Serif KR',serif;
+      font-size:15px;font-weight:900;color:#f0c84a;
+      text-align:center;margin-bottom:18px;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+
+    /* 두 사람 입력 */
+    .couple-row{
+      display:grid;grid-template-columns:1fr 40px 1fr;
+      align-items:center;gap:8px;margin-bottom:16px;
+    }
+    .person-box{display:flex;flex-direction:column;gap:8px;}
+    .person-label{font-size:11px;font-weight:900;text-align:center;color:rgba(195,165,235,0.9);letter-spacing:1px;}
+    .heart-center{
+      display:flex;align-items:center;justify-content:center;
+      font-size:22px;
+      filter:drop-shadow(0 0 8px rgba(255,60,166,0.8));
+      animation:heartbeat 1.5s ease-in-out infinite;
+    }
+    @keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+
+    .inp{
+      width:100%;padding:12px 12px;border-radius:12px;font-size:14px;
+      border:1.5px solid rgba(212,168,64,0.3);
+      background:rgba(18,3,38,0.85);color:#fff5e0;
+      outline:none;font-family:'Noto Sans KR',sans-serif;
+      transition:border-color .2s;text-align:center;
+    }
+    .inp::placeholder{color:rgba(180,150,220,0.45);font-size:12px;}
+    .inp:focus{border-color:#ff3ca6;}
+
+    .birth-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+    .birth-inp{
+      padding:10px 6px;border-radius:10px;font-size:13px;
+      border:1.5px solid rgba(212,168,64,0.25);
+      background:rgba(18,3,38,0.85);color:#fff5e0;
+      outline:none;font-family:'Noto Sans KR',sans-serif;
+      transition:border-color .2s;text-align:center;
+    }
+    .birth-inp::placeholder{color:rgba(180,150,220,0.4);font-size:11px;}
+    .birth-inp:focus{border-color:#ff3ca6;}
+
+    .calc-btn{
+      width:100%;padding:15px;border-radius:14px;
+      background:linear-gradient(135deg,#8020c0,#e0206080);
+      border:none;color:#fff;font-size:16px;font-weight:900;
+      font-family:'Noto Sans KR',sans-serif;cursor:pointer;
+      margin-top:18px;letter-spacing:1px;
+      box-shadow:0 4px 20px rgba(180,30,100,0.5);
+      transition:all .2s;position:relative;overflow:hidden;
+    }
+    .calc-btn::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,#a030e0,#ff3ca6);
+      opacity:0;transition:opacity .2s;
+    }
+    .calc-btn:hover::before{opacity:1;}
+    .calc-btn:active{transform:scale(0.97);}
+    .calc-btn span{position:relative;z-index:1;}
+
+    /* 결과 */
+    #result-section{display:none;margin:18px 16px 0;}
+
+    /* 메인 궁합 카드 */
+    .main-card{
+      background:rgba(14,3,32,0.95);
+      border:1.5px solid rgba(255,60,166,0.5);
+      border-radius:20px;padding:22px 18px;
+      position:relative;overflow:hidden;
+      text-align:center;margin-bottom:14px;
+    }
+    .main-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff3ca6,#f0c84a,#ff3ca6,transparent)}
+    .names-display{
+      font-size:18px;font-weight:900;color:#fff5e0;
+      margin-bottom:6px;letter-spacing:2px;
+    }
+    .names-display .heart{color:#ff3ca6;margin:0 8px;font-size:22px;}
+
+    /* 원형 게이지 */
+    .gauge-wrap{margin:18px auto;width:160px;height:160px;position:relative;}
+    .gauge-svg{width:160px;height:160px;transform:rotate(-90deg);}
+    .gauge-bg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:12;}
+    .gauge-fill{fill:none;stroke-width:12;stroke-linecap:round;
+      stroke-dasharray:408;stroke-dashoffset:408;
+      transition:stroke-dashoffset 1.8s cubic-bezier(.22,1,.36,1);
+    }
+    .gauge-center{
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      text-align:center;
+    }
+    .gauge-pct{font-size:36px;font-weight:900;font-family:'Noto Serif KR',serif;}
+    .gauge-label{font-size:11px;color:rgba(195,165,235,0.8);margin-top:2px;}
+
+    .result-grade{
+      font-family:'Noto Serif KR',serif;
+      font-size:20px;font-weight:900;margin:4px 0 10px;
+    }
+    .result-msg{
+      font-size:13.5px;line-height:1.9;color:#f0e6ff;
+      background:rgba(255,60,166,0.07);
+      border-radius:12px;padding:12px 14px;
+      border-left:3px solid #ff3ca6;
+      text-align:left;
+    }
+
+    /* 세부 분석 바 */
+    .detail-card{
+      background:rgba(14,3,32,0.92);
+      border:1.5px solid rgba(212,168,64,0.35);
+      border-radius:16px;padding:16px;
+      margin-bottom:14px;position:relative;overflow:hidden;
+    }
+    .detail-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#d4a840,transparent)}
+    .detail-title{font-size:13px;font-weight:900;color:#f0c84a;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+    .bars{display:flex;flex-direction:column;gap:8px;}
+    .brow{display:flex;align-items:center;gap:8px;}
+    .blabel{font-size:11.5px;font-weight:700;width:72px;flex-shrink:0;color:#fff5e0;}
+    .btrack{flex:1;height:7px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
+    .bfill{height:100%;border-radius:4px;transition:width 1.6s cubic-bezier(.22,1,.36,1);width:0;}
+    .bfill.love{background:linear-gradient(90deg,#ff9dbd,#ff3ca6)}
+    .bfill.reunion{background:linear-gradient(90deg,#c090ff,#8020e0)}
+    .bfill.sync{background:linear-gradient(90deg,#f5d060,#e8a800)}
+    .bfill.trust{background:linear-gradient(90deg,#80e8ff,#0090e0)}
+    .bfill.future{background:linear-gradient(90deg,#80ffb0,#10b060)}
+    .bpct{font-size:11px;font-weight:900;color:#f0c84a;width:30px;text-align:right;flex-shrink:0;}
+
+    /* 깨비 조언 */
+    .advice-card{
+      background:linear-gradient(135deg,rgba(80,10,120,0.6),rgba(140,20,70,0.4));
+      border:1.5px solid rgba(255,60,166,0.4);
+      border-radius:16px;padding:16px;
+      margin-bottom:14px;position:relative;overflow:hidden;
+    }
+    .advice-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#ff3ca6,transparent)}
+    .advice-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .advice-header img{width:44px;height:44px;object-fit:cover;border-radius:10px;border:1.5px solid rgba(255,60,166,0.5);}
+    .advice-header strong{font-size:13px;font-weight:900;color:#ff9dbd;}
+    .advice-text{font-size:13px;line-height:1.9;color:#fff5e0;}
+
+    /* 재도전 버튼 */
+    .retry-btn{
+      width:100%;padding:14px;border-radius:14px;
+      background:linear-gradient(90deg,#7a3cff,#ff3ca6);
+      color:white;border:none;font-size:15px;font-weight:900;
+      cursor:pointer;font-family:'Noto Sans KR',sans-serif;
+      margin-bottom:10px;
+    }
+
+    /* 별 파티클 */
+    .stars-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+    .star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite;}
+    @keyframes twinkle{0%,100%{opacity:0.1}50%{opacity:var(--op)}}
+
+    /* 하단 네비 */
+    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;background:rgba(6,0,16,0.97);border-top:1.5px solid rgba(212,168,64,0.35);display:flex;justify-content:space-around;align-items:center;padding:14px 0 24px;backdrop-filter:blur(20px);}
+    .nitem{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:2px 0;transition:all .2s;}
+    .nicon{font-size:30px;display:block;}
+    .nlabel{font-size:13px;font-weight:700;color:rgba(195,165,235,0.8);}
+    .nitem.active .nlabel{color:#f0c84a;}
+    .nitem.active .nicon{filter:drop-shadow(0 0 6px rgba(240,200,74,0.8));}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .fadein{animation:fadeUp .4s ease forwards;}
+
+    /* 로딩 */
+    .loading-wrap{text-align:center;padding:30px 0;}
+    .loading-hearts{font-size:28px;letter-spacing:6px;animation:pulse 1s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+  </style>
+</head>
+<body>
+
+<!-- 별 배경 -->
+<div class="stars-bg" id="stars"></div>
+
+<div class="app" style="position:relative;z-index:1;">
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="back-btn" onclick="go('index.html')">←</div>
+    <div class="header-title">💗 재회궁합</div>
+  </div>
+
+  <!-- 캐릭터 배너 -->
+  <div class="char-banner">
+    <img src="kkabbi-main.jpg" alt="깨비아씨" onerror="this.style.display='none'">
+    <div class="char-banner-text">
+      <strong>깨비아씨의 재회궁합 풀이</strong>
+      <span>두 사람의 기운을 살펴<br>재회의 가능성을 점쳐드립니다 🌙</span>
+    </div>
+  </div>
+
+  <!-- 입력 폼 -->
+  <div class="form-wrap">
+    <div class="form-title">💫 두 사람의 정보를 입력하세요</div>
+
+    <div class="couple-row">
+      <!-- 나 -->
+      <div class="person-box">
+        <div class="person-label">💙 나</div>
+        <input class="inp" id="my-name" placeholder="내 이름" maxlength="6">
+        <div class="birth-row">
+          <input class="birth-inp" id="my-year" placeholder="년도" maxlength="4" type="number">
+          <input class="birth-inp" id="my-month" placeholder="월" maxlength="2" type="number">
+          <input class="birth-inp" id="my-day" placeholder="일" maxlength="2" type="number">
+        </div>
+      </div>
+
+      <div class="heart-center">💗</div>
+
+      <!-- 상대 -->
+      <div class="person-box">
+        <div class="person-label">💖 상대</div>
+        <input class="inp" id="your-name" placeholder="상대 이름" maxlength="6">
+        <div class="birth-row">
+          <input class="birth-inp" id="your-year" placeholder="년도" maxlength="4" type="number">
+          <input class="birth-inp" id="your-month" placeholder="월" maxlength="2" type="number">
+          <input class="birth-inp" id="your-day" placeholder="일" maxlength="2" type="number">
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calc()">
+      <span>🔮 재회궁합 보기</span>
+    </button>
+  </div>
+
+  <!-- 결과 -->
+  <div id="result-section">
+
+    <!-- 메인 궁합 카드 -->
+    <div class="main-card fadein">
+      <div class="names-display">
+        <span id="r-myname"></span>
+        <span class="heart">💗</span>
+        <span id="r-yourname"></span>
+      </div>
+      <div style="font-size:11px;color:rgba(195,165,235,0.7);margin-bottom:4px;" id="r-birth"></div>
+
+      <!-- 원형 게이지 -->
+      <div class="gauge-wrap">
+        <svg class="gauge-svg" viewBox="0 0 160 160">
+          <circle class="gauge-bg" cx="80" cy="80" r="65"/>
+          <circle class="gauge-fill" id="gauge-fill" cx="80" cy="80" r="65"/>
+        </svg>
+        <div class="gauge-center">
+          <div class="gauge-pct" id="gauge-pct" style="color:#ff3ca6;">0%</div>
+          <div class="gauge-label">재회 가능성</div>
+        </div>
+      </div>
+
+      <div class="result-grade" id="r-grade"></div>
+      <div class="result-msg" id="r-msg"></div>
+    </div>
+
+    <!-- 세부 분석 -->
+    <div class="detail-card fadein">
+      <div class="detail-title">📊 세부 궁합 분석</div>
+      <div class="bars">
+        <div class="brow"><div class="blabel">💗 사랑 궁합</div><div class="btrack"><div class="bfill love" id="b-love"></div></div><div class="bpct" id="p-love"></div></div>
+        <div class="brow"><div class="blabel">🌙 재회 가능성</div><div class="btrack"><div class="bfill reunion" id="b-reunion"></div></div><div class="bpct" id="p-reunion"></div></div>
+        <div class="brow"><div class="blabel">⚡ 감정 교감</div><div class="btrack"><div class="bfill sync" id="b-sync"></div></div><div class="bpct" id="p-sync"></div></div>
+        <div class="brow"><div class="blabel">🤝 신뢰 지수</div><div class="btrack"><div class="bfill trust" id="b-trust"></div></div><div class="bpct" id="p-trust"></div></div>
+        <div class="brow"><div class="blabel">✨ 미래 가능성</div><div class="btrack"><div class="bfill future" id="b-future"></div></div><div class="bpct" id="p-future"></div></div>
+      </div>
+    </div>
+
+    <!-- 깨비 조언 -->
+    <div class="advice-card fadein">
+      <div class="advice-header">
+        <img src="kkabbi-main.jpg" alt="깨비아씨" onerror="this.outerHTML='<div style=\'font-size:36px\'>🔮</div>'">
+        <strong>🍀 깨비아씨의 한마디</strong>
+      </div>
+      <div class="advice-text" id="r-advice"></div>
+    </div>
+
+    <button class="retry-btn" onclick="reset()">🔄 다시 보기</button>
+
+  </div>
+
+</div>
+
+<!-- 하단 네비 -->
+<div class="bottom-nav">
+  <div class="nitem" onclick="go('index.html')"><span class="nicon">🏠</span><span class="nlabel">홈</span></div>
+  <div class="nitem" onclick="go('today.html')">
+    <span class="nicon"><img src="nav-zodiac.png" style="width:30px;height:30px;object-fit:contain;" onerror="this.outerHTML='🔮'"></span>
+    <span class="nlabel">운세</span>
+  </div>
+  <div class="nitem active"><span class="nicon">💗</span><span class="nlabel">궁합</span></div>
+  <div class="nitem" onclick="go('talisman.html')"><span class="nicon">📜</span><span class="nlabel">카테고리</span></div>
+  <div class="nitem" onclick="go('my.html')"><span class="nicon">👤</span><span class="nlabel">마이페이지</span></div>
+</div>
+
+<script>
+function go(p){window.location.href=p;}
+
+// 별 배경 생성
+(function(){
+  const wrap=document.getElementById('stars');
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    const size=Math.random()*2.5+0.5;
+    s.style.cssText=`width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+2).toFixed(1)}s;--op:${(Math.random()*0.6+0.3).toFixed(1)};animation-delay:${(Math.random()*4).toFixed(1)}s`;
+    wrap.appendChild(s);
+  }
+})();
+
+// 궁합 데이터
+const grades=[
+  {min:90,label:"🔥 운명적인 재회",color:"#ff3ca6"},
+  {min:80,label:"💫 강한 재회의 기운",color:"#ff6eb0"},
+  {min:70,label:"🌙 재회의 가능성이 높아요",color:"#c070ff"},
+  {min:60,label:"💜 인연의 실이 이어져 있어요",color:"#a050e0"},
+  {min:50,label:"🌸 작은 불씨가 남아있어요",color:"#ff9dbd"},
+  {min:40,label:"⭐ 시간이 더 필요해요",color:"#ffd86b"},
+  {min:0,label:"🌱 새로운 출발이 필요한 시기",color:"#80e890"}
+];
+
+const msgs={
+  high:[
+    "두 사람 사이에는 아직 끊어지지 않은 붉은 실이 이어져 있습니다. 하늘이 맺어준 인연이기에 시간이 지나도 그 기운은 사라지지 않습니다. 먼저 한 걸음 내딛는 용기가 기적을 만들어낼 것입니다.",
+    "운명은 두 사람을 다시 마주하게 할 준비를 하고 있습니다. 그리움이 클수록 재회의 기운도 강해집니다. 진심을 담아 다가가면 반드시 응답이 올 것입니다.",
+    "두 사람의 별자리가 다시 하나로 모이고 있습니다. 지금은 멀리 있어도 그 기운은 분명히 당신을 향하고 있습니다. 포기하지 마세요.",
+    "이 인연은 하늘이 허락한 깊은 인연입니다. 시간과 거리를 초월해 두 마음이 다시 이어질 가능성이 매우 높습니다.",
+    "두 사람 사이의 감정은 여전히 살아 숨쉬고 있습니다. 작은 계기 하나가 모든 것을 바꿔놓을 수 있는 강한 재회의 기운이 흐릅니다."
+  ],
+  mid:[
+    "인연의 끈은 아직 이어져 있지만, 서로의 마음을 확인할 시간이 필요합니다. 급하게 서두르지 말고 자연스러운 흐름에 맡겨보세요. 진심은 반드시 통합니다.",
+    "두 사람 사이에 아직 감정의 온기가 남아있습니다. 먼저 가벼운 연락이나 안부를 전하면 좋은 반응이 올 수 있습니다.",
+    "재회의 가능성이 있지만 타이밍이 중요합니다. 서로가 충분히 정리될 시간을 주면서 자연스럽게 거리를 좁혀가세요.",
+    "인연이 완전히 끊어진 것은 아닙니다. 하지만 지금은 각자의 시간이 필요한 때입니다. 준비가 되었을 때 다가가면 더 좋은 결과가 있을 것입니다.",
+    "두 사람의 기운은 여전히 서로를 향하고 있습니다. 조급해하지 말고 천천히 마음을 열어가면 재회의 문이 열릴 것입니다."
+  ],
+  low:[
+    "지금 당장의 재회보다는 스스로를 더 사랑하는 시간이 필요한 때입니다. 더 나은 인연을 위해 지금은 자신에게 집중해보세요.",
+    "인연의 기운이 잠시 멀어져 있습니다. 억지로 붙잡으려 하기보다 자연스럽게 흘러가도록 두는 것이 더 현명한 선택입니다.",
+    "지금은 새로운 출발을 준비하는 시기입니다. 과거에 집착하기보다 앞으로 나아갈 때 더 좋은 인연이 기다리고 있습니다.",
+    "두 사람 사이에 거리가 생겼지만, 그것이 끝을 의미하지는 않습니다. 지금은 서로에게 시간과 공간을 주는 것이 최선입니다.",
+    "재회보다 먼저 각자의 성장이 필요한 시기입니다. 스스로가 더 성장했을 때 더 좋은 관계가 만들어질 수 있습니다."
+  ]
+};
+
+const advices=[
+  "그리움은 마음이 살아있다는 증거입니다. 하지만 진짜 사랑은 기다림 속에서 더 깊어집니다. 조금만 더 인내하세요.",
+  "상대방이 당신을 생각하는 마음은 분명히 있습니다. 먼저 가벼운 안부로 문을 두드려보는 것도 좋습니다.",
+  "재회는 억지로 되는 것이 아닙니다. 당신이 먼저 행복해질 때, 상대방도 자연스럽게 돌아오게 됩니다.",
+  "지금 이 순간의 그리움을 무시하지 마세요. 그것이 진짜 마음의 소리입니다.",
+  "인연이라면 반드시 다시 만납니다. 지금은 그 시간을 준비하며 스스로를 더 빛나게 만드세요.",
+  "진심은 언제나 상대방에게 전해집니다. 두려워하지 말고 솔직하게 마음을 전해보세요.",
+  "사랑은 타이밍입니다. 지금이 바로 그 타이밍일 수 있습니다. 용기를 내보세요.",
+  "상대방의 마음속에 당신의 자리는 아직 남아있습니다. 그 자리를 다시 채울 준비를 하세요.",
+  "재회를 원한다면 먼저 자신을 사랑하세요. 빛나는 당신을 보면 상대방도 다시 마음이 움직일 것입니다.",
+  "운명은 준비된 자에게 기회를 줍니다. 지금 이 순간을 소중히 하며 재회를 준비하세요."
+];
+
+function hash(str){
+  let h=0;
+  for(let i=0;i<str.length;i++) h=(h<<5)-h+str.charCodeAt(i)|0;
+  return Math.abs(h);
+}
+
+function calc(){
+  const mn=document.getElementById('my-name').value.trim();
+  const yn=document.getElementById('your-name').value.trim();
+  const my=document.getElementById('my-year').value;
+  const mm=document.getElementById('my-month').value;
+  const md=document.getElementById('my-day').value;
+  const yy=document.getElementById('your-year').value;
+  const ym=document.getElementById('your-month').value;
+  const yd=document.getElementById('your-day').value;
+
+  if(!mn||!yn){alert('두 사람의 이름을 입력해주세요 💗');return;}
+  if(!my||!mm||!md||!yy||!ym||!yd){alert('두 사람의 생년월일을 모두 입력해주세요 🌙');return;}
+
+  // 시드 기반 수치 계산
+  const seed = hash(mn+yn+my+mm+md+yy+ym+yd);
+  const r = (offset)=> 40 + (hash(seed+''+offset) % 56); // 40~95
+
+  const love    = r(1);
+  const reunion = r(2);
+  const sync    = r(3);
+  const trust   = r(4);
+  const future  = r(5);
+  const total   = Math.round((love*0.25 + reunion*0.35 + sync*0.15 + trust*0.1 + future*0.15));
+
+  // 결과 표시
+  document.getElementById('r-myname').textContent = mn;
+  document.getElementById('r-yourname').textContent = yn;
+  document.getElementById('r-birth').textContent = `${my}.${mm}.${md} ✦ ${yy}.${ym}.${yd}`;
+
+  // 등급
+  const grade = grades.find(g=>total>=g.min);
+  document.getElementById('r-grade').textContent = grade.label;
+  document.getElementById('r-grade').style.color = grade.color;
+  document.getElementById('gauge-pct').style.color = grade.color;
+
+  // 메시지
+  const msgPool = total>=75 ? msgs.high : total>=50 ? msgs.mid : msgs.low;
+  document.getElementById('r-msg').textContent = msgPool[seed % msgPool.length];
+  document.getElementById('r-advice').textContent = advices[seed % advices.length];
+
+  // 게이지 애니메이션
+  const circumference = 408;
+  const offset = circumference - (circumference * total / 100);
+  const gaugeFill = document.getElementById('gauge-fill');
+  gaugeFill.style.stroke = grade.color;
+  gaugeFill.style.filter = `drop-shadow(0 0 6px ${grade.color})`;
+
+  // 결과 섹션 표시
+  document.getElementById('result-section').style.display='block';
+  document.getElementById('result-section').scrollIntoView({behavior:'smooth'});
+
+  // 애니메이션 딜레이
+  setTimeout(()=>{
+    // 게이지
+    gaugeFill.style.strokeDashoffset = offset;
+    // 숫자 카운트업
+    let cur=0;
+    const timer=setInterval(()=>{
+      cur=Math.min(cur+2,total);
+      document.getElementById('gauge-pct').textContent=cur+'%';
+      if(cur>=total)clearInterval(timer);
+    },30);
+    // 바
+    const vals={love,reunion,sync,trust,future};
+    Object.keys(vals).forEach(k=>{
+      document.getElementById('b-'+k).style.width=vals[k]+'%';
+      document.getElementById('p-'+k).textContent=vals[k]+'%';
+    });
+  },200);
+}
+
+function reset(){
+  document.getElementById('result-section').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
