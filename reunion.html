@@ -64,15 +64,10 @@
     }
 
     /* 두 사람 입력 */
-    .couple-row{
-      display:grid;grid-template-columns:1fr 40px 1fr;
-      align-items:center;gap:8px;margin-bottom:16px;
-    }
-    .person-box{display:flex;flex-direction:column;gap:8px;}
-    .person-label{font-size:11px;font-weight:900;text-align:center;color:rgba(195,165,235,0.9);letter-spacing:1px;}
+    .person-box{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+    .person-label{font-size:12px;font-weight:900;color:rgba(195,165,235,0.9);letter-spacing:1px;margin-bottom:2px;}
     .heart-center{
-      display:flex;align-items:center;justify-content:center;
-      font-size:22px;
+      text-align:center;font-size:26px;margin:2px 0 12px;
       filter:drop-shadow(0 0 8px rgba(255,60,166,0.8));
       animation:heartbeat 1.5s ease-in-out infinite;
     }
@@ -88,13 +83,14 @@
     .inp::placeholder{color:rgba(180,150,220,0.45);font-size:12px;}
     .inp:focus{border-color:#ff3ca6;}
 
-    .birth-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+    .birth-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+    .birth-row .year-inp{grid-column:1/3;}
     .birth-inp{
-      padding:10px 6px;border-radius:10px;font-size:13px;
+      padding:11px 12px;border-radius:10px;font-size:13px;
       border:1.5px solid rgba(212,168,64,0.25);
       background:rgba(18,3,38,0.85);color:#fff5e0;
       outline:none;font-family:'Noto Sans KR',sans-serif;
-      transition:border-color .2s;text-align:center;
+      transition:border-color .2s;
     }
     .birth-inp::placeholder{color:rgba(180,150,220,0.4);font-size:11px;}
     .birth-inp:focus{border-color:#ff3ca6;}
@@ -253,31 +249,29 @@
   <div class="form-wrap">
     <div class="form-title">💫 두 사람의 정보를 입력하세요</div>
 
-    <div class="couple-row">
       <!-- 나 -->
       <div class="person-box">
         <div class="person-label">💙 나</div>
-        <input class="inp" id="my-name" placeholder="내 이름" maxlength="6">
+        <input class="inp" id="my-name" placeholder="내 이름을 입력하세요" maxlength="6" style="text-align:left;padding-left:14px;">
         <div class="birth-row">
-          <input class="birth-inp" id="my-year" placeholder="년도" maxlength="4" type="number">
-          <input class="birth-inp" id="my-month" placeholder="월" maxlength="2" type="number">
-          <input class="birth-inp" id="my-day" placeholder="일" maxlength="2" type="number">
+          <input class="birth-inp year-inp" id="my-year" placeholder="출생년도 (예: 1995)" maxlength="4" type="number">
+          <input class="birth-inp" id="my-month" placeholder="월 (예: 8)" maxlength="2" type="number">
+          <input class="birth-inp" id="my-day" placeholder="일 (예: 15)" maxlength="2" type="number">
         </div>
       </div>
 
-      <div class="heart-center">💗</div>
+      <div class="heart-center">💗 ─ ─ ─ 💗</div>
 
       <!-- 상대 -->
       <div class="person-box">
-        <div class="person-label">💖 상대</div>
-        <input class="inp" id="your-name" placeholder="상대 이름" maxlength="6">
+        <div class="person-label">💖 상대방</div>
+        <input class="inp" id="your-name" placeholder="상대방 이름을 입력하세요" maxlength="6" style="text-align:left;padding-left:14px;">
         <div class="birth-row">
-          <input class="birth-inp" id="your-year" placeholder="년도" maxlength="4" type="number">
-          <input class="birth-inp" id="your-month" placeholder="월" maxlength="2" type="number">
-          <input class="birth-inp" id="your-day" placeholder="일" maxlength="2" type="number">
+          <input class="birth-inp year-inp" id="your-year" placeholder="출생년도 (예: 1993)" maxlength="4" type="number">
+          <input class="birth-inp" id="your-month" placeholder="월 (예: 3)" maxlength="2" type="number">
+          <input class="birth-inp" id="your-day" placeholder="일 (예: 22)" maxlength="2" type="number">
         </div>
       </div>
-    </div>
 
     <button class="calc-btn" onclick="calc()">
       <span>🔮 재회궁합 보기</span>
